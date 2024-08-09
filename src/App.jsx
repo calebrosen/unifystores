@@ -21,6 +21,7 @@ import ViewPushManufacturers from './pages/manufacturers/ViewPushManufacturers.j
 import EditManufacturerName from './pages/manufacturers/EditManufacturerName.jsx';
 import AddNewOrderStatus from './pages/orderstatus/AddNewOrderStatus.jsx';
 import OrderStatus from './pages/orderstatus/orderstatus.jsx';
+import StockStatus from './pages/stockStatus/stockStatus.jsx';
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
 
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/manufacturers/EditManufacturerName" element={<RequireAuth><HomeAndLogOutButtons><EditManufacturerName /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/manufacturers/AddNewManufacturer" element={<RequireAuth><HomeAndLogOutButtons><AddNewManufacturer /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/orderstatus" element={<RequireAuth><HomeAndLogOutButtons><OrderStatus /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/stockStatus" element={<RequireAuth><HomeAndLogOutButtons><StockStatus /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/orderstatus/AddNewOrderStatus" element={<RequireAuth><HomeAndLogOutButtons><AddNewOrderStatus /></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
       </Router>
