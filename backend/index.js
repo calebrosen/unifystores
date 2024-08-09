@@ -141,6 +141,22 @@ app.post('/pushPartDiagrams', (req, res)=> {
     })
 })
 
+app.get('/orderstatus', (req, res)=> { 
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Order Status'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+app.post('/addNewOrderStatus', (req, res)=> { 
+    const sql = "CALL PushPartDiagrams(?)";
+    const values = [req.body.selectedStore]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
 
 app.get('/fetchAgents', (req, res)=> { 
     const sql = "Select `Agent`, `AgentID` from CouponAgentList WHERE Status = 1";
