@@ -1,34 +1,45 @@
 import axios from 'axios';
-import React, { useContext } from 'react';
-import { StoreContext } from '../../contexts/StoreContext';
+import React, { useState } from 'react';
 
 function AddNewManufacturer() {
-  const { selectedStore } = useContext(StoreContext);
+  const [manufacturerName, setManufacturerName] = useState('');
 
-  const pushToStore = (e) => {
-    if (selectedStore) {
-      let manufacturerID = e.target.id;
-      let name = e.target.value;
-      const confirmPush = confirm('Are you sure you want to push ' + name + ' to ' + selectedStore + '?');
+  const updateManufacturerName = (e) => {
+    setManufacturerName(e.target.value);
+  }
+  
+  const addManufacturerAction = () => {
+    if (manufacturerName != '') {
+      const confirmPush = confirm('Are you sure you want to add ' + manufacturerName + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushManufacturer', { selectedStore, manufacturerID })
+        axios.post('http://127.0.0.1:8081/addNewManufacturer', { manufacturerName })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);
+            }
+            else {
+              alert('no success');
             }
             console.log(res);
         })
         .catch(err => alert('Error:', err));
       }
-    } else {
-      alert('Try selecting a store first.');
     }
   }
 
   return (
-    
-    <div id="manufacturersContainer" className='subsectionContainer'>
-      <input className='inputBox1'></input>
+    <div>
+      <div className='centered'>
+        <p className='largeHeader marginTop2rem'>
+          INPUT A MANUFACTURER NAME
+        </p>
+        <div id="manufacturersContainer" className='subsectionContainer'>
+          <input className='inputBox1' onChange={updateManufacturerName}></input>
+        </div>
+        <div>
+          <button className='darkRedButton marginTop4rem' onClick={addManufacturerAction}>Add Manufacturer</button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -162,6 +162,10 @@ body {
   visibility: hidden;
 }
 
+.marginTop4rem {
+  margin-top: 4rem;
+}
+
 .marginTop3rem {
   margin-top: 3rem;
 }

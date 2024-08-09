@@ -122,6 +122,14 @@ app.get('/viewEditManufacturers', (req, res)=> {
     })
 })
 
+app.post('/addNewManufacturer', (req, res)=> { 
+    const sql = "CALL AddManufacturer(?)";
+    const values = [req.body.manufacturerName]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
 
 
 app.post('/pushPartDiagrams', (req, res)=> { 
