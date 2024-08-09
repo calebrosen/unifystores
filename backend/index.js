@@ -158,6 +158,23 @@ app.get('/orderstatus', (req, res)=> {
     })
 })
 
+app.get('/viewEditOrderStatusName', (req, res)=> {
+    const sql = "CALL GetOrderStatuses();";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+app.post('/updateOrderStatusName', (req, res) => {
+    const sql = "CALL UpdateOrderStatusName(?, ?);";
+    const values = [req.body.order_status_id, req.body.editedName];
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+      });
+  });
+
 app.post('/addNewOrderStatus', (req, res)=> { 
     const sql = "CALL AddOrderStatus(?)";
     const values = [req.body.orderStatusName]
