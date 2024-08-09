@@ -18,6 +18,7 @@ import Login from './pages/login/login.jsx';
 import AddNewManufacturer from './pages/manufacturers/AddNewManufacturer.jsx';
 import Manufacturers from './pages/manufacturers/manufacturers.jsx';
 import ViewPushManufacturers from './pages/manufacturers/ViewPushManufacturers.jsx';
+import EditManufacturerName from './pages/manufacturers/EditManufacturerName.jsx';
 import AddNewOrderStatus from './pages/orderstatus/AddNewOrderStatus.jsx';
 import OrderStatus from './pages/orderstatus/orderstatus.jsx';
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
