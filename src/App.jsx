@@ -18,6 +18,7 @@ import Login from './pages/login/login.jsx';
 import AddNewManufacturer from './pages/manufacturers/AddNewManufacturer.jsx';
 import Manufacturers from './pages/manufacturers/manufacturers.jsx';
 import ViewPushManufacturers from './pages/manufacturers/ViewPushManufacturers.jsx';
+import EditManufacturerName from './pages/manufacturers/EditManufacturerName.jsx';
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
 
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/information/pushInformation" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><PushInformation /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/manufacturers" element={<RequireAuth><HomeAndLogOutButtons><Manufacturers /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/manufacturers/ViewPushManufacturers" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ViewPushManufacturers /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/manufacturers/EditManufacturerName" element={<RequireAuth><HomeAndLogOutButtons><EditManufacturerName /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/manufacturers/AddNewManufacturer" element={<RequireAuth><HomeAndLogOutButtons><AddNewManufacturer /></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
       </Router>
