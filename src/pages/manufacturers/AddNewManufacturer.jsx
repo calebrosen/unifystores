@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { StoreContext } from '../../contexts/StoreContext';
 
 function AddNewManufacturer() {
@@ -28,7 +28,7 @@ function AddNewManufacturer() {
   return (
     
     <div id="manufacturersContainer" className='subsectionContainer'>
-      
+      <input className='inputBox1'></input>
     </div>
   );
 }
