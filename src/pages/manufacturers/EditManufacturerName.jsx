@@ -1,11 +1,8 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import { StoreContext } from '../../contexts/StoreContext';
+import React, { useEffect, useState } from 'react';
 
 function EditPushManufacturerName() {
   const [data, setData] = useState([]);
-  const { selectedStore } = useContext(StoreContext);
-  const [editedName, setEditedName] = useState('');
  
   useEffect(() => {
     fetch('http://127.0.0.1:8081/viewEditManufacturers')
@@ -14,29 +11,29 @@ function EditPushManufacturerName() {
       .catch(err => console.log('Fetch error:', err));
   }, []);
 
-  const pushToStore = (e) => {
-    if (selectedStore) {
-      let manufacturerID = e.target.id;
-      let name = e.target.value;
-      const confirmPush = confirm('Are you sure you want to push ' + name + ' to ' + selectedStore + '?');
+  const editManufacturerName = (manufacturerID, originalName) => {
+    const inputID = `manufacturerID${manufacturerID}`;
+    const editedName = document.getElementById(inputID).value;
+    if (editedName != originalName) {
+      const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${manufacturerID}) to ${editedName}?`);
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushManufacturer', { selectedStore, manufacturerID })
-        .then(res => {
+        axios.post('http://127.0.0.1:8081/updateManufacturerName', { manufacturerID, editedName })
+          .then(res => {
+            console.log(res);
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);
-            }
-            console.log(res);
-        })
-        .catch(err => alert('Error:', err));
+            } 
+          })
+          .catch(err => alert('Error:', err));
       }
     } else {
-      alert('Try selecting a store first.');
+      alert("There's an input field, btw. Try changing that first.");
     }
   }
 
   return (
-    
     <div id="manufacturersContainer" className='subsectionContainer'>
+      <p className='xlHeader'>Edit Manufacturer Name</p>
       <table className='marginTop3rem'>
         <thead>
           <tr>
@@ -50,20 +47,21 @@ function EditPushManufacturerName() {
             <tr key={i}>
               <td>{d.manufacturer_id}</td>
               <td>
-              <input
-                    type="text"
-                    placeholder="Code if ADMIN selected"
-                    id="couponCodeField"
-                    value={d.name}
-                    className='textBoxCoupon'
-                    onChange={(e) => setEditedName(e.target.value)}
-                    />
-                
-                
-                
-                
-                </td>
-              <td>&nbsp;<button className='darkRedButtonInline' id={d.manufacturer_id} value={d.name} onClick={pushToStore}>Edit Nmae</button></td>
+                <input
+                  type="text"
+                  id={`manufacturerID${d.manufacturer_id}`}
+                  defaultValue={d.name}
+                  name={d.name}
+                  className='textBox1'
+                />
+              </td>
+              <td>
+                <button 
+                  className='darkRedButtonInlineMD' 
+                  onClick={() => editManufacturerName(d.manufacturer_id, d.name)}>
+                    Edit Name
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
