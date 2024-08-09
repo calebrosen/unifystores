@@ -24,6 +24,8 @@ function AddNewOrderStatus() {
         })
         .catch(err => alert('Error:', err));
       }
+    } else {
+      alert('Try again');
     }
   }
 

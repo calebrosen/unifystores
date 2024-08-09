@@ -159,8 +159,8 @@ app.get('/orderstatus', (req, res)=> {
 })
 
 app.post('/addNewOrderStatus', (req, res)=> { 
-    const sql = "CALL PushPartDiagrams(?)";
-    const values = [req.body.selectedStore]
+    const sql = "CALL AddOrderStatus(?)";
+    const values = [req.body.orderStatusName]
     unify.query(sql, values, (err, data) => {
         if (err) return res.json(err);
         return res.json(data);
