@@ -131,6 +131,15 @@ app.post('/addNewManufacturer', (req, res)=> {
     })
 })
 
+app.post('/updateManufacturerName', (req, res) => {
+    const sql = "CALL UpdateManufacturerName(?, ?);";
+    const values = [req.body.manufacturerID, req.body.editedName];
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+      });
+  });
+
 
 app.post('/pushPartDiagrams', (req, res)=> { 
     const sql = "CALL PushPartDiagrams(?)";
