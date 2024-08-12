@@ -236,7 +236,7 @@ app.get('/customergroups', (req, res)=> {
 })
 
 app.post('/addNewCustomerGroup', (req, res)=> { 
-    const sql = "CALL AddCustomerGroup(?)";
+    const sql = "CALL AddNewCustomerGroup(?)";
     const values = [req.body.customerGroupName]
     unify.query(sql, values, (err, data) => {
         if (err) return res.json(err);

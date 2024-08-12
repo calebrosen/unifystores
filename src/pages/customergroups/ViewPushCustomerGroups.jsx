@@ -17,7 +17,7 @@ function ViewPushCustomerGroups() {
     if (selectedStore) {
       let customerGroupID = e.target.id;
       let name = e.target.value;
-      const confirmPush = confirm('Are you sure you want to push customer group "' + name + '" to ' + selectedStore + '?');
+      const confirmPush = confirm('Are you sure you want to push customer group "' + name + '" to ' + selectedStore + '??');
       if (confirmPush) {
         axios.post('http://127.0.0.1:8081/pushCustomerGroup', { selectedStore, customerGroupID })
         .then(res => {

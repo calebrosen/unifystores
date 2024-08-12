@@ -65,7 +65,7 @@ const App = () => {
           <Route path="/customergroups" element={<RequireAuth><HomeAndLogOutButtons><CustomerGroups /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups/EditCustomerGroupName" element={<RequireAuth><HomeAndLogOutButtons><CustomerGroups /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups/ViewPushCustomerGroups" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ViewPushCustomerGroups /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
-          <Route path="/customergroups/AddNewCustomerGroup" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><AddNewCustomerGroup /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/customergroups/AddNewCustomerGroup" element={<RequireAuth><HomeAndLogOutButtons><AddNewCustomerGroup /></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
       </Router>
     </StoreProvider>
