@@ -18,6 +18,8 @@ const unify = mysql.createConnection({
     port: "3306"
 })
 
+/* fully internal databases so login information doesn't matter */
+
 const federated = mysql.createConnection({
     host: "10.1.10.186",
     user: "caleb",
