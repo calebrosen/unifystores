@@ -244,6 +244,32 @@ app.post('/addNewCustomerGroup', (req, res)=> {
     })
 })
 
+app.get('/viewEditCustomerGroupName', (req, res)=> {
+    const sql = "CALL GetCustomerGroups();";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+app.post('/editCustomerGroupName', (req, res)=> {
+    const sql = "CALL UpdateCustomerGroupName(?, ?);";
+    const values = [req.body.customerGroupID, req.body.name];
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+app.post('/pushCustomerGroups', (req, res)=> { 
+    const sql = "CALL PushCustomerGroupToStore(?, ?)";
+    const values = [req.body.selectedStore, req.body.customerGroupID]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
 app.get('/fetchAgents', (req, res)=> { 
     const sql = "Select `Agent`, `AgentID` from CouponAgentList WHERE Status = 1";
     federated.query(sql, (err,data)=> {

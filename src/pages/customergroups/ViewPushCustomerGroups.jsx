@@ -13,6 +13,8 @@ function ViewPushCustomerGroups() {
       .catch(err => console.log('Fetch error:', err));
   }, []);
 
+  
+
   const pushToStore = (e) => {
     if (selectedStore) {
       let customerGroupID = e.target.id;

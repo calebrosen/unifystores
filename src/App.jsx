@@ -32,6 +32,7 @@ import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
 import EditPushStockStatusName from './pages/stockstatus/EditPushStockStatusName.jsx';
 import StockStatus from './pages/stockstatus/StockStatus.jsx';
 import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx';
+import EditCustomerGroupName from './pages/customergroups/EditCustomerGroupName.jsx';
 
 const App = () => {
   return (
@@ -63,7 +64,7 @@ const App = () => {
           <Route path="/stockstatus/EditPushStockStatusName" element={<RequireAuth><HomeAndLogOutButtons><EditPushStockStatusName /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/stockstatus/ViewPushStockStatuses" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ViewPushStockStatuses /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups" element={<RequireAuth><HomeAndLogOutButtons><CustomerGroups /></HomeAndLogOutButtons></RequireAuth>} />
-          <Route path="/customergroups/EditCustomerGroupName" element={<RequireAuth><HomeAndLogOutButtons><CustomerGroups /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/customergroups/EditCustomerGroupName" element={<RequireAuth><HomeAndLogOutButtons><EditCustomerGroupName /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups/ViewPushCustomerGroups" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ViewPushCustomerGroups /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups/AddNewCustomerGroup" element={<RequireAuth><HomeAndLogOutButtons><AddNewCustomerGroup /></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
