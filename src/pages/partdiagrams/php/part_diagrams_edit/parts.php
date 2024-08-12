@@ -126,7 +126,7 @@
             
             $query = "DELETE FROM part_diagrams_model_part_relations WHERE id = {$the_id} ";
             $delete_query = mysqli_query($connection, $query);
-            header("Location: /part_diagrams_edit/parts.php?model_id={$model_id}&model={$model}");
+            header("Location: parts.php?model_id={$model_id}&model={$model}");
         }
     }
 ?>

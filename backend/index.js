@@ -150,7 +150,7 @@ app.post('/pushPartDiagrams', (req, res)=> {
     })
 })
 
-app.get('/orderstatus', (req, res)=> { 
+app.get('/orderStatus', (req, res)=> { 
     const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Order Status'";
     unify.query(sql, (err,data)=> {
         if(err) return res.json (err);
@@ -178,6 +178,66 @@ app.post('/updateOrderStatusName', (req, res) => {
 app.post('/addNewOrderStatus', (req, res)=> { 
     const sql = "CALL AddOrderStatus(?)";
     const values = [req.body.orderStatusName]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+app.post('/pushOrderStatus', (req, res)=> { 
+    const sql = "CALL PushOrderStatusToStore(?, ?)";
+    const values = [req.body.selectedStore, req.body.orderStatusID]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+app.get('/stockstatus', (req, res)=> { 
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Stock Status'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+app.post('/addNewStockStatus', (req, res)=> { 
+    const sql = "CALL AddStockStatus(?)";
+    const values = [req.body.stockStatusName]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+app.get('/viewEditStockStatusName', (req, res)=> {
+    const sql = "CALL GetStockStatuses();";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+app.post('/pushStockStatus', (req, res)=> { 
+    const sql = "CALL PushStockStatusToStore(?, ?)";
+    const values = [req.body.selectedStore, req.body.stockStatusID]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
+app.get('/customergroups', (req, res)=> {
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Customer Groups'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+app.post('/addNewCustomerGroup', (req, res)=> { 
+    const sql = "CALL AddCustomerGroup(?)";
+    const values = [req.body.customerGroupName]
     unify.query(sql, values, (err, data) => {
         if (err) return res.json(err);
         return res.json(data);

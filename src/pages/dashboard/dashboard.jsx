@@ -8,18 +8,23 @@ function Dashboard() {
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));
   }, []);
-
+  var temp = '';
   return (
-    <div id="container">
-      {data
-        .sort((a, b) => a.section.localeCompare(b.section)) // alphabetically sorting
-        .map((d, i) => (
-          <div key={i}  id={`${d.path} Section`} className='section'>
-            <a href={d.path || '#'} className="noDecoration">
-              <p className='sectionTitleHomePage'>{d.section}</p>
-            </a>
-          </div>
-        ))}
+    <div>
+      <div className="centered xlHeader">
+      SELECT A SECTION
+      </div>
+      <div id="container">
+        {data
+          .sort((a, b) => a.section.localeCompare(b.section)) // alphabetically sorting
+          .map((d, i) => (
+            <div key={i}  id={`${d.path} Section`} className='section'>
+              <a href={d.path || '#'} className="noDecoration">
+                <p className='sectionTitleHomePage'>{d.section}</p>
+              </a>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

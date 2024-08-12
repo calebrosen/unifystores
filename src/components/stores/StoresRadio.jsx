@@ -3,7 +3,7 @@ import { StoreContext } from '../../contexts/StoreContext';
 
 function StoresRadio({ children }) {
   const [data, setData] = useState([]);
-  const { selectedStore, setSelectedStore } = useContext(StoreContext); // Use context
+  const { selectedStore, setSelectedStore } = useContext(StoreContext); // use context
 
   useEffect(() => {
     fetch('http://127.0.0.1:8081/fetchStores')
@@ -13,7 +13,7 @@ function StoresRadio({ children }) {
   }, []);
 
   const handleStoreChange = (event) => {
-    setSelectedStore(event.target.value); // Update selected store in context
+    setSelectedStore(event.target.value);
   };
 
   return (

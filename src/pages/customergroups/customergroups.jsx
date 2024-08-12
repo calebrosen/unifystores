@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-function StockStatus() {
+function CustomerGroups() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/stockstatus')
+    fetch('http://127.0.0.1:8081/customergroups')
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));
@@ -11,7 +11,7 @@ function StockStatus() {
 
   return (
     
-    <div id="stockStatusContainer" className='subsectionContainer'>
+    <div id="customerGroupsContainer" className='subsectionContainer'>
     <p className='largeHeader'>SELECT A SUBSECTION</p>
       <div id="container">
         {data
@@ -28,4 +28,4 @@ function StockStatus() {
   );
 }
 
-export default StockStatus;
+export default CustomerGroups;
