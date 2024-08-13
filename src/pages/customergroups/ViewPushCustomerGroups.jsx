@@ -13,15 +13,13 @@ function ViewPushCustomerGroups() {
       .catch(err => console.log('Fetch error:', err));
   }, []);
 
-  
-
   const pushToStore = (e) => {
     if (selectedStore) {
       let customerGroupID = e.target.id;
       let name = e.target.value;
-      const confirmPush = confirm('Are you sure you want to push customer group "' + name + '" to ' + selectedStore + '??');
+      const confirmPush = confirm('Are you sure you want to push customer group "' + name + '" to ' + selectedStore + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushCustomerGroup', { selectedStore, customerGroupID })
+        axios.post('http://127.0.0.1:8081/pushCustomerGroups', { selectedStore, customerGroupID })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);
@@ -39,7 +37,7 @@ function ViewPushCustomerGroups() {
 
   return (
     
-    <div id="stockStatusContainer" className='subsectionContainer'>
+    <div id="customerGroupContainer" className='subsectionContainer'>
       <table className='marginTop3rem'>
         <thead>
           <tr>

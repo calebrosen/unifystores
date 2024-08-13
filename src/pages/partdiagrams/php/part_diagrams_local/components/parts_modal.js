@@ -32,19 +32,24 @@ function Parts_modal({ setSelectedIndex, part, modelId }) {
     )
   }
   
-/*  React.useEffect(() => {
-    let url = `http://localhost/unify/src/pages/pa342342rtdiagrams/part_diagrams_local/php/get_options.php?partid=${selectedPartId}&modelid=${modelId}`;
-    fetch(url).then(response => {
-      console.log(response);
-      return response.json();
-    }).then(result => {
-      console.log(JSON.stringify(result));
-      setOptions(result);
-      console.log(options);
-    }).catch(err => {
-      console.log("Error Reading data " + err);
-    });
-  }, [selectedPartId])*/
+  //fixing pulling related options
+  React.useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const response = await fetch(`./part_diagrams_local/php/get_options.php?partid=${selectedPartId}&modelid=${modelId}`);
+        if (response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setOptions(data);
+      } catch (error) {
+        console.error('Error fetching options:', error);
+      }
+    };
+
+    fetchOptions();
+  }, [selectedPartId, modelId]);
+
 
   return (
     <div className="modalBackground" onClick={() => setSelectedIndex(-1)}>

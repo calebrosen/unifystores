@@ -14,8 +14,6 @@ body {
   gap: 15px;
 }
 
-
-
 #createCouponContainer {
   display: flex;
   flex-wrap: wrap;
@@ -33,12 +31,9 @@ body {
   text-align: center;
 }
 
-
-
 #storeContainer {
   text-align: center;
 }
-
 
 .section {
   background-color: #fff;
@@ -239,9 +234,30 @@ body {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
+.marginBottom2rem {
+  margin-bottom:2rem;
+}
+
 .selectBox1:hover:active::selection::after {
   margin-top:2rem;
   font-size:2.35rem;
+  padding: 2px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  border: 1px solid darkred;
+}
+
+.selectBox2 {
+  margin-top:2rem;
+  font-size:2rem;
+  padding: 2px;
+  border-radius: 4px;
+  border: 1px solid rgb(163, 163, 163);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.selectBox2:hover:active::selection::after {
+  margin-top:2rem;
   padding: 2px;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
@@ -440,13 +456,14 @@ body {
 
 table {
   width: 100%;
+  font-size:1.28em; /*globally setting font size to remain consistent */
   border-collapse: collapse;
   font-family: Arial, sans-serif;
-  background-color: #f9f9f9; /* Light background for the table */
+  background-color: #f9f9f9;
   border-radius: 5px;
   border: 1px solid #000000;
-  overflow: hidden; /* To apply border-radius correctly */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  overflow: hidden; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 thead {

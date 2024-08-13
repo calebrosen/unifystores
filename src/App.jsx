@@ -7,11 +7,14 @@ import Stores from './components/stores/Stores.jsx';
 import StoresRadio from './components/stores/StoresRadio.jsx';
 import { StoreProvider } from './contexts/StoreContext.jsx';
 import './index.css';
+import Countries from './pages/countries/Countries.jsx';
+import EditCountriesOnStore from './pages/countries/EditCountriesOnStore.jsx';
 import Coupons from './pages/coupons/coupons.jsx';
 import CreateCoupon from './pages/coupons/createCoupon.jsx';
 import ModifyCoupons from './pages/coupons/modifyCoupons.jsx';
 import AddNewCustomerGroup from './pages/customergroups/AddNewCustomerGroup.jsx';
 import CustomerGroups from './pages/customergroups/customergroups.jsx';
+import EditCustomerGroupName from './pages/customergroups/EditCustomerGroupName.jsx';
 import ViewPushCustomerGroups from './pages/customergroups/ViewPushCustomerGroups.jsx';
 import Dashboard from './pages/dashboard/dashboard.jsx';
 import Information from './pages/information/information.jsx';
@@ -28,11 +31,12 @@ import OrderStatus from './pages/orderstatus/orderstatus.jsx';
 import ViewPushOrderStatuses from './pages/orderstatus/ViewPushOrderStatuses.jsx';
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
+import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
+import SalesAgent from './pages/salesagent/SalesAgent.jsx';
 import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
 import EditPushStockStatusName from './pages/stockstatus/EditPushStockStatusName.jsx';
 import StockStatus from './pages/stockstatus/StockStatus.jsx';
 import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx';
-import EditCustomerGroupName from './pages/customergroups/EditCustomerGroupName.jsx';
 
 const App = () => {
   return (
@@ -67,6 +71,10 @@ const App = () => {
           <Route path="/customergroups/EditCustomerGroupName" element={<RequireAuth><HomeAndLogOutButtons><EditCustomerGroupName /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups/ViewPushCustomerGroups" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ViewPushCustomerGroups /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/customergroups/AddNewCustomerGroup" element={<RequireAuth><HomeAndLogOutButtons><AddNewCustomerGroup /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/salesagent" element={<RequireAuth><HomeAndLogOutButtons><SalesAgent /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/salesagent/AddNewSalesAgent" element={<RequireAuth><HomeAndLogOutButtons><AddNewSalesAgent /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/countries" element={<RequireAuth><HomeAndLogOutButtons><Countries /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/countries/EditCountriesOnStore" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><EditCountriesOnStore /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
       </Router>
     </StoreProvider>

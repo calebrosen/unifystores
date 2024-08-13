@@ -272,6 +272,15 @@ app.post('/pushCustomerGroups', (req, res)=> {
     })
 })
 
+app.get('/salesagent', (req, res)=> {
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Sales Agent'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
+
+
 app.get('/fetchAgents', (req, res)=> { 
     const sql = "Select `Agent`, `AgentID` from CouponAgentList WHERE Status = 1";
     federated.query(sql, (err,data)=> {
@@ -315,6 +324,31 @@ app.post('/createCoupon', (req, res) => {
         return res.json(data);
       });
   });
+
+  app.get('/countries', (req, res)=> { 
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Countries'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.get('/getCountries', (req, res)=> { 
+    const sql = "Call GetCountries()";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.post('/editCountryOnStore', (req, res)=> { 
+    const sql = "Call EditCountryOnStore(?, ?, ?)";
+    const values = [req.body.selectedStore, req.body.countryID, req.body.selectedStatus];
+    unify.query(sql, values, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
 
 
 //maintaining login state
