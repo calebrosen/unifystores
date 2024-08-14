@@ -38,6 +38,8 @@ import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
 import EditPushStockStatusName from './pages/stockstatus/EditPushStockStatusName.jsx';
 import StockStatus from './pages/stockstatus/StockStatus.jsx';
 import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx';
+import EditZonesOnStore from './pages/zones/EditZonesOnStore.jsx';
+import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
 import Zones from './pages/zones/Zones.jsx';
 
 
@@ -78,8 +80,10 @@ const App = () => {
           <Route path="/salesagent/AddNewSalesAgent" element={<RequireAuth><HomeAndLogOutButtons><AddNewSalesAgent /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/countries" element={<RequireAuth><HomeAndLogOutButtons><Countries /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/countries/EditCountriesOnStore" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><EditCountriesOnStore /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
-          <Route path="/countries/VieWEnabledCountries" element={<RequireAuth><HomeAndLogOutButtons><ViewEnabledCountries /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/countries/ViewEnabledCountries" element={<RequireAuth><HomeAndLogOutButtons><ViewEnabledCountries /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/zones" element={<RequireAuth><HomeAndLogOutButtons><Zones /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/zones/EditZonesOnStore" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><EditZonesOnStore /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/zones/ViewEnabledZones" element={<RequireAuth><HomeAndLogOutButtons><ViewEnabledZones /></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
       </Router>
     </StoreProvider>

@@ -393,7 +393,7 @@ app.post('/createCoupon', (req, res) => {
   })
 
   app.post('/disableZone', (req, res)=> { 
-    const sql = "Call DisableZonesOnAllStore(?)";
+    const sql = "Call DisableZoneOnAllStores(?)";
     const values = [req.body.selectedZoneID];
     unify.query(sql, values, (err, data) => {
         if(err) return res.json (err);
