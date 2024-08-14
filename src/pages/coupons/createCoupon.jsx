@@ -20,9 +20,9 @@ function CreateCoupon() {
   const handleInputChange = (e) => {
     setSelectedAgent(e.target.value);
     if (e.target.value === 'ADMIN') {
-      adminInput.current.style.display = 'block'; // Show the input
+      adminInput.current.style.display = 'block';
     } else {
-      adminInput.current.style.display = 'none'; // Hide the input
+      adminInput.current.style.display = 'none';
     }
   };
 

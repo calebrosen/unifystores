@@ -37,9 +37,6 @@ function Parts_modal({ setSelectedIndex, part, modelId }) {
     const fetchOptions = async () => {
       try {
         const response = await fetch(`./part_diagrams_local/php/get_options.php?partid=${selectedPartId}&modelid=${modelId}`);
-        if (response.ok) {
-          throw new Error('Network response was not ok');
-        }
         const data = await response.json();
         setOptions(data);
       } catch (error) {
