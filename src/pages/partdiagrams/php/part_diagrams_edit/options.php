@@ -104,6 +104,6 @@
 
         $query = "DELETE FROM part_diagrams_part_options WHERE id = {$the_id}";
         $delete_query = mysqli_query($connection, $query);
-        header("Location: /part_diagrams_edit/options.php?model_id={$model_id}&model={$model}&part_id={$part_id}&part={$part}");
+        header("Location: options.php?model_id={$model_id}&model={$model}&part_id={$part_id}&part={$part}");
     }
 ?>

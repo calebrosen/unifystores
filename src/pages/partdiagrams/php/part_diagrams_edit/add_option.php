@@ -15,9 +15,10 @@
         // $part_id = $_POST['part_id'];
         $option_part_id = $_POST['option_part_id'];
         $description = $_POST['description'];
+        $part_model = $_POST['part_model'];
 
-        $query = "INSERT INTO part_diagrams_part_options (model_id, part_id, option_part_id, `description`) 
-                  VALUES ('{$model_id}','{$part_id}','{$option_part_id}','{$description}')";
+        $query = "INSERT INTO part_diagrams_part_options (`model_id`, `part_id`, `option_part_id`, `option_model`, `description`) 
+                  VALUES ('{$model_id}','{$part_id}','{$option_part_id}','{$part_model}','{$description}')";
 
         $create_option_query = mysqli_query($connection, $query);
 
@@ -65,18 +66,19 @@
        <label for="option_part_id">Option Parts</label>
     </div>
     <div>
-       <select name="option_part_id">           
+       <select name="option_part_id" id="option_part_id" onchange="updatePartModel()">           
             <?php
                 $query = "SELECT DISTINCT P.product_id, P.model, P.status, PD.name FROM product P INNER JOIN product_description PD ON P.product_id = PD.product_id WHERE P.status = 1 ORDER BY P.model";
-                $select_products = mysqli_query($connection, $query);    
+                $select_products = mysqli_query($connection, $query);
                 while($row = mysqli_fetch_assoc($select_products)) {
                     $part_id = $row['product_id'];
                     $part_model = $row['model'];
-                    $part_name = $row['name'];                
-                    echo "<option value='{$part_id}'>{$part_model} - {$part_name}</option>";
+                    $part_name = $row['name'];
+                    echo "<option value='{$part_id}' data-model='{$part_model}'>{$part_model} - {$part_name}</option>";
                 }
             ?> 
        </select>
+       <input type="hidden" name="part_model" id="part_model">
     </div>
     <br>
 
@@ -92,3 +94,12 @@
     </div>
 
 </form>
+
+<script>
+function updatePartModel() {
+    var partSelect = document.getElementById("option_part_id");
+    var selectedOption = partSelect.options[partSelect.selectedIndex];
+    var partModel = selectedOption.getAttribute("data-model");
+    document.getElementById("part_model").value = partModel;
+}
+</script>
