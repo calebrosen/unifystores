@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StoreContext } from '../../contexts/StoreContext';
 
 function CreateCoupon() {
@@ -8,6 +8,7 @@ function CreateCoupon() {
   const [couponCode, setCouponCode] = useState('');
   const [amount, setAmount] = useState('');
   const { selectedStore } = useContext(StoreContext);
+  const adminInput = useRef(null);
 
   useEffect(() => {
     fetch('http://127.0.0.1:8081/fetchAgents')
@@ -15,6 +16,15 @@ function CreateCoupon() {
       .then(data => setAgents(data))
       .catch(err => console.log('Fetch error:', err));
   }, []);
+
+  const handleInputChange = (e) => {
+    setSelectedAgent(e.target.value);
+    if (e.target.value === 'ADMIN') {
+      adminInput.current.style.display = 'block'; // Show the input
+    } else {
+      adminInput.current.style.display = 'none'; // Hide the input
+    }
+  };
 
   const createCouponAction = () => {
     if (selectedAgent == 'ADMIN' && couponCode == '') {
@@ -52,10 +62,10 @@ function CreateCoupon() {
     <div id="createCouponContainer">
       <div id="agentSelection">
         <select
-          className='agentSelection'
+          className="agentSelection"
           id="selectAgent"
           value={selectedAgent}
-          onChange={(e) => setSelectedAgent(e.target.value)}
+          onChange={handleInputChange}
         >
           <option value="ADMIN">ADMIN</option>
           {agents.map((agent, i) => (
@@ -66,13 +76,13 @@ function CreateCoupon() {
         </select>
       </div>
 
-      <div id="inputCouponCode">
+      <div id="inputCouponCode" ref={adminInput}>
         <input
           type="text"
-          placeholder="Code if ADMIN selected"
+          placeholder="Coupon Code"
           id="couponCodeField"
           value={couponCode}
-          className='textBoxCoupon'
+          className="textBoxCoupon"
           onChange={(e) => setCouponCode(e.target.value)}
         />
       </div>

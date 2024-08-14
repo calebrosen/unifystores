@@ -17,8 +17,8 @@ body {
 #createCouponContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 15px;
+  justify-content: center;
+  gap: 25px;
   margin-top:5em;
 }
 

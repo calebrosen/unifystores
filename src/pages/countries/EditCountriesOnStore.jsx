@@ -13,14 +13,6 @@ function EditCountriesOnStore() {
     const [searchQuery, setSearchQuery] = useState(''); 
     const { selectedStore } = useContext(StoreContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const openModal = () => {
-        if (selectedStore != '') {
-            setIsModalOpen(true);
-        } else {
-            alert('Select a store first');
-        }
-    };
     
     const closeModal = () => {
         setIsModalOpen(false);
