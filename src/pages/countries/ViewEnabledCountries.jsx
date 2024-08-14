@@ -24,7 +24,6 @@ function ViewEnabledCountries() {
         if (confirmEdit) {
             axios.post('http://127.0.0.1:8081/disableCountry', { selectedCountryID })
             .then(res => {
-                console.log(res);
                 if (res.data[0][0]['success']) {
                   alert(res.data[0][0]['success']);
                 } else {
@@ -40,7 +39,7 @@ function ViewEnabledCountries() {
 
     return (
         <div id="countriesContainer" className='subsectionContainer'>
-            <p className='xlHeader'>Enabled Countries</p>
+            <p className='xlHeader'>Enabled Countries (Except USA)</p>
             <table className='marginTop3rem'>
                 <thead>
                     <tr>

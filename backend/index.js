@@ -359,7 +359,6 @@ app.post('/createCoupon', (req, res) => {
     })
   })
 
-
   app.get('/viewEnabledCountries', (req, res)=> { 
     const sql = "Call ViewEnabledCountries();";
     unify.query(sql, (err,data)=> {
@@ -368,6 +367,47 @@ app.post('/createCoupon', (req, res) => {
     })
   })
 
+  app.get('/zones', (req, res)=> { 
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Zones'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.get('/getZones', (req, res)=> { 
+    const sql = "Call GetZones()";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.post('/editZonesOnStore', (req, res)=> { 
+    const sql = "Call EditZonesOnStore(?, ?, ?)";
+    const values = [req.body.selectedStore, req.body.zoneID, req.body.selectedStatus];
+    unify.query(sql, values, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.post('/disableZone', (req, res)=> { 
+    const sql = "Call DisableZonesOnAllStore(?)";
+    const values = [req.body.selectedZoneID];
+    unify.query(sql, values, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.get('/viewEnabledZones', (req, res)=> { 
+    const sql = "Call ViewEnabledZones();";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
 
 //maintaining login state
 const jwt = require('jsonwebtoken');

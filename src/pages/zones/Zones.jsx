@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
 
-function Dashboard() {
+function Zones() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/sections')
+    fetch('http://127.0.0.1:8081/zones')
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));
   }, []);
+
   return (
-    <div>
-      <div className="centered xlHeader">
-      SELECT A SECTION
-      </div>
+    <div id="zonesContainer" className='subsectionContainer'>
+    <p className='largeHeader'>SELECT A SUBSECTION</p>
       <div id="container">
         {data
-          .sort((a, b) => a.section.localeCompare(b.section)) // alphabetically sorting
+          .sort((a, b) => a.subsection.localeCompare(b.subsection)) // alphabetically sorting
           .map((d, i) => (
-            <div key={i}  id={`${d.path} Section`} className='section animated animatedFadeInUp fadeInUp'>
+            <div key={i}  id={`${d.path}Section`} className='section'>
               <a href={d.path || '#'} className="noDecoration">
-                <p className='sectionTitleHomePage'>{d.section}</p>
+                <p className='sectionTitleHomePage'>{d.subsection}</p>
               </a>
             </div>
           ))}
@@ -28,4 +27,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Zones;
