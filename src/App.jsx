@@ -9,6 +9,7 @@ import { StoreProvider } from './contexts/StoreContext.jsx';
 import './index.css';
 import Countries from './pages/countries/Countries.jsx';
 import EditCountriesOnStore from './pages/countries/EditCountriesOnStore.jsx';
+import ViewEnabledCountries from './pages/countries/ViewEnabledCountries.jsx';
 import Coupons from './pages/coupons/coupons.jsx';
 import CreateCoupon from './pages/coupons/createCoupon.jsx';
 import ModifyCoupons from './pages/coupons/modifyCoupons.jsx';
@@ -37,6 +38,7 @@ import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
 import EditPushStockStatusName from './pages/stockstatus/EditPushStockStatusName.jsx';
 import StockStatus from './pages/stockstatus/StockStatus.jsx';
 import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx';
+
 
 const App = () => {
   return (
@@ -75,6 +77,7 @@ const App = () => {
           <Route path="/salesagent/AddNewSalesAgent" element={<RequireAuth><HomeAndLogOutButtons><AddNewSalesAgent /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/countries" element={<RequireAuth><HomeAndLogOutButtons><Countries /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/countries/EditCountriesOnStore" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><EditCountriesOnStore /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/countries/VieWEnabledCountries" element={<RequireAuth><HomeAndLogOutButtons><ViewEnabledCountries /></HomeAndLogOutButtons></RequireAuth>} />
         </Routes>
       </Router>
     </StoreProvider>

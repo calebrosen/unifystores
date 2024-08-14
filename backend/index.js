@@ -350,6 +350,24 @@ app.post('/createCoupon', (req, res) => {
     })
   })
 
+  app.post('/disableCountry', (req, res)=> { 
+    const sql = "Call DisableCountryOnAllStores(?)";
+    const values = [req.body.selectedCountryID];
+    unify.query(sql, values, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+
+  app.get('/viewEnabledCountries', (req, res)=> { 
+    const sql = "Call ViewEnabledCountries();";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
 
 //maintaining login state
 const jwt = require('jsonwebtoken');

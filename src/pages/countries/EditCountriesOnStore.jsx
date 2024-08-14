@@ -68,11 +68,7 @@ function EditCountriesOnStore() {
         e.preventDefault();
         const selectedStatus = e.target.querySelector('select').value;
         const confirmEdit = confirm('Are you sure you would like to set ' + countryName + ' to status ' + selectedStatus + ' on ' + selectedStore + '?');
-        console.group();
-        console.log(countryID);
-        console.log(selectedStatus);
-        console.log(selectedStore);
-        console.groupEnd();
+
         if (confirmEdit) {
             axios.post('http://127.0.0.1:8081/editCountryOnStore', { selectedStore, countryID, selectedStatus })
             .then(res => {
