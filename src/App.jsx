@@ -32,6 +32,8 @@ import OrderStatus from './pages/orderstatus/orderstatus.jsx';
 import ViewPushOrderStatuses from './pages/orderstatus/ViewPushOrderStatuses.jsx';
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
+import ProductDescription from './pages/productdescription/productdescription.jsx';
+import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
 import SalesAgent from './pages/salesagent/SalesAgent.jsx';
 import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
@@ -84,6 +86,8 @@ const App = () => {
           <Route path="/zones" element={<RequireAuth><HomeAndLogOutButtons><Zones /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/zones/EditZonesOnStore" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><EditZonesOnStore /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/zones/ViewEnabledZones" element={<RequireAuth><HomeAndLogOutButtons><ViewEnabledZones /></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/productdescription" element={<RequireAuth><HomeAndLogOutButtons><ProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/productdescription/EditDescription" element={<RequireAuth><HomeAndLogOutButtons><ViewEditProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>

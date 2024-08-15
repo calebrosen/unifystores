@@ -409,6 +409,48 @@ app.post('/createCoupon', (req, res) => {
     })
   })
 
+  app.get('/productdescription', (req, res)=> { 
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Product Description'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.get('/viewEditProductDescription', (req, res)=> { 
+    const sql = "CALL GetProduct_summary_dif_table;";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.post('/getProductDescDifferences', (req, res)=> { 
+    const sql = "CALL GetProduct_description_differences(?);";
+    const values = [req.body.difID];
+    unify.query(sql, values, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+  
+  app.post('/saveProductDescription', (req, res)=> { 
+    const sql = "CALL PushProductDescriptionToStores(?, ?, ?, ?);";
+    const values = [req.body.storeId, req.body.selectedMPN, req.body.selectedModel, req.body.descriptionToSave];
+    unify.query(sql, values, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+  app.post('/refetchProductDescriptions', (req, res) => {
+    const sql = "CALL GetProductSummaryTables()";
+    unify.query(sql, (err, data) => {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
 //maintaining login state
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = '1RGS3CR3T';

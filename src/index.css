@@ -58,7 +58,7 @@ body {
 }
 
 .animated {
-  animation-duration: .95s;
+  animation-duration: 1s;
   animation-fill-mode: both;
 }
 
@@ -235,7 +235,6 @@ body {
   background-color: darkred;
   color: white;
   border: 1px solid #3b3b3b;
-  font-size:2rem;
   border-radius: 4px;
 }
 
@@ -259,8 +258,20 @@ body {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
+.marginBottom1rem {
+  margin-bottom:1rem;
+}
+
 .marginBottom2rem {
   margin-bottom:2rem;
+}
+
+.marginBottom3rem {
+  margin-bottom:3rem;
+}
+
+.marginBottom4rem {
+  margin-bottom:4rem;
 }
 
 .selectBox1:hover:active::selection::after {
@@ -648,4 +659,45 @@ tbody td:last-of-type {
 .infoTextHelp {
   margin-top: 1rem;
   color: darkred;
+}
+
+.largeModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.largeOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999; 
+}
+
+.tinyTh {
+  width: 2%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.textAreaAuto {
+  width: 100%;
+  height: auto;
+  text-wrap: auto;
+}
+
+.mdSpan {
+  font-size:2.5rem;
 }
