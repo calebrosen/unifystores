@@ -20,7 +20,7 @@ function ViewEditProductDescription() {
       .then(data => setProductDescription(data[0]))
       .catch(err => console.log('Fetch error:', err));
   }, []);
-
+  
   function fetchProductDescription(difID) {
     axios.post('http://127.0.0.1:8081/getProductDescDifferences', { difID })
       .then(res => {

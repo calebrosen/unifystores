@@ -8,7 +8,7 @@ function ProductDescription() {
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));
   }, []);
-
+  
   return (
     
     <div id="productDescriptionContainer" className='subsectionContainer'>
