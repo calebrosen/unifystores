@@ -132,6 +132,7 @@ function ViewEditProductDescription() {
             <th>Model</th>
             <th>MPN</th>
             <th>Different Versions</th>
+            <th>Category</th>
             <th>View/Edit</th>
           </tr>
         </thead>
@@ -141,6 +142,7 @@ function ViewEditProductDescription() {
               <td>{d.model}</td>
               <td>{d.mpn}</td>
               <td>{d.versions}</td>
+              <td>{d.category}</td>
               <td>
                 <button 
                   data-custom-model={d.model}
@@ -168,7 +170,8 @@ function ViewEditProductDescription() {
             <button className='editPreviewButton' onClick={() => setActiveTab('preview')}>Preview</button>
             &nbsp;&nbsp;
             {descriptions.length > 0 && (
-              <span className='mdSpan'>Product Name: {descriptions[0].product_name}</span>
+              <span className='mdSpan'>{descriptions[0].category}| {descriptions[0].mpn} |  {descriptions[0].product_name}</span>
+              // <span className='mdSpan'>Product Name: {descriptions[0].product_name}</span>
             )}
           </div>
           <div>
