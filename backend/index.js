@@ -408,6 +408,7 @@ app.post('/createCoupon', (req, res) => {
         return res.json(data);
     })
   })
+
   app.get('/products', (req, res)=> { 
     const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'products'";
     unify.query(sql, (err,data)=> {
@@ -431,16 +432,23 @@ app.post('/createCoupon', (req, res) => {
     })
   })
 
-  app.get('/getProductsForRelease', (req, res)=> { 
-    const storeID = 'DIM'; //req.params.store_id;
-    const sql = "CALL GetProductForRelease(?);";
-    unify.query(sql, [storeID], (err,data)=> {
+  app.post('/getProductsForRelease', (req, res)=> {
+    const sql = "CALL GetProductForRelease(?)";
+    const values = [req.body.selectedStore];
+    unify.query(sql, values, (err,data)=> {
         if(err) return res.json (err);
         return res.json(data);
     })
   })
 
-
+  app.post('/releaseProductOnStore', (req, res)=> {
+    const sql = "CALL ReleaseProductOnStore(?, ?, ?, ?)";
+    const values = [req.body.selectedStore, req.body.releaseQuantity, req.body.productID, req.body.selectedMPN];
+    unify.query(sql, values, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
 
   app.post('/getProductDescDifferences', (req, res)=> { 
     const sql = "CALL GetProduct_description_differences(?);";

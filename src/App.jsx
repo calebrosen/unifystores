@@ -33,14 +33,14 @@ import ViewPushOrderStatuses from './pages/orderstatus/ViewPushOrderStatuses.jsx
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
 import ProductDescription from './pages/productdescription/productdescription.jsx';
-import Products from './pages/products/Products.jsx';
-import ReleaseProducts from './pages/products/ReleaseProduct.jsx';
 import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
+import Products from './pages/products/Products.jsx';
+import ReleaseProducts from './pages/products/ReleaseProducts.jsx';
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
 import SalesAgent from './pages/salesagent/SalesAgent.jsx';
 import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
 import EditPushStockStatusName from './pages/stockstatus/EditPushStockStatusName.jsx';
-import StockStatus from './pages/stockstatus/stockStatus.jsx';
+import StockStatus from './pages/stockstatus/StockStatus.jsx';
 import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx';
 import EditZonesOnStore from './pages/zones/EditZonesOnStore.jsx';
 import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
@@ -90,7 +90,7 @@ const App = () => {
           <Route path="/zones/ViewEnabledZones" element={<RequireAuth><HomeAndLogOutButtons><ViewEnabledZones /></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/productdescription" element={<RequireAuth><HomeAndLogOutButtons><ProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products" element={<RequireAuth><HomeAndLogOutButtons><Products /></HomeAndLogOutButtons></RequireAuth>}/>
-          <Route path="/products/releaseproducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ReleaseProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
+          <Route path="/products/ReleaseProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ReleaseProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/productdescription/EditDescription" element={<RequireAuth><HomeAndLogOutButtons><ViewEditProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
