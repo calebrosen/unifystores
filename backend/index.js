@@ -408,7 +408,13 @@ app.post('/createCoupon', (req, res) => {
         return res.json(data);
     })
   })
-
+  app.get('/products', (req, res)=> { 
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'products'";
+    unify.query(sql, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+})
   app.get('/productdescription', (req, res)=> { 
     const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Product Description'";
     unify.query(sql, (err,data)=> {
@@ -424,6 +430,17 @@ app.post('/createCoupon', (req, res) => {
         return res.json(data);
     })
   })
+
+  app.get('/getProductsForRelease', (req, res)=> { 
+    const storeID = 'DIM'; //req.params.store_id;
+    const sql = "CALL GetProductForRelease(?);";
+    unify.query(sql, [storeID], (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
+
 
   app.post('/getProductDescDifferences', (req, res)=> { 
     const sql = "CALL GetProduct_description_differences(?);";
@@ -450,6 +467,11 @@ app.post('/createCoupon', (req, res) => {
         return res.json(data);
     })
   })
+
+
+
+
+
 
 //maintaining login state
 const jwt = require('jsonwebtoken');
