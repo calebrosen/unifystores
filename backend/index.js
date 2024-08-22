@@ -450,6 +450,15 @@ app.post('/createCoupon', (req, res) => {
     })
   })
 
+  app.post('/searchProducts', (req, res)=> {
+    const sql = "CALL SearchForProducts(?, ?, ?)";
+    const values = [req.body.searchMPN, req.body.searchName, req.body.searchStatus];
+    unify.query(sql, values, (err,data)=> {
+        if(err) return res.json (err);
+        return res.json(data);
+    })
+  })
+
   app.post('/getProductDescDifferences', (req, res)=> { 
     const sql = "CALL GetProduct_description_differences(?);";
     const values = [req.body.difID];

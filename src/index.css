@@ -317,6 +317,28 @@ body {
   border: 1px solid darkred;
 }
 
+.labelInputBox2 {
+  font-size:2rem;
+}
+
+.spaceAroundSpan {
+  padding: 8px;
+}
+.inputBox2 {
+  margin-top:2rem;
+  font-size:1.75rem;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid rgb(163, 163, 163);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.inputBox2:hover:active::selection::after {
+  margin-top:2rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  border: 1px solid darkred;
+}
+
 .regText {
   font-size:1.5rem;
 }
@@ -580,6 +602,10 @@ tbody td:last-of-type {
 .editCouponForm label {
   display: block;
   margin-bottom: 10px; 
+}
+
+.searchGroup {
+  text-align: center;
 }
 
 .spaceBetween {

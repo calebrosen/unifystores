@@ -34,6 +34,7 @@ import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
 import ProductDescription from './pages/productdescription/productdescription.jsx';
 import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
+import EditProducts from './pages/products/EditProducts.jsx';
 import Products from './pages/products/Products.jsx';
 import ReleaseProducts from './pages/products/ReleaseProducts.jsx';
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
@@ -45,7 +46,6 @@ import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx
 import EditZonesOnStore from './pages/zones/EditZonesOnStore.jsx';
 import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
 import Zones from './pages/zones/Zones.jsx';
-
 
 const App = () => {
   return (
@@ -92,6 +92,7 @@ const App = () => {
           <Route path="/products" element={<RequireAuth><HomeAndLogOutButtons><Products /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/ReleaseProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ReleaseProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/productdescription/EditDescription" element={<RequireAuth><HomeAndLogOutButtons><ViewEditProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/products/EditProducts" element={<RequireAuth><HomeAndLogOutButtons><EditProducts /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>
