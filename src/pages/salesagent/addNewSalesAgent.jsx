@@ -5,7 +5,7 @@ function AddNewSalesAgent() {
   const [salesAgentName, setSalesAgentName] = useState('');
 
   const updateSalesAgentName = (e) => {
-    setSalesAgentName(e.target.value);
+    setSalesAgentName(e.target.value.trim());
   }
   
   const addSalesAgentAction = () => {

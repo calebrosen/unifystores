@@ -38,6 +38,7 @@ import EditProducts from './pages/products/EditProducts.jsx';
 import Products from './pages/products/Products.jsx';
 import ReleaseProducts from './pages/products/ReleaseProducts.jsx';
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
+import EditSalesAgents from './pages/salesagent/editSalesAgents.jsx';
 import SalesAgent from './pages/salesagent/SalesAgent.jsx';
 import AddNewStockStatus from './pages/stockstatus/AddNewStockStatus.jsx';
 import EditPushStockStatusName from './pages/stockstatus/EditPushStockStatusName.jsx';
@@ -93,6 +94,7 @@ const App = () => {
           <Route path="/products/ReleaseProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ReleaseProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/productdescription/EditDescription" element={<RequireAuth><HomeAndLogOutButtons><ViewEditProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/EditProducts" element={<RequireAuth><HomeAndLogOutButtons><EditProducts /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/salesagent/editSalesAgents" element={<RequireAuth><HomeAndLogOutButtons><EditSalesAgents /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>

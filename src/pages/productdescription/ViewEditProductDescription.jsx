@@ -60,12 +60,6 @@ function ViewEditProductDescription() {
 
   const saveProductDescription = (storeId) => {
     const descriptionToSave = descriptionValues[storeId];
-    // console.group("Logging");
-    // console.log(storeId);
-    // console.log(selectedMPN);
-    // console.log(selectedModel);
-    // console.log(descriptionToSave);
-    // console.groupEnd();
     const confirmSave = confirm('Are you sure you want to save this description?');
     if (confirmSave) {
       axios.post('http://127.0.0.1:8081/saveProductDescription', { storeId, selectedMPN, selectedModel, descriptionToSave})
@@ -110,7 +104,6 @@ function ViewEditProductDescription() {
       }
     }
   }
-
 
   return (
     <div>
