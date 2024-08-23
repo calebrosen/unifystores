@@ -229,6 +229,15 @@ app.post('/pushStockStatus', (req, res)=> {
     })
 })
 
+app.post('/addNewSalesAgent', (req, res)=> { 
+    const sql = "CALL AddNewSalesAgent(?)";
+    const values = [req.body.salesAgentName]
+    unify.query(sql, values, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+})
+
 app.get('/customergroups', (req, res)=> {
     const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Customer Groups'";
     unify.query(sql, (err,data)=> {

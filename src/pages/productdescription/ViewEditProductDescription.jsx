@@ -170,7 +170,7 @@ function ViewEditProductDescription() {
             <button className='editPreviewButton' onClick={() => setActiveTab('preview')}>Preview</button>
             &nbsp;&nbsp;
             {descriptions.length > 0 && (
-              <span className='mdSpan'>{descriptions[0].category}| {descriptions[0].mpn} |  {descriptions[0].product_name}</span>
+              <span className='mdSpan'>{descriptions[0].category} | {descriptions[0].mpn} |  {descriptions[0].product_name}</span>
               // <span className='mdSpan'>Product Name: {descriptions[0].product_name}</span>
             )}
           </div>

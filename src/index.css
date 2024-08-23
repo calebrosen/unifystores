@@ -317,6 +317,38 @@ body {
   border: 1px solid darkred;
 }
 
+.inputBox3 {
+  margin-top:2rem;
+  font-size:2.8rem;
+  width:80%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid rgb(163, 163, 163);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.inputBox3:hover:active::selection::after {
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  border: 1px solid darkred;
+}
+
+.inputBox4 {
+  margin-top:2rem;
+  font-size:2.6rem;
+  width:50%;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid rgb(163, 163, 163);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.inputBox4:hover:active::selection::after {
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  border: 1px solid darkred;
+}
+
 .labelInputBox2 {
   font-size:2rem;
 }
