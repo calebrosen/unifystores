@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
 function EditSalesAgents() {
-  const [salesAgentName, setSalesAgentName] = useState("");
   const [data, setData] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedFName, setSelectedFName] = useState("");
@@ -106,7 +105,7 @@ function EditSalesAgents() {
             alert(res.data[0][0]['success']);
           }
           else {
-            alert('no success');
+            alert('Something went wrong');
           }
           console.log(res);
           fetchAgents();
@@ -119,7 +118,7 @@ function EditSalesAgents() {
   return (
     <div>
       <div className="centered">
-        <p className="largeHeader marginTop2rem">Edit Sales Agents</p>
+        <p className="xlHeader marginTop2rem">Edit Sales Agents</p>
         <div id="salesAgentContainer">
           <table className="marginTop3rem">
             <thead>

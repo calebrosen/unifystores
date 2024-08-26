@@ -18,7 +18,7 @@ function AddNewCustomerGroup() {
               alert(res.data[0][0]['success']);
             }
             else {
-              alert('no success');
+              alert('Something went wrong');
             }
             console.log(res);
         })

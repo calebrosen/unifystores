@@ -10,7 +10,7 @@ function AddNewSalesAgent() {
   
   const addSalesAgentAction = () => {
     if (salesAgentName != '') {
-      const confirmPush = confirm('Are you sure you want to add ' + salesAgentName + '?');
+      const confirmPush = confirm(`Are you sure you want to add "${salesAgentName}"? They will be added to the local table and ALL stores.`);
       if (confirmPush) {
         axios.post('http://127.0.0.1:8081/addNewSalesAgent', { salesAgentName })
         .then(res => {
@@ -18,7 +18,7 @@ function AddNewSalesAgent() {
               alert(res.data[0][0]['success']);
             }
             else {
-              alert('no success');
+              alert('Something went wrong');
             }
             console.log(res);
         })
