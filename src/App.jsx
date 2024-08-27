@@ -7,6 +7,8 @@ import Stores from './components/stores/Stores.jsx';
 import StoresRadio from './components/stores/StoresRadio.jsx';
 import { StoreProvider } from './contexts/StoreContext.jsx';
 import './index.css';
+import AddNewAttributeGroup from './pages/attributes/AddNewAttributeGroup.jsx';
+import Attributes from './pages/attributes/Attributes.jsx';
 import Countries from './pages/countries/Countries.jsx';
 import EditCountriesOnStore from './pages/countries/EditCountriesOnStore.jsx';
 import ViewEnabledCountries from './pages/countries/ViewEnabledCountries.jsx';
@@ -95,6 +97,8 @@ const App = () => {
           <Route path="/productdescription/EditDescription" element={<RequireAuth><HomeAndLogOutButtons><ViewEditProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/EditProducts" element={<RequireAuth><HomeAndLogOutButtons><EditProducts /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/salesagent/editSalesAgents" element={<RequireAuth><HomeAndLogOutButtons><EditSalesAgents /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/attributes/AddNewAttributeGroup" element={<RequireAuth><HomeAndLogOutButtons><AddNewAttributeGroup /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/attributes" element={<RequireAuth><HomeAndLogOutButtons><Attributes /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>

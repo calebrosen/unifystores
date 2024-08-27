@@ -759,3 +759,9 @@ tbody td:last-of-type {
 .mdSpan {
   font-size:2.5rem;
 }
+
+.exampleImage {
+  border: 1px solid #afafaf;
+  margin-top: 3rem;
+  border-radius: 7px;
+}
