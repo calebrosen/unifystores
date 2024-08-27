@@ -480,6 +480,14 @@ app.get("/attributes", (req, res) => {
   });
 });
 
+app.get("/GetAttributeGroups", (req, res) => {
+  const sql = "Select * from `attribute_group_description`";
+  unify.query(sql, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 app.post("/addNewAttributeGroup", (req, res) => {
   const sql = "Call AddNewAttributeGroup(?);";
   const values = [req.body.attributeGroupName];
