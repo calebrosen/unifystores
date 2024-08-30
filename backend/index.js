@@ -242,6 +242,15 @@ app.post("/addNewSalesAgent", (req, res) => {
   });
 });
 
+app.post("/ImportSalesAgents", (req, res) => {
+  const sql = "CALL ImportSalesAgents(?)";
+  const values = [req.body.selectedStore];
+  unify.query(sql, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 app.get("/getSalesAgents", (req, res) => {
   const sql = "CALL GetSalesAgents()";
   unify.query(sql, (err, data) => {
@@ -505,6 +514,7 @@ app.get("/products", (req, res) => {
     return res.json(data);
   });
 });
+
 app.get("/productdescription", (req, res) => {
   const sql =
     "Select `subsection`, `path` from subsections WHERE `section` = 'Product Description'";

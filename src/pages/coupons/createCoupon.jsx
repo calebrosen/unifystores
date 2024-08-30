@@ -7,8 +7,10 @@ function CreateCoupon() {
   const [selectedAgent, setSelectedAgent] = useState('ADMIN');
   const [couponCode, setCouponCode] = useState('');
   const [amount, setAmount] = useState('');
+  const [generatedCouponCode, setGeneratedCouponCode] = useState('');
   const { selectedStore } = useContext(StoreContext);
   const adminInput = useRef(null);
+  const couponCodeRef = useRef(null);
 
   useEffect(() => {
     fetch('http://127.0.0.1:8081/fetchAgents')
@@ -27,7 +29,7 @@ function CreateCoupon() {
   };
 
   const createCouponAction = () => {
-    if (selectedAgent == 'ADMIN' && couponCode == '') {
+    if (selectedAgent === 'ADMIN' && couponCode === '') {
       alert('You selected admin you so must enter a coupon code.');
       return;
     }
@@ -42,9 +44,9 @@ function CreateCoupon() {
           .then(res => {
             console.log('Response: ', res.data);
             if (res.status === 200) {
-              var couponCodeCreated = res.data[0][0].CouponCode;
-              alert('Coupon with code ' + couponCodeCreated + ' created.');
-              console.log(couponCodeCreated);
+              const coupon = res.data[0][0]['CouponCode'];
+              setGeneratedCouponCode(coupon);
+              copyToClipboard(coupon);
             } else {
               console.log("Unexpected response status:", res.status);
             }
@@ -57,48 +59,63 @@ function CreateCoupon() {
       alert('You either forgot to select a store or input an amount.');
     }
   };
-  
+
+  const copyToClipboard = (code) => {
+    navigator.clipboard.writeText(code).then(() => {
+      alert("Coupon code copied: " + code);
+    }).catch(err => {
+      console.log('Failed to copy: ', err);
+    });
+  };
+
   return (
-    <div id="createCouponContainer">
-      <div id="agentSelection">
-        <select
-          className="agentSelection"
-          id="selectAgent"
-          value={selectedAgent}
-          onChange={handleInputChange}
-        >
-          <option value="ADMIN">ADMIN</option>
-          {agents.map((agent, i) => (
-            <option key={i} value={agent.AgentID}>
-              {agent.Agent}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div>
+      <div id="createCouponContainer">
+        <div id="agentSelection">
+          <select
+            className="agentSelection"
+            id="selectAgent"
+            value={selectedAgent}
+            onChange={handleInputChange}
+          >
+            <option value="ADMIN">ADMIN</option>
+            {agents.map((agent, i) => (
+              <option key={i} value={agent.AgentID}>
+                {agent.Agent}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div id="inputCouponCode" ref={adminInput}>
-        <input
-          type="text"
-          placeholder="Coupon Code"
-          id="couponCodeField"
-          value={couponCode}
-          className="textBoxCoupon"
-          onChange={(e) => setCouponCode(e.target.value)}
-        />
-      </div>
+        <div id="inputCouponCode" ref={adminInput}>
+          <input
+            type="text"
+            placeholder="Coupon Code"
+            id="couponCodeField"
+            maxLength="11"
+            value={couponCode}
+            className="textBoxCoupon"
+            onChange={(e) => setCouponCode(e.target.value)}
+          />
+        </div>
 
-      <div id="inputAmount">
-        <input
-          type="number"
-          placeholder="Amount of Coupon"
-          className='textBoxCoupon'
-          id="amountField"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </div>
+        <div id="inputAmount">
+          <input
+            type="number"
+            placeholder="Amount of Coupon"
+            className='textBoxCoupon'
+            id="amountField"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
 
-      <button className='createButton' id="createCouponButton" onClick={createCouponAction}>Create Coupon</button>
+        <button className='createButton' id="createCouponButton" onClick={createCouponAction}>Create Coupon</button>
+      </div>
+      
+      {generatedCouponCode && (
+        <div className='marginTop4rem smHeader'>Coupon code: {generatedCouponCode}</div>
+      )}
     </div>
   );
 }

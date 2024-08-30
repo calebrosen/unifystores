@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import exampleImage from '../../assets/img/attributeGroupExample.jpg';
 
 const AddNewAttributeGroup = () => {
@@ -8,6 +8,16 @@ const AddNewAttributeGroup = () => {
   const updateAttributeGroupName = (e) => {
     setAttributeGroupName(e.target.value.trim());
   }
+
+  function fetchAgents() {
+    fetch("http://127.0.0.1:8081/getAttributeGroups")
+    .then((res) => res.json())
+    .then((data) => setData(data[0]))
+    .catch((err) => console.log("Fetch error:", err));
+  }
+  useEffect(() => {
+    fetchAgents();
+  }, []);
   
   const AddAttributeGroupAction = () => {
     if (attributeGroupName != '') {
