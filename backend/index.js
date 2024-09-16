@@ -41,7 +41,7 @@ app.get("/sections", (req, res) => {
 });
 
 app.get("/fetchStores", (req, res) => {
-  const sql = "Select `ms_short_name` from managed_stores WHERE ms_status = 1";
+  const sql = "Select * from managed_stores WHERE ms_status = 1";
   unify.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -610,7 +610,7 @@ app.post("/login", (req, res) => {
     if (err) return res.status(500).json({ message: "Login Failed" });
     if (data.length > 0) {
       const token = jwt.sign({ id: data[0].id }, SECRET_KEY, {
-        expiresIn: "90m",
+        expiresIn: "6h",
       });
       return res.json({ message: "Login successful", token });
     } else {

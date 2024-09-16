@@ -28,6 +28,8 @@ function StoresRadio({ children }) {
                 type="radio"
                 name="storeSelection"
                 value={d.ms_short_name}
+                data-custom-url={d.ms_url}
+                data-custom-admin-url={d.ms_admin_url}
                 id={`select${d.ms_short_name}`}
                 checked={selectedStore === d.ms_short_name}
                 onChange={handleStoreChange}

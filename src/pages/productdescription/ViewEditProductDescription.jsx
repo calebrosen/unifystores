@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import isAuthenticated from '../../components/auth';
 
 Modal.setAppElement('#root');
 
@@ -40,8 +41,10 @@ function ViewEditProductDescription() {
 
   const openModal = (e) => {
     const difIDTemp = e.target.id;
-    setSelectedMPN(e.target.getAttribute('data-custom-mpn'));
-    setSelectedModel(e.target.getAttribute('data-custom-model'));
+    const tempSelectedMPN = e.target.getAttribute('data-custom-mpn');
+    const tempSelectedModel = e.target.getAttribute('data-custom-model');
+    setSelectedMPN(tempSelectedMPN);
+    setSelectedModel(tempSelectedModel);
     fetchProductDescription(difIDTemp);
     setIsOpen(true);
   }
@@ -59,19 +62,24 @@ function ViewEditProductDescription() {
   );
 
   const saveProductDescription = (storeId) => {
-    const descriptionToSave = descriptionValues[storeId];
-    const confirmSave = confirm('Are you sure you want to save this description?');
-    if (confirmSave) {
-      axios.post('http://127.0.0.1:8081/saveProductDescription', { storeId, selectedMPN, selectedModel, descriptionToSave})
-      .then(res => {
-        if (res.data[0][0]['success']) {
-          alert(res.data[0][0]['success']);
-        } else {
-          alert("Something went wrong.");
-        }
-        console.log(res);
-      })
-      .catch(err => console.error('Error saving description:', err));
+    const CheckAuth = isAuthenticated();
+    if (CheckAuth == true) {
+      const descriptionToSave = descriptionValues[storeId];
+      const confirmSave = confirm('Are you sure you want to save this description?');
+      if (confirmSave) {
+        axios.post('http://127.0.0.1:8081/saveProductDescription', { storeId, selectedMPN, selectedModel, descriptionToSave})
+        .then(res => {
+          if (res.data[0][0]['success']) {
+            alert(res.data[0][0]['success']);
+          } else {
+            alert("Something went wrong.");
+          }
+          console.log(res);
+        })
+        .catch(err => console.error('Error saving description:', err));
+      }
+    } else {
+      alert('User is logged out. Please refresh to log back in.');
     }
   };
 
@@ -111,9 +119,9 @@ function ViewEditProductDescription() {
         <button className='darkRedButton' onClick={refetchContent}>Refetch content</button>
       </div>
       <div className='centeredContainer marginBottom4rem'>
-        <input 
+        <input
           className='marginTop3rem inputBox1'
-          label='Search by MPN' 
+          label='Search by MPN'
           placeholder='Search by MPN'
           value={searchQuery}
           onChange={handleSearch}
@@ -137,7 +145,7 @@ function ViewEditProductDescription() {
               <td>{d.versions}</td>
               <td>{d.category}</td>
               <td>
-                <button 
+                <button
                   data-custom-model={d.model}
                   data-custom-mpn={d.mpn}
                   id={d.dif_id}
@@ -181,8 +189,8 @@ function ViewEditProductDescription() {
                   <tr key={i}>
                     <td className='bold'>&nbsp;{d.store_id}</td>
                     <td>
-                      <button 
-                        className='darkRedButtonInline' 
+                      <button
+                        className='darkRedButtonInline'
                         onClick={() => saveProductDescription(d.store_id)}>
                         Use
                       </button>

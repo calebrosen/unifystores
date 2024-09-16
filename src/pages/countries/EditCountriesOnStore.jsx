@@ -13,7 +13,7 @@ function EditCountriesOnStore() {
     const [searchQuery, setSearchQuery] = useState(''); 
     const { selectedStore } = useContext(StoreContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
+
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -67,6 +67,7 @@ function EditCountriesOnStore() {
                 console.log(res);
                 if (res.data[0][0]['success']) {
                   alert(res.data[0][0]['success']);
+                  OpenAdminURL();
                 } else {
                   alert("Something went wrong.");
                 }
@@ -76,15 +77,25 @@ function EditCountriesOnStore() {
         }
     }
 
+    const OpenAdminURL = () => {
+        var stores = document.querySelectorAll("input[name='storeSelection']");
+        stores.forEach((store) => {
+          if (store.checked) {
+            const adminURLForStore = store.getAttribute("data-custom-admin-url");
+            window.open(adminURLForStore, "_blank");
+          }
+        })
+    }
+
     return (
         <div id="countriesContainer" className='subsectionContainer'>
             {/*searchable input */}
             <input 
-                className='marginTop3rem inputBox1' 
-                label='Search for Countries' 
+                className='marginTop3rem inputBox1'
+                label='Search for Countries'
                 placeholder='Search for Countries'
-                value={searchQuery} 
-                onChange={handleSearch} 
+                value={searchQuery}
+                onChange={handleSearch}
             />
             <table className='marginTop3rem'>
                 <thead>
