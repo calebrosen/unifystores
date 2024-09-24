@@ -28,6 +28,14 @@ const federated = mysql.createConnection({
   port: "3306",
 });
 
+const copyProducts = mysql.createConnection({
+  host: "10.1.10.186",
+  user: "caleb",
+  password: ")GVGKqESUtr+",
+  database: "copyProductsToStore",
+  port: "3306",
+});
+
 app.get("/", (re, res) => {
   return res.json("from backend");
 });
@@ -594,6 +602,23 @@ app.post("/saveProductDescription", (req, res) => {
 app.post("/refetchProductDescriptions", (req, res) => {
   const sql = "CALL GetProductSummaryTables()";
   unify.query(sql, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get("/getProductsToCopy", (req, res) => {
+  const sql = "CALL GetProductsForUnify()";
+  copyProducts.query(sql, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.post("/getProductsForViewingCopy", (req, res) => {
+  const sql = "CALL GetProductsForViewingCopy(?)";
+  const values = [req.body.tempProductIdsString];
+  copyProducts.query(sql, values, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });

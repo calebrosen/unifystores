@@ -37,6 +37,7 @@ import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
 import ProductDescription from './pages/productdescription/productdescription.jsx';
 import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
+import CopyProductsToStores from './pages/products/CopyProductsToStores.jsx';
 import EditProducts from './pages/products/EditProducts.jsx';
 import Products from './pages/products/Products.jsx';
 import ReleaseProducts from './pages/products/ReleaseProducts.jsx';
@@ -103,6 +104,7 @@ const App = () => {
           <Route path="/attributes/AddNewAttributeGroup" element={<RequireAuth><HomeAndLogOutButtons><AddNewAttributeGroup /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes/AddNewAttribute" element={<RequireAuth><HomeAndLogOutButtons><AddNewAttribute /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes" element={<RequireAuth><HomeAndLogOutButtons><Attributes /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/products/CopyProductsToStores" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyProductsToStores /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>
