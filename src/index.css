@@ -803,13 +803,39 @@ tbody td:last-of-type {
   font-size: 2.5rem;
   color: #000;
   background-color: #ffffff;
-  border: 2px solid orange;
+  border: 2px solid rgb(179, 16, 16);
   border-radius: 12px;
   padding: 4px 8px;
   margin: 2.5rem 0;
+  transition: 0.25s ease;
 }
 
 .GoBackButton:hover {
-  background-color: #ecb26e;
+  background-color: #ad0d0d;
   color: #fff;
+  border: 2px solid #000;
+}
+
+.sweetalert-lg-info {
+  font-size: 20px;
+}
+
+.correctProductsConfirmButton {
+  font-size: 28px;
+  border-radius: 12px;
+  transition: 0.25s ease;
+  padding: 2px 10px;
+  margin: 4rem auto;
+  background-color: #fff;
+  border: 2px solid #2dbe1a;
+}
+
+.correctProductsConfirmButton:hover, .correctProductsConfirmButton:active {
+  background-color: #2dbe1a;
+  border: 2px solid #313131;
+  cursor: pointer;
+}
+
+.lastMessageCopy {
+  font-size: 26px;
 }

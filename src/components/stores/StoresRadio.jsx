@@ -18,6 +18,7 @@ function StoresRadio({ children }) {
 
   return (
     <div id="storeContainer">
+    <div id="storesRadioInner">
       <p className='selectStoresHeader'>SELECT STORE TO AFFECT</p>
       {
         data
@@ -38,6 +39,7 @@ function StoresRadio({ children }) {
             </span>
           ))
       }
+      </div>
       {children}
     </div>
   );

@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const { Client } = require("basic-ftp") 
 
 const app = express();
 app.use(express.json());
@@ -11,29 +13,27 @@ app.use((req, res, next) => {
 });
 
 const unify = mysql.createConnection({
-  host: "10.1.10.186",
-  user: "caleb",
-  password: ")GVGKqESUtr+",
-  database: "unify",
-  port: "3306",
+  host: process.env.UBUNTUHOST,
+  user: process.env.UBUNTUUSER,
+  password: process.env.UBUNTUPASSWORD,
+  database: process.env.UNIFYDB,
+  port: process.env.UBUNTUPORT,
 });
 
-/* fully internal databases so login information doesn't matter */
-
 const federated = mysql.createConnection({
-  host: "10.1.10.186",
-  user: "caleb",
-  password: ")GVGKqESUtr+",
-  database: "federatedb",
-  port: "3306",
+  host: process.env.UBUNTUHOST,
+  user: process.env.UBUNTUUSER,
+  password: process.env.UBUNTUPASSWORD,
+  database: process.env.FEDERATEDB,
+  port: process.env.UBUNTUPORT,
 });
 
 const copyProducts = mysql.createConnection({
-  host: "10.1.10.186",
-  user: "caleb",
-  password: ")GVGKqESUtr+",
-  database: "copyProductsToStore",
-  port: "3306",
+  host: process.env.UBUNTUHOST,
+  user: process.env.UBUNTUUSER,
+  password: process.env.UBUNTUPASSWORD,
+  database: process.env.COPYPRODUCTSDB,
+  port: process.env.UBUNTUPORT,
 });
 
 app.get("/", (re, res) => {
@@ -623,6 +623,91 @@ app.post("/getProductsForViewingCopy", (req, res) => {
     return res.json(data);
   });
 });
+
+app.post("/insertIntoSelectedProductsToCopy", (req, res) => {
+  const sql = "CALL InsertIntoSelectedProductsToCopy(?, ?, ?, ?)";
+  const values = [req.body.pID, req.body.model, req.body.mpn, req.body.force_copy];
+  copyProducts.query(sql, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.post("/truncateSelectedProductsToCopyTable", (req, res) => {
+  const sql = "CALL TruncateSelectedProductsToCopyTable()";
+  copyProducts.query(sql, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.post("/CopyProducts_GetTargetData", (req, res) => {
+  const sql = "CALL uspStep2_GetTargetData(?)";
+  const values = [req.body.selectedStore];
+  copyProducts.query(sql, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.post("/CopyProducts_GetProductsToCopy", (req, res) => {
+  const sql = "CALL uspStep3_GetProductsToCopy()";
+  copyProducts.query(sql, (err, data) => {
+    if (err) {
+      console.log("Error:", err);
+      return res.json(err);
+    }e
+    return res.json(data);
+  });
+});
+
+
+app.post("/CopyProducts_CopyProductsToStore", (req, res) => {
+  const sql = "CALL uspStep4_CopyProductsTo(?)";
+  const values = [req.body.selectedStore];
+  copyProducts.query(sql, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+
+async function moveImages() {
+  const client = new Client()
+  client.ftp.verbose = true
+  try {
+      await client.access({
+          host: process.env.OCMASTERHOST,
+          user: process.env.OCMASTERUSER,
+          password: process.env.OCMASTERPASSWORD
+      })
+      console.log(await client.list())
+      await client.downloadTo("img.jpg", "README_FTP.md")
+      await client.uploadFrom(".env", ".env")
+
+  }
+  catch(err) {
+      console.log(err)
+  }
+  client.close()
+}
+
+moveImages();
+
+
+
+
+
+/* Copying images from local store to the live store */
+
+
+
+
+
+
+
+
+
 
 //maintaining login state
 const jwt = require("jsonwebtoken");

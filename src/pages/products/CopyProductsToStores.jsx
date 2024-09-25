@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { StoreContext } from '../../contexts/StoreContext';
+import Swal from "sweetalert2";
+import { StoreContext } from "../../contexts/StoreContext";
 
 function CopyProductsToStores() {
   const [productsResponse, setProductsResponse] = useState([]);
@@ -12,6 +13,16 @@ function CopyProductsToStores() {
   const [step3, setStep3] = useState(false);
   const { selectedStore } = useContext(StoreContext);
   const [viewProductsToCopy, setViewProductsToCopy] = useState([]);
+  const [forceCopyState, setForceCopyState] = useState({});
+  const [lastMessage, setLastMessage] = useState('');
+
+  // update checkbox state for each product
+  const handleCheckboxChange = (productId) => {
+    setForceCopyState((prevState) => ({
+      ...prevState,
+      [productId]: !prevState[productId],
+    }));
+  };
 
   useEffect(() => {
     fetch("http://127.0.0.1:8081/getProductsToCopy")
@@ -51,60 +62,245 @@ function CopyProductsToStores() {
     }
   };
 
+  const HideStoreSelection = () => {
+    const stores = document.getElementById("storesRadioInner");
+    stores.style.display = "none";
+  };
+
+  const ShowStoreSelection = () => {
+    const stores = document.getElementById("storesRadioInner");
+    stores.style.display = "block";
+  };
+
   const ClearSelection = () => {
     setProductIdsToCopy([]);
-    const allCheckboxes = document.querySelectorAll("input[class='checkboxForCopyProduct']");
+    const allCheckboxes = document.querySelectorAll(
+      "input[class='checkboxForCopyProduct']"
+    );
     allCheckboxes.forEach((checkbox) => {
       checkbox.checked = false;
-    })
+    });
   };
 
   const ProceedToStep2 = () => {
-    setStep1(false);
-    setStep2(true);
-    console.log(productIdsToCopy);
-    const tempProductIdsString = productIdsToCopy.toString();
-    axios.post('http://127.0.0.1:8081/getProductsForViewingCopy', { tempProductIdsString })
-        .then(res => {
-            if (res.data) {
-              console.log(res.data);
-              setProductIdsToCopy(res.data[0]);
-            } else {
-              alert("Something went wrong.");
-            }
-            console.log(res);
-        })
-        .catch(err => alert('Error:', err));
-  }
+    if (selectedStore) {
+      setStep1(false);
+      setStep2(true);
+      HideStoreSelection();
 
+      const tempProductIdsString = productIdsToCopy.toString();
+      axios
+        .post("http://127.0.0.1:8081/getProductsForViewingCopy", {
+          tempProductIdsString,
+        })
+        .then((res) => {
+          if (res.data) {
+            console.log(res.data);
+            setViewProductsToCopy(res.data[0]);
+          } else {
+            alert("Something went wrong.");
+          }
+          console.log(res);
+        })
+        .catch((err) => alert("Error:", err));
+    } else {
+      alert("Select a store to copy the products to.");
+    }
+  };
+
+  const ProceedToStep3 = () => {
+    let confirmCopy = confirm(
+      "Are you POSITIVE? There is no going back. Well, there is, but it will just be a lot of work."
+    );
+  
+    if (confirmCopy) {
+      const productList = viewProductsToCopy.map((product) => ({
+        product_id: product.product_id,
+        model: product.model,
+        mpn: product.mpn,
+        force_copy: forceCopyState[product.product_id] ? 1 : 0,
+      }));
+  
+      setLastMessage('Processing...');
+
+      HideStoreSelection();
+  
+      // truncating table
+      axios
+        .post("http://127.0.0.1:8081/truncateSelectedProductsToCopyTable")
+        .then((res) => {
+          if (
+            res.data &&
+            res.data[0] &&
+            res.data[0][0] &&
+            res.data[0][0]["success"]
+          ) {
+            console.log(res.data[0][0]["success"]);
+  
+            // inserting products after truncation
+            const axiosRequests = productList.map((product) => {
+              const { product_id: pID, model, mpn, force_copy } = product;
+  
+              if (pID && model && mpn && force_copy !== undefined) {
+                return axios.post(
+                  "http://127.0.0.1:8081/insertIntoSelectedProductsToCopy",
+                  { pID, model, mpn, force_copy }
+                );
+              } else {
+                alert("Something wasn't set. Check console!");
+                console.log("PID ", pID);
+                console.log("model ", model);
+                console.log("mpn ", mpn);
+                console.log("forcecopy ", force_copy);
+                return Promise.reject("Invalid product data");
+              }
+            });
+  
+            // waiting for all product insertions to complete
+            return Promise.all(axiosRequests);
+          } else {
+            console.log(
+              "Unexpected response format or missing 'success' key:",
+              res
+            );
+            alert("Something went wrong.");
+            return Promise.reject("Failed to truncate table");
+          }
+        })
+        .then(() => {
+          console.log("All products inserted successfully");
+  
+          // CopyProducts_GetTargetData procedure
+          return axios.post("http://127.0.0.1:8081/CopyProducts_GetTargetData", {
+            selectedStore,
+          });
+        })
+        .then((res) => {
+          if (
+            res.data &&
+            res.data[0] &&
+            res.data[0][0] &&
+            res.data[0][0]["success"]
+          ) {
+            console.log(res.data[0][0]["success"]);
+            console.log("successfully processed CopyProducts_GetTargetData");
+  
+            // CopyProducts_GetProductsToCopy procedure
+            return axios.post(
+              "http://127.0.0.1:8081/CopyProducts_GetProductsToCopy"
+            );
+          } else {
+            console.log(
+              "Unexpected response format or missing 'success' key:",
+              res
+            );
+            alert("Something went wrong.");
+            return Promise.reject("Failed to process CopyProducts_GetTargetData");
+          }
+        })
+        .then((res) => {
+          if (
+            res.data &&
+            res.data[0] &&
+            res.data[0][0] &&
+            res.data[0][0]["success"]
+          ) {
+            console.log(res.data[0][0]["success"]);
+            console.log("successfully processed CopyProducts_GetProductsToCopy");
+  
+            // CopyProducts_CopyProductsToStore procedure
+            return axios.post(
+              "http://127.0.0.1:8081/CopyProducts_CopyProductsToStore",
+              { selectedStore }
+            );
+          } else {
+            console.log(
+              "Unexpected response format or missing 'success' key:",
+              res
+            );
+            alert("Something went wrong.");
+            return Promise.reject("Failed to process CopyProducts_GetProductsToCopy");
+          }
+        })
+        .then((res) => {
+          if (
+            res.data &&
+            res.data[0] &&
+            res.data[0][0] &&
+            res.data[0][0]["success"]
+          ) {
+            console.log(res.data[0][0]["success"]);
+            console.log("successfully processed CopyProducts_CopyProductsToStore");
+            setLastMessage('Completed');
+            setStep2(false);
+            setStep3(true);
+          } else {
+            console.log(
+              "Unexpected response format or missing 'success' key:",
+              res
+            );
+            alert("Something went wrong.");
+          }
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+          alert("An error occurred during the process.");
+        });
+    }
+  };
+  
 
   const GoBackOneStep = () => {
     if (step2) {
       setStep2(false);
+      setStep3(false);
       setStep1(true);
+      ShowStoreSelection();
     } else if (step3) {
       setStep3(false);
+      setStep1(false);
       setStep2(true);
     }
+  };
 
-    //doing delay here because page doesnt load for a while
-    setTimeout(() => {
-      const allCheckboxes = document.querySelectorAll("input[class='checkboxForCopyProduct']");
+  // re-checking the checkboxes when going back to step one
+  useEffect(() => {
+    if (step1) {
+      GoBackToStepOne();
+    }
+  }, [step1]);
+
+  // re-checking the checkboxes when going back to step one
+  const GoBackToStepOne = () => {
+    const allCheckboxes = document.querySelectorAll(
+      "input[class='checkboxForCopyProduct']"
+    );
+    if (allCheckboxes) {
       allCheckboxes.forEach((checkbox) => {
-        let id = checkbox.getAttribute('data-custom-product-id');
+        let id = checkbox.getAttribute("data-custom-product-id");
         if (productIdsToCopy.includes(id)) {
           checkbox.checked = true;
         }
       });
-    }, 10000);
-    
-  }
+    }
+  };
+
+  const ExplainForceCopy = () => {
+    Swal.fire({
+      title: "What does Force Copy mean?",
+      text: "Force copy means that even if the product already exists, it will copy it over. Otherwise, it will not copy it over. For example, if you are copying a E660i-9EAN, and the store already has an E660i-9EAN (even though the item descriptions may be different), it will not copy it unless this box is checked.",
+      icon: "question",
+      customClass: "sweetalert-lg-info",
+    });
+  };
 
   if (step1) {
-  return (
+    return (
       <div>
         <div className="centered">
-          <p className="xlHeader marginTop3rem">SELECT WHICH PRODUCTS TO COPY</p>
+          <p className="xlHeader marginTop3rem">
+            SELECT WHICH PRODUCTS TO COPY
+          </p>
           {productIdsToCopy && productIdsToCopy.length > 0 && (
             <div>
               <span style={{ fontSize: "24px" }}>Product ID's selected: </span>
@@ -114,7 +310,12 @@ function CopyProductsToStores() {
                 </span>
               ))}
               <div>
-                <button className="saveButtonLG marginTop2rem" onClick={ProceedToStep2}>Proceed</button>
+                <button
+                  className="saveButtonLG marginTop2rem"
+                  onClick={ProceedToStep2}
+                >
+                  Proceed
+                </button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button
                   className="deleteButtonLG marginTop2rem"
@@ -182,52 +383,93 @@ function CopyProductsToStores() {
         </div>
       </div>
     );
-  }
-  else if (step2) {
+  } else if (step2) {
     return (
       <div>
-        <div className='goBack'>
-          <button className='GoBackButton' onClick={GoBackOneStep}>Go Back</button>
+        <div className="goBack">
+          <button className="GoBackButton" onClick={GoBackOneStep}>
+            Go Back
+          </button>
         </div>
-        <div className='xlHeader'>Are you SURE these are the correct products?</div>
+        <div className="xlHeader">
+          Are you SURE these are the correct product(s) to copy to{" "}
+          {selectedStore}?
+        </div>
         <table className="marginTop3rem">
-            <thead>
-              <tr>
-                <th>Force Copy</th>
-                <th>ID</th>
-                <th>Model</th>
-                <th>MPN</th>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Date Added</th>
+          <thead>
+            <tr>
+              <th onClick={ExplainForceCopy}>
+                Force Copy{" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="23"
+                  width="23"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="#005eff"
+                    d="M504 256c0 137-111 248-248 248S8 393 8 256C8 119.1 119 8 256 8s248 111.1 248 248z"
+                  />
+                  <path
+                    fill="#ffffff"
+                    d="M262.7 90c-54.5 0-89.3 23-116.5 63.8-3.5 5.3-2.4 12.4 2.7 16.3l34.7 26.3c5.2 3.9 12.6 3 16.7-2.1 17.9-22.7 30.1-35.8 57.3-35.8 20.4 0 45.7 13.1 45.7 33 0 15-12.4 22.7-32.5 34C247.1 238.5 216 254.9 216 296v4c0 6.6 5.4 12 12 12h56c6.6 0 12-5.4 12-12v-1.3c0-28.5 83.2-29.6 83.2-106.7 0-58-60.2-102-116.5-102zM256 338c-25.4 0-46 20.6-46 46 0 25.4 20.6 46 46 46s46-20.6 46-46c0-25.4-20.6-46-46-46z"
+                  />
+                </svg>
+              </th>
+              <th>ID</th>
+              <th>Model</th>
+              <th>MPN</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Date Added</th>
+            </tr>
+          </thead>
+          <tbody>
+            {viewProductsToCopy.map((d, i) => (
+              <tr key={i}>
+                <td>
+                  &nbsp;&nbsp;&nbsp;{" "}
+                  <input
+                    type="checkbox"
+                    className="checkboxForCopyProduct"
+                    checked={!!forceCopyState[d.product_id]}
+                    onChange={() => handleCheckboxChange(d.product_id)}
+                  ></input>
+                </td>
+                <td>{d.product_id}</td>
+                <td>{d.model}</td>
+                <td>{d.mpn}</td>
+                <td>{d.name}</td>
+                <td>{d.status}</td>
+                <td>{d.date_added}</td>
               </tr>
-            </thead>
-            <tbody>
-              {productIdsToCopy.map((d, i) => (
-                <tr key={i}>
-                  <td>
-                    &nbsp;&nbsp;&nbsp;{" "}
-                    <input
-                      type="checkbox"
-                      className="checkboxForCopyProduct"
-                      data-custom-product-id={d.product_id}
-                    ></input>
-                  </td>
-                  <td>{d.product_id}</td>
-                  <td>{d.model}</td>
-                  <td>{d.mpn}</td>
-                  <td>{d.name}</td>
-                  <td>{d.status}</td>
-                  <td>{d.date_added}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            ))}
+          </tbody>
+        </table>
+        <button
+          className="correctProductsConfirmButton"
+          onClick={ProceedToStep3}
+        >
+          YES! These are the correct products.
+        </button>
+        <div>
+        {lastMessage}
+        </div>
       </div>
-    )
-  }
-  else if (step3) {
-    return;
+    );
+  } else if (step3) {
+    return (
+      <div>
+        <div className="goBack">
+          <button className="GoBackButton" onClick={GoBackOneStep}>
+            Go Back
+          </button>
+        </div>
+        <div className='lastMessageCopy'>
+        {lastMessage}
+        </div>
+      </div>
+    );
   }
 }
 
