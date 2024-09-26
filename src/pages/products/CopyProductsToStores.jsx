@@ -14,7 +14,7 @@ function CopyProductsToStores() {
   const { selectedStore } = useContext(StoreContext);
   const [viewProductsToCopy, setViewProductsToCopy] = useState([]);
   const [forceCopyState, setForceCopyState] = useState({});
-  const [lastMessage, setLastMessage] = useState('');
+  const [lastMessage, setLastMessage] = useState("");
 
   // update checkbox state for each product
   const handleCheckboxChange = (productId) => {
@@ -28,6 +28,7 @@ function CopyProductsToStores() {
     fetch("http://127.0.0.1:8081/getProductsToCopy")
       .then((res) => res.json())
       .then((data) => setProductsResponse(data[0]))
+      //.then(CopyImagesToStore())
       .catch((err) => console.log("Fetch error:", err));
   }, []);
 
@@ -112,7 +113,7 @@ function CopyProductsToStores() {
     let confirmCopy = confirm(
       "Are you POSITIVE? There is no going back. Well, there is, but it will just be a lot of work."
     );
-  
+
     if (confirmCopy) {
       const productList = viewProductsToCopy.map((product) => ({
         product_id: product.product_id,
@@ -120,11 +121,11 @@ function CopyProductsToStores() {
         mpn: product.mpn,
         force_copy: forceCopyState[product.product_id] ? 1 : 0,
       }));
-  
-      setLastMessage('Processing...');
+
+      setLastMessage("Processing...");
 
       HideStoreSelection();
-  
+
       // truncating table
       axios
         .post("http://127.0.0.1:8081/truncateSelectedProductsToCopyTable")
@@ -136,11 +137,11 @@ function CopyProductsToStores() {
             res.data[0][0]["success"]
           ) {
             console.log(res.data[0][0]["success"]);
-  
-            // inserting products after truncation
+
+            // Inserting products after truncation
             const axiosRequests = productList.map((product) => {
               const { product_id: pID, model, mpn, force_copy } = product;
-  
+
               if (pID && model && mpn && force_copy !== undefined) {
                 return axios.post(
                   "http://127.0.0.1:8081/insertIntoSelectedProductsToCopy",
@@ -155,8 +156,8 @@ function CopyProductsToStores() {
                 return Promise.reject("Invalid product data");
               }
             });
-  
-            // waiting for all product insertions to complete
+
+            // Waiting for all product insertions to complete
             return Promise.all(axiosRequests);
           } else {
             console.log(
@@ -169,11 +170,14 @@ function CopyProductsToStores() {
         })
         .then(() => {
           console.log("All products inserted successfully");
-  
+
           // CopyProducts_GetTargetData procedure
-          return axios.post("http://127.0.0.1:8081/CopyProducts_GetTargetData", {
-            selectedStore,
-          });
+          return axios.post(
+            "http://127.0.0.1:8081/CopyProducts_GetTargetData",
+            {
+              selectedStore,
+            }
+          );
         })
         .then((res) => {
           if (
@@ -184,7 +188,7 @@ function CopyProductsToStores() {
           ) {
             console.log(res.data[0][0]["success"]);
             console.log("successfully processed CopyProducts_GetTargetData");
-  
+
             // CopyProducts_GetProductsToCopy procedure
             return axios.post(
               "http://127.0.0.1:8081/CopyProducts_GetProductsToCopy"
@@ -195,7 +199,9 @@ function CopyProductsToStores() {
               res
             );
             alert("Something went wrong.");
-            return Promise.reject("Failed to process CopyProducts_GetTargetData");
+            return Promise.reject(
+              "Failed to process CopyProducts_GetTargetData"
+            );
           }
         })
         .then((res) => {
@@ -206,8 +212,10 @@ function CopyProductsToStores() {
             res.data[0][0]["success"]
           ) {
             console.log(res.data[0][0]["success"]);
-            console.log("successfully processed CopyProducts_GetProductsToCopy");
-  
+            console.log(
+              "successfully processed CopyProducts_GetProductsToCopy"
+            );
+
             // CopyProducts_CopyProductsToStore procedure
             return axios.post(
               "http://127.0.0.1:8081/CopyProducts_CopyProductsToStore",
@@ -219,7 +227,9 @@ function CopyProductsToStores() {
               res
             );
             alert("Something went wrong.");
-            return Promise.reject("Failed to process CopyProducts_GetProductsToCopy");
+            return Promise.reject(
+              "Failed to process CopyProducts_GetProductsToCopy"
+            );
           }
         })
         .then((res) => {
@@ -230,8 +240,11 @@ function CopyProductsToStores() {
             res.data[0][0]["success"]
           ) {
             console.log(res.data[0][0]["success"]);
-            console.log("successfully processed CopyProducts_CopyProductsToStore");
-            setLastMessage('Completed');
+            console.log(
+              "successfully processed CopyProducts_CopyProductsToStore"
+            );
+            CopyImagesToStore();
+            setLastMessage("Completed. Copying images now...");
             setStep2(false);
             setStep3(true);
           } else {
@@ -240,6 +253,9 @@ function CopyProductsToStores() {
               res
             );
             alert("Something went wrong.");
+            return Promise.reject(
+              "Failed to process CopyProducts_CopyProductsToStore"
+            );
           }
         })
         .catch((err) => {
@@ -248,9 +264,82 @@ function CopyProductsToStores() {
         });
     }
   };
+
+
+  const CopyImagesToStore = () => {
+    axios
+      .post("http://127.0.0.1:8081/CopyProducts_CopyImagesToStore")
+      .then((res) => {
+        if (res.data && res.data[0]) {
+          let images = res.data[0];
+          let successCount = 0;
+          let failureCount = 0;
   
+          images.forEach((i) => {
+            let imagePath = i.image;
+            axios
+              .post(
+                "http://127.0.0.1:8081/CopyProducts_CopyImagesToStore_Action",
+                { selectedStore, imagePath }
+              )
+              .then((res) => {
+                if (res.status === 200) {
+                  successCount++;
+                  console.log(`Image ${imagePath} moved successfully.`);
+                } else {
+                  failureCount++;
+                  console.log(`Failed to move image ${imagePath}.`);
+                }
+  
+                // if all images are processed
+                if (successCount + failureCount === images.length) {
+                  if (successCount === images.length) {
+                    alert("All images copied successfully!");
+                    setLastMessage('All images copied successfully!');
+                  } else {
+                    alert(
+                      `Completed with some errors. ${successCount} images copied successfully, ${failureCount} failed.`
+                    );
+                  }
+                }
+              })
+              .catch((err) => {
+                failureCount++;
+                console.log(`Error when moving image ${imagePath}:`, err);
+  
+                // if all images are processed, regardless of success/failure
+                if (successCount + failureCount === images.length) {
+                  alert(
+                    `Completed with errors. ${successCount} images copied successfully, ${failureCount} failed.`
+                  );
+                }
+              });
+          });
+        } else {
+          alert("Something went wrong, no images found.");
+          console.log("Error in copying images response: ", res);
+        }
+      })
+      .catch((err) => alert("Error when copying images:", err));
+  };
+  
+  const RefetchAllProducts = () => {
+    const confirmRefetch = confirm('Are you sure you want to refetch all of the products?');
+    if (confirmRefetch) {
+      fetch("http://127.0.0.1:8081/RefetchOCMasterTables")
+      .then((res) => res.json())
+      .then((data) => alert('Refetched products.'))
+      .then((data) => refresh())
+      .catch((err) => console.log("Fetch error:", err));
+    }
+  }
+
+  function refresh() {
+    location.reload();
+  }
 
   const GoBackOneStep = () => {
+    setLastMessage('');
     if (step2) {
       setStep2(false);
       setStep3(false);
@@ -301,6 +390,10 @@ function CopyProductsToStores() {
           <p className="xlHeader marginTop3rem">
             SELECT WHICH PRODUCTS TO COPY
           </p>
+          <div>
+            <button className='darkRedButtonInlineMD' onClick={RefetchAllProducts} style={{margin: "1rem 0 2rem 0"}}>Refetch products
+            </button>
+          </div>
           {productIdsToCopy && productIdsToCopy.length > 0 && (
             <div>
               <span style={{ fontSize: "24px" }}>Product ID's selected: </span>
@@ -452,9 +545,7 @@ function CopyProductsToStores() {
         >
           YES! These are the correct products.
         </button>
-        <div>
-        {lastMessage}
-        </div>
+        <div className="lastMessageCopy">{lastMessage}</div>
       </div>
     );
   } else if (step3) {
@@ -465,9 +556,7 @@ function CopyProductsToStores() {
             Go Back
           </button>
         </div>
-        <div className='lastMessageCopy'>
-        {lastMessage}
-        </div>
+        <div className="lastMessageCopy">{lastMessage}</div>
       </div>
     );
   }

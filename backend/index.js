@@ -1,8 +1,10 @@
-require("dotenv").config();
+require('dotenv').config({ path: './env/.env' });
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
-const { Client } = require("basic-ftp") 
+const fs = require("fs");
+const { Client } = require("basic-ftp");
+const path = require("path");
 
 const app = express();
 app.use(express.json());
@@ -607,6 +609,14 @@ app.post("/refetchProductDescriptions", (req, res) => {
   });
 });
 
+app.get("/RefetchOCMasterTables", (req, res) => {
+  const sql = "CALL uspStep1_GetMasterTablesCopy()";
+  copyProducts.query(sql, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 app.get("/getProductsToCopy", (req, res) => {
   const sql = "CALL GetProductsForUnify()";
   copyProducts.query(sql, (err, data) => {
@@ -626,7 +636,12 @@ app.post("/getProductsForViewingCopy", (req, res) => {
 
 app.post("/insertIntoSelectedProductsToCopy", (req, res) => {
   const sql = "CALL InsertIntoSelectedProductsToCopy(?, ?, ?, ?)";
-  const values = [req.body.pID, req.body.model, req.body.mpn, req.body.force_copy];
+  const values = [
+    req.body.pID,
+    req.body.model,
+    req.body.mpn,
+    req.body.force_copy,
+  ];
   copyProducts.query(sql, values, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -656,11 +671,10 @@ app.post("/CopyProducts_GetProductsToCopy", (req, res) => {
     if (err) {
       console.log("Error:", err);
       return res.json(err);
-    }e
+    }
     return res.json(data);
   });
 });
-
 
 app.post("/CopyProducts_CopyProductsToStore", (req, res) => {
   const sql = "CALL uspStep4_CopyProductsTo(?)";
@@ -671,42 +685,151 @@ app.post("/CopyProducts_CopyProductsToStore", (req, res) => {
   });
 });
 
+app.post("/CopyProducts_CopyImagesToStore", (req, res) => {
+  const sql = "CALL uspStep5_CopyImagesToStore()";
+  copyProducts.query(sql, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
 
-async function moveImages() {
-  const client = new Client()
-  client.ftp.verbose = true
+
+
+// copying images to store
+app.post("/CopyProducts_CopyImagesToStore_Action", async (req, res) => {
+  const { selectedStore, imagePath } = req.body;
+  if (!selectedStore || !imagePath) {
+    return res.status(400).send("Store and image path are required");
+  }
+
+  //there is a bug with simple-ftp that doesn't allow you to mess with directories and then transfer images.
+  //so, i am splitting it into two steps. this works and doesn't have any issues
   try {
+    const firstStepResult = await moveImages(selectedStore, imagePath, 1);
+
+    console.log("First step result:", firstStepResult);
+
+    const secondStepResult = await moveImages(selectedStore, imagePath, 2);
+
+    console.log("Second step result:", secondStepResult);
+
+    res.status(200).send('Images moved successfully in both steps');
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Failed to move images');
+  }
+});
+
+async function moveImages(selectedStore, imagePath, step) {
+  const client = new Client();
+  client.ftp.verbose = true;
+  let moveToClient = null;
+  let storeHost, storeUser, storePW;
+
+  switch (selectedStore.trim().toUpperCase()) {
+    case "DIM":
+      storeHost = 1;
+      storeUser = 1;
+      storePW = 1;
+      break;
+    case "FMS":
+      storeHost = 1;
+      storeUser = 1;
+      storePW = 1;
+      break;
+    case "FMP":
+      storeHost = 1;
+      storeUser = 1;
+      storePW = 1;
+      break;
+    case "FPG":
+      storeHost = 1;
+      storeUser = 1;
+      storePW = 1;
+      break;
+    case "GNP":
+      storeHost = 1;
+      storeUser = 1;
+      storePW = 1;
+      break;
+    case "RFS":
+      storeHost = 1;
+      storeUser = 1;
+      storePW = 1;
+      break;
+    case "MFS":
+      storeHost = process.env.MFSHOST;
+      storeUser = process.env.MFSUSER;
+      storePW = process.env.MFSPASSWORD;
+      break;
+    default:
+      console.log("Store wasn't set in moveImages function.");
+      return;
+  }
+
+  try {
+    if (step == 1) {
+      // accessing OCMASTER FTP
       await client.access({
-          host: process.env.OCMASTERHOST,
-          user: process.env.OCMASTERUSER,
-          password: process.env.OCMASTERPASSWORD
-      })
-      console.log(await client.list())
-      await client.downloadTo("img.jpg", "README_FTP.md")
-      await client.uploadFrom(".env", ".env")
+        host: process.env.OCMASTERHOST,
+        user: process.env.OCMASTERUSER,
+        password: process.env.OCMASTERPASSWORD,
+      });
 
+      // ensuring directory exists locally
+      const localDir = path.dirname(imagePath);
+      fs.mkdirSync(localDir, { recursive: true });
+
+      // downloading file
+      await client.downloadTo(imagePath, "/oc_master/image/" + imagePath);
+
+      // Initialize moveToClient here so it can be reused
+      moveToClient = new Client();
+      moveToClient.ftp.verbose = true;
+
+      // accessing store FTP
+      await moveToClient.access({
+        host: storeHost,
+        user: storeUser,
+        password: storePW,
+      });
+
+      // extracting directory path from image path
+      const directoryPath = imagePath.substring(
+        0,
+        imagePath.lastIndexOf("/") + 1
+      );
+
+      // ensure the directory exists on the target store, and creating it if necessary
+      await moveToClient.ensureDir(directoryPath);
+
+      return "Step 1: File downloaded";
+    } else if (step == 2) {
+      // Ensure moveToClient is accessible for the second step
+      if (!moveToClient) {
+        moveToClient = new Client();
+        moveToClient.ftp.verbose = true;
+        await moveToClient.access({
+          host: storeHost,
+          user: storeUser,
+          password: storePW,
+        });
+      }
+
+      // Uploading the image to the target store
+      await moveToClient.uploadFrom(imagePath, imagePath);
+
+      return "Step 2: File uploaded";
+    }
+  } catch (err) {
+    console.log("Error in moveImages:", err);
+  } finally {
+    client.close();
+    if (moveToClient) {
+      moveToClient.close();
+    }
   }
-  catch(err) {
-      console.log(err)
-  }
-  client.close()
 }
-
-moveImages();
-
-
-
-
-
-/* Copying images from local store to the live store */
-
-
-
-
-
-
-
-
 
 
 //maintaining login state

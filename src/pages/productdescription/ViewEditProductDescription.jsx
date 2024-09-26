@@ -8,12 +8,13 @@ Modal.setAppElement('#root');
 function ViewEditProductDescription() {
   const [productDescription, setProductDescription] = useState([]);
   const [activeTab, setActiveTab] = useState('preview');
-  const [searchQuery, setSearchQuery] = useState(''); 
+  const [searchQuery, setSearchQuery] = useState('');
   const [descriptions, setDescriptions] = useState([]);
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [selectedMPN, setSelectedMPN] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
   const [descriptionValues, setDescriptionValues] = useState({});
+  const [buttonStatus, setButtonStatus] = useState('');
 
   useEffect(() => {
     fetch('http://127.0.0.1:8081/viewEditProductDescription')
@@ -57,7 +58,7 @@ function ViewEditProductDescription() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredProducts = productDescription.filter((d) => 
+  const filteredProducts = productDescription.filter((d) =>
     d.mpn.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -67,13 +68,17 @@ function ViewEditProductDescription() {
       const descriptionToSave = descriptionValues[storeId];
       const confirmSave = confirm('Are you sure you want to save this description?');
       if (confirmSave) {
+        //disabling all buttons
+        DisableButtons();
         axios.post('http://127.0.0.1:8081/saveProductDescription', { storeId, selectedMPN, selectedModel, descriptionToSave})
         .then(res => {
           if (res.data[0][0]['success']) {
-            alert(res.data[0][0]['success']);
+            alert(`successfully updated ${selectedMPN}`);
           } else {
             alert("Something went wrong.");
           }
+          //enabling all buttons
+          EnableButtons();
           console.log(res);
         })
         .catch(err => console.error('Error saving description:', err));
@@ -82,6 +87,15 @@ function ViewEditProductDescription() {
       alert('User is logged out. Please refresh to log back in.');
     }
   };
+
+  const DisableButtons = () => {
+    setButtonStatus('disabled');
+  }
+
+  const EnableButtons = () => {
+    setButtonStatus('');
+  }
+
 
   const handleDescriptionChange = (storeId, value) => {
     setDescriptionValues(prev => ({
@@ -149,6 +163,7 @@ function ViewEditProductDescription() {
                   data-custom-model={d.model}
                   data-custom-mpn={d.mpn}
                   id={d.dif_id}
+                  disabled={buttonStatus}
                   className='darkRedButtonInlineMD'
                   onClick={openModal}>
                     View/Edit
