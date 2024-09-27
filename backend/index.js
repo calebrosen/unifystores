@@ -728,35 +728,39 @@ async function moveImages(selectedStore, imagePath, step) {
 
   switch (selectedStore.trim().toUpperCase()) {
     case "DIM":
-      storeHost = 1;
-      storeUser = 1;
-      storePW = 1;
+      storeHost = process.env.DIMHOST;
+      storeUser = process.env.DIMUSER;
+      storePW = process.env.DIMPASSWORD;
       break;
     case "FMS":
-      storeHost = 1;
-      storeUser = 1;
-      storePW = 1;
+      storeHost = process.env.FMSHOST;
+      storeUser = process.env.FMSUSER;
+      storePW = process.env.FMSPASSWORD;
       break;
     case "FMP":
-      storeHost = 1;
-      storeUser = 1;
-      storePW = 1;
+      storeHost = process.env.FMPHOST;
+      storeUser = process.env.FMPUSER;
+      storePW = process.env.FMPPASSWORD;
       break;
     case "FPG":
-      storeHost = 1;
-      storeUser = 1;
-      storePW = 1;
+      storeHost = process.env.FPGHOST;
+      storeUser = process.env.FPGUSER;
+      storePW = process.env.FPGPASSWORD;
       break;
     case "GNP":
-      storeHost = 1;
-      storeUser = 1;
-      storePW = 1;
+      storeHost = process.env.GNPHOST;
+      storeUser = process.env.GNPUSER;
+      storePW = process.env.GNPPASSWORD;
       break;
     case "RFS":
-      storeHost = 1;
-      storeUser = 1;
-      storePW = 1;
+      storeHost = process.env.RFSHOST;
+      storeUser = process.env.RFSUSER;
+      storePW = process.env.RFSPASSWORD;
       break;
+    case "BMS":
+      storeHost= process.env.BMSHOST;
+      storeUser = process.env.BMSUSER;
+      storePW = process.env.BMSPASSWORD;
     case "MFS":
       storeHost = process.env.MFSHOST;
       storeUser = process.env.MFSUSER;
