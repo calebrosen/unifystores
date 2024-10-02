@@ -177,7 +177,7 @@ function ViewEditProductDescription() {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
+        contentLabel="Description Modal"
       >
         <div>
           <div className='tab-buttons marginTopAndBottom'>
