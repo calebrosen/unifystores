@@ -188,7 +188,7 @@ function CopyProductsToStores() {
           ) {
             console.log(res.data[0][0]["success"]);
             console.log("successfully processed CopyProducts_GetTargetData");
-
+            setLastMessage("successfully processed CopyProducts_GetTargetData - proceeding...");
             // CopyProducts_GetProductsToCopy procedure
             return axios.post(
               "http://127.0.0.1:8081/CopyProducts_GetProductsToCopy"
@@ -215,6 +215,7 @@ function CopyProductsToStores() {
             console.log(
               "successfully processed CopyProducts_GetProductsToCopy"
             );
+            setLastMessage("successfully processed CopyProducts_GetProductsToCopy - proceeding...");
 
             // CopyProducts_CopyProductsToStore procedure
             return axios.post(
@@ -243,6 +244,7 @@ function CopyProductsToStores() {
             console.log(
               "successfully processed CopyProducts_CopyProductsToStore"
             );
+            setLastMessage("successfully processed CopyProducts_CopyProductsToStore - proceeding...");
             CopyImagesToStore();
             setLastMessage("Completed. Copying images now...");
             setStep2(false);
