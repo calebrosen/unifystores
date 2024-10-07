@@ -491,13 +491,31 @@ app.get("/viewEnabledZones", (req, res) => {
 });
 
 app.get("/attributes", (req, res) => {
-  const sql =
-    "Select `subsection`, `path` from subsections WHERE `section` = 'Attributes'";
+  const sql = "SELECT `subsection`, `path` FROM subsections WHERE `section` = 'Attributes'";
+
+  unify.query(sql, (err, data) => {
+      if (err) return res.json(err);
+
+      // inserting attributes from OCMaster
+      const sql2 = "CALL GetNewAttributesFromOCMaster()";
+      unify.query(sql2, (err) => {
+          if (err) return res.json(err);
+
+
+          // returning the results of the first query
+          return res.json(data);
+      });
+  });
+});
+
+app.get("/GetAttributes", (req, res) => {
+  const sql = "Call GetAttributes()";
   unify.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
+
 
 app.get("/GetAttributeGroups", (req, res) => {
   const sql = "Select * from `attribute_group_description`";
