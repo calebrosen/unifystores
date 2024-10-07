@@ -801,6 +801,20 @@ tbody td:last-of-type {
   transform: scale(2.5);
 }
 
+.biggerCheckbox {
+  transform: scale(2);
+  position: relative;
+  display: flexbox;
+}
+
+.spaceApart {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  gap: 5rem;
+  margin-top: 4rem;
+}
+
 .GoBackButton {
   font-size: 2.5rem;
   color: #000;

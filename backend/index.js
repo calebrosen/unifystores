@@ -516,6 +516,14 @@ app.get("/GetAttributes", (req, res) => {
   });
 });
 
+app.post("/GetProductsForAttributeCopy", (req, res) => {
+  const sql = "Call GetProductsForAttributeCopy(?);";
+  const values = [req.body.selectedAttribute];
+  unify.query(sql, values, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
 
 app.get("/GetAttributeGroups", (req, res) => {
   const sql = "Select * from `attribute_group_description`";
