@@ -7,17 +7,16 @@ const CopyAttributes = () => {
   const [selectedAttribute, setSelectedAttribute] = useState("");
   const { selectedStore } = useContext(StoreContext);
   const [productsToAffect, setProductsToAffect] = useState([]);
+  const [showLastPreview, setShowLastPreview] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8081/GetAttributes")
       .then((res) => res.json())
       .then((data) => setData(data[0]))
+      .then(HideStoreSelection())
       .catch((err) => console.log("Fetch error:", err));
   }, []);
 
-//   useEffect(() => {
-//     HideStoreSelection();
-//   }, []);
 
   const PreviewCopyAction = () => {
     if (selectedAttribute) {
@@ -46,36 +45,15 @@ const CopyAttributes = () => {
     }
   };
 
-  /*
-  const AddAttributeAction = () => {
-    if (attributeGroupName != "") {
-      const confirmPush = confirm(
-        `Are you sure you want to add "${attributeName}" as an Attribute of Attribute Group "${attributeGroup}? They will be added to the local table and ALL stores.`
-      );
-      if (confirmPush) {
-        axios
-          .post("http://127.0.0.1:8081/addNewAttributeGroup", {
-            attributeName,
-            attributeGroupID,
-          })
-          .then((res) => {
-            if (res.data[0][0]["success"]) {
-              alert(res.data[0][0]["success"]);
-            } else {
-              alert("Something went wrong");
-            }
-            console.log(res);
-          })
-          .catch((err) => alert("Error:", err));
-      }
-    } else {
-      alert("Input an attribute group name");
-    }
-  };
-*/
-
   const PreviewProductsToAffect = () => {
-
+    if (selectedAttribute && selectedStore) {
+      // need to post to PreviewProductsForAttributeCopy with selectedStore and selectedAttribute
+      // then, preview products being copied to
+      setShowStoreSelection(false);
+      setShowLastPreview(true);
+    } else {
+      alert('Select a store to copy to.');
+    }
   }
 
   const HideStoreSelection = () => {
@@ -126,7 +104,15 @@ const CopyAttributes = () => {
         </div>
       </div>
     );
-  } else {
+  } 
+  else if (showLastPreview) {
+    return (
+      <p>
+        tester
+      </p>
+    )
+  }
+  else {
     // products are set (proceed button has been clicked)
     return (
       <div>
