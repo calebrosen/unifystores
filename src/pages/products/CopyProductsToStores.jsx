@@ -28,7 +28,6 @@ function CopyProductsToStores() {
     fetch("http://127.0.0.1:8081/getProductsToCopy")
       .then((res) => res.json())
       .then((data) => setProductsResponse(data[0]))
-      //.then(CopyImagesToStore())
       .catch((err) => console.log("Fetch error:", err));
   }, []);
 

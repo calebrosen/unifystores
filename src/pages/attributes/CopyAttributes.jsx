@@ -8,6 +8,8 @@ const CopyAttributes = () => {
   const { selectedStore } = useContext(StoreContext);
   const [productsToAffect, setProductsToAffect] = useState([]);
   const [showLastPreview, setShowLastPreview] = useState(false);
+  const [storeProductsToAffectPreview, setStoreProductsToAffectPreview] = useState([]);
+  const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
     fetch("http://127.0.0.1:8081/GetAttributes")
@@ -17,10 +19,8 @@ const CopyAttributes = () => {
       .catch((err) => console.log("Fetch error:", err));
   }, []);
 
-
   const PreviewCopyAction = () => {
     if (selectedAttribute) {
-      // previewing what products have this attribute
       axios
         .post("http://127.0.0.1:8081/GetProductsForAttributeCopy", {
           selectedAttribute,
@@ -37,7 +37,6 @@ const CopyAttributes = () => {
           } else {
             alert("Something went wrong.");
           }
-          console.log(res);
         })
         .catch((err) => alert("Error:", err));
     } else {
@@ -47,14 +46,29 @@ const CopyAttributes = () => {
 
   const PreviewProductsToAffect = () => {
     if (selectedAttribute && selectedStore) {
-      // need to post to PreviewProductsForAttributeCopy with selectedStore and selectedAttribute
-      // then, preview products being copied to
-      setShowStoreSelection(false);
+      axios
+        .post("http://127.0.0.1:8081/PreviewProductsForAttributeCopy", {
+          selectedStore,
+          selectedAttribute,
+        })
+        .then((res) => {
+          if (res.data) {
+            setStoreProductsToAffectPreview(res.data[0]);
+
+            //setting each checkbox as checked by default
+            const newCheckedItems = new Set(res.data[0].map((item) => item.StoreID));
+            setCheckedItems(newCheckedItems);
+          } else {
+            alert("Something went wrong when attempting to find products to preview. Maybe there were no applicable products.");
+          }
+        })
+        .catch((err) => alert("Error:", err));
+      HideStoreSelection();
       setShowLastPreview(true);
     } else {
-      alert('Select a store to copy to.');
+      alert("Select a store to copy to.");
     }
-  }
+  };
 
   const HideStoreSelection = () => {
     const stores = document.getElementById("storesRadioInner");
@@ -67,14 +81,32 @@ const CopyAttributes = () => {
   };
 
   const HandleChangeAttribute = (e) => {
-    const attributeIDToSet = e.currentTarget.value;
-    setSelectedAttribute(attributeIDToSet);
+    setSelectedAttribute(e.currentTarget.value);
+  };
+
+  const handleCheckboxChange = (item) => {
+    setCheckedItems((prevCheckedItems) => {
+      const newCheckedItems = new Set(prevCheckedItems);
+      
+      if (newCheckedItems.has(item)) {
+        newCheckedItems.delete(item); // Uncheck
+      } else {
+        newCheckedItems.add(item); // Check
+      }
+      console.log(newCheckedItems);
+      return newCheckedItems;
+    });
   };
 
   const GoBack = () => {
-    //HideStoreSelection();
+    // This function resets everything to initial states
+    HideStoreSelection();
     setProductsToAffect([]);
+    setStoreProductsToAffectPreview([]);
+    setShowLastPreview(false);
+    setCheckedItems(new Set());
   };
+
 
   if (!productsToAffect.length > 0) {
     return (
@@ -84,11 +116,11 @@ const CopyAttributes = () => {
           <select
             id="selectAttributeGroup"
             className="selectBox1"
-            onClick={HandleChangeAttribute}
+            onChange={HandleChangeAttribute}
           >
             <option></option>
             {data.map((d, i) => (
-              <option key={i} value={d.attribute_id} id={d.attribute_id}>
+              <option key={i} value={d.attribute_id}>
                 {d.name}
               </option>
             ))}
@@ -104,16 +136,74 @@ const CopyAttributes = () => {
         </div>
       </div>
     );
-  } 
-  else if (showLastPreview) {
+  } else if (showLastPreview) {
     return (
-      <p>
-        tester
-      </p>
-    )
-  }
-  else {
-    // products are set (proceed button has been clicked)
+      <div>
+        <div className="centered">
+        <p className="xlHeader marginTop3rem">
+          Products on {selectedStore} with the boxes checked will be copied to
+          </p>
+          <div className="spaceApart">
+            <button className="darkRedButton" onClick={GoBack}>Go back</button>
+            <button className="darkRedButton">Proceed</button>
+          </div>
+          <p className="miniInfoText marginTop3rem">
+            T stands for Target | OCM stands for OCMaster
+          </p>
+          <table className="marginTop4rem">
+            <thead>
+              <tr>
+                <th>Copy</th>
+                <th>T ID</th>
+                <th>T MPN</th>
+                <th>T Model</th>
+                <th>T Name</th>
+                <th>T Hidden</th>
+                <th>T Status</th>
+                <th>OCM MPN</th>
+                <th>OCM Model</th>
+                <th>OCM Name</th>
+                <th>Attr. Name</th>
+                <th>Attr. Text</th>
+              </tr>
+            </thead>
+            <tbody>
+              {storeProductsToAffectPreview && storeProductsToAffectPreview.length > 0 ? (
+                storeProductsToAffectPreview.map((d, i) => (
+                  <tr key={i}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={checkedItems.has(d.StoreID)}
+                        onChange={() => handleCheckboxChange(d.StoreID)} // handling checkbox change
+                        style={{marginLeft: '16px'}}
+                        className="checkboxForCopyProduct"
+                      />
+                    </td>
+                    <td>{d.StoreID}</td>
+                    <td>{d.StoreMPN}</td>
+                    <td>{d.StoreModel}</td>
+                    <td>{d.StoreName}</td>
+                    <td>{d.Hidden}</td>
+                    <td>{d.Status}</td>
+                    <td>{d.OCM_MPN}</td>
+                    <td>{d.OCM_Model}</td>
+                    <td>{d.OCM_Name}</td>
+                    <td>{d.OCM_Attribute_Name}</td>
+                    <td>{d.OCM_Attribute_Text}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={12} style={{ textAlign: 'center', fontSize: '26px' }}>Loading...</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  } else {
     return (
       <div>
         <div className="centered">
@@ -121,7 +211,9 @@ const CopyAttributes = () => {
             <button className="darkRedButton" onClick={GoBack}>
               Go back
             </button>
-            <button className="darkRedButton" onClick={PreviewProductsToAffect}>Proceed</button>
+            <button className="darkRedButton" onClick={PreviewProductsToAffect}>
+              Proceed
+            </button>
           </div>
           <p className="xlHeader marginTop3rem">
             Products on OCMaster with Attribute ID {selectedAttribute}

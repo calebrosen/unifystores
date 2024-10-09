@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './env/.env' });
+require("dotenv").config({ path: "./env/.env" });
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
@@ -491,20 +491,12 @@ app.get("/viewEnabledZones", (req, res) => {
 });
 
 app.get("/attributes", (req, res) => {
-  const sql = "SELECT `subsection`, `path` FROM subsections WHERE `section` = 'Attributes'";
-
+  const sql =
+    "SELECT `subsection`, `path` FROM subsections WHERE `section` = 'Attributes'";
   unify.query(sql, (err, data) => {
-      if (err) return res.json(err);
+    if (err) return res.json(err);
 
-      // inserting attributes from OCMaster
-      const sql2 = "CALL GetNewAttributesFromOCMaster()";
-      unify.query(sql2, (err) => {
-          if (err) return res.json(err);
-
-
-          // returning the results of the first query
-          return res.json(data);
-      });
+    return res.json(data);
   });
 });
 
@@ -533,7 +525,6 @@ app.post("/PreviewProductsForAttributeCopy", (req, res) => {
     return res.json(data);
   });
 });
-
 
 app.get("/GetAttributeGroups", (req, res) => {
   const sql = "Select * from `attribute_group_description`";
@@ -729,8 +720,6 @@ app.post("/CopyProducts_CopyImagesToStore", (req, res) => {
   });
 });
 
-
-
 // copying images to store
 app.post("/CopyProducts_CopyImagesToStore_Action", async (req, res) => {
   const { selectedStore, imagePath } = req.body;
@@ -749,10 +738,10 @@ app.post("/CopyProducts_CopyImagesToStore_Action", async (req, res) => {
 
     console.log("Second step result:", secondStepResult);
 
-    res.status(200).send('Images moved successfully in both steps');
+    res.status(200).send("Images moved successfully in both steps");
   } catch (error) {
     console.log("Error:", error);
-    res.status(500).send('Failed to move images');
+    res.status(500).send("Failed to move images");
   }
 });
 
@@ -794,7 +783,7 @@ async function moveImages(selectedStore, imagePath, step) {
       storePW = process.env.RFSPASSWORD;
       break;
     case "BMS":
-      storeHost= process.env.BMSHOST;
+      storeHost = process.env.BMSHOST;
       storeUser = process.env.BMSUSER;
       storePW = process.env.BMSPASSWORD;
     case "MFS":
@@ -872,7 +861,8 @@ async function moveImages(selectedStore, imagePath, step) {
 }
 
 
-//maintaining login state
+
+// maintaining login state
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = "1RGS3CR3T";
 

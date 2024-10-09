@@ -855,3 +855,8 @@ tbody td:last-of-type {
 .lastMessageCopy {
   font-size: 26px;
 }
+
+.miniInfoText {
+  font-size: 2rem;
+  font-weight: 700;
+}
