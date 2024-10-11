@@ -1,0 +1,117 @@
+const connectToDB = require("../model/db");
+
+// Loading all subsections
+exports.getSubsections = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Coupons'";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// Getting all attributes
+exports.fetchAgents = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "Select `Agent`, `AgentID` from federatedb.CouponAgentList WHERE Status = 1";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// creating coupon on selected store. Agent may be ADMIN or a real sales agent
+exports.createCoupon = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL CreateCoupon(?, ?, ?, ?);";
+    const values = [
+      req.body.selectedAgent,
+      req.body.selectedStore,
+      req.body.amount,
+      req.body.couponCode,
+    ];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// Getting all coupons on the selected store
+exports.selectCoupons = async (req, res) => {
+  try {
+    const db = await connectToDB();
+  const sql = "CALL SelectCoupons(?);";
+  const values = [req.body.selectedStore];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// Updating coupon
+exports.updateCoupon = async (req, res) => {
+    try {
+      const db = await connectToDB();
+      const sql = "CALL UpdateCoupon(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      const values = [
+        req.body.selectedStore,
+        req.body.coupon_id,
+        req.body.name,
+        req.body.code,
+        req.body.type,
+        req.body.discount,
+        req.body.date_start,
+        req.body.date_end,
+        req.body.uses_total,
+        req.body.status,
+      ];
+      db.query(sql, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.json(data);
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Database connection failed", error });
+    }
+  };
+
+
+  exports.deleteCoupon = async (req, res) => {
+    try {
+      const db = await connectToDB();
+      const sql = "CALL DeleteCoupon(?, ?, ?);";
+      const values = [req.body.selectedStore, req.body.coupon_id, req.body.code];
+      db.query(sql, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.json(data);
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Database connection failed", error });
+    }
+  };

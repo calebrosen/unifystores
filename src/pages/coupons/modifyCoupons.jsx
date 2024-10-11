@@ -12,7 +12,7 @@ function ModifyCoupons() {
   const [currentCoupon, setCurrentCoupon] = useState(null);
 
   const selectCoupons = () => {
-    axios.post('http://127.0.0.1:8081/selectCoupons', { selectedStore })
+    axios.post(`${process.env.REACT_APP_API_URL}/node/coupons/selectCoupons`, { selectedStore })
       .then(res => {
         setCoupons(res.data[0]);
       })
@@ -34,7 +34,7 @@ function ModifyCoupons() {
     if (confirmUpdate) {
       e.preventDefault();
       const payload = { ...currentCoupon, selectedStore };
-      axios.post('http://127.0.0.1:8081/updateCoupon', payload)
+      axios.post(`${process.env.REACT_APP_API_URL}/node/coupons/updateCoupon`, payload)
         .then(res => {
           console.log(res);
           closeModal();
@@ -49,10 +49,10 @@ function ModifyCoupons() {
 
   const deleteCoupon = (e) => {
     const confirmDelete = confirm("Are you sure you want to delete this coupon?");
-    if (confirmDelete) {   
+    if (confirmDelete) {
       e.preventDefault();
       const payload = { ...currentCoupon, selectedStore };
-      axios.post('http://127.0.0.1:8081/deleteCoupon', payload)
+      axios.post(`${process.env.REACT_APP_API_URL}/node/coupons/deleteCoupon`, payload)
         .then(res => {
           console.log(res);
           closeModal();

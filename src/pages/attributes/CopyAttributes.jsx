@@ -12,7 +12,7 @@ const CopyAttributes = () => {
   const [checkedItems, setCheckedItems] = useState(new Set());
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8081/GetAttributes")
+    fetch(`${process.env.REACT_APP_API_URL}/node/attributes/getAttributes`)
       .then((res) => res.json())
       .then((data) => setData(data[0]))
       .then(HideStoreSelection())
@@ -22,7 +22,7 @@ const CopyAttributes = () => {
   const PreviewCopyAction = () => {
     if (selectedAttribute) {
       axios
-        .post("http://127.0.0.1:8081/GetProductsForAttributeCopy", {
+        .post(`${process.env.REACT_APP_API_URL}/node/attributes/getProductsForAttributeCopy`, {
           selectedAttribute,
         })
         .then((res) => {
@@ -47,7 +47,7 @@ const CopyAttributes = () => {
   const PreviewProductsToAffect = () => {
     if (selectedAttribute && selectedStore) {
       axios
-        .post("http://127.0.0.1:8081/PreviewProductsForAttributeCopy", {
+        .post(`${process.env.REACT_APP_API_URL}/node/attributes/previewProductsForAttributeCopy`, {
           selectedStore,
           selectedAttribute,
         })
@@ -140,8 +140,11 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
+        <h1 style={{fontWeight: '700'}}>
+        Selected: {selectedStore}
+        </h1>
         <p className="xlHeader marginTop3rem">
-          Products on {selectedStore} with the boxes checked will be copied to
+          Products with the boxes checked will be copied to
           </p>
           <div className="spaceApart">
             <button className="darkRedButton" onClick={GoBack}>Go back</button>
@@ -174,7 +177,7 @@ const CopyAttributes = () => {
                     <td>
                       <input
                         type="checkbox"
-                        checked={checkedItems.has(d.StoreID)}
+                        checked={checkedItems.has(d.StoreID)} // StoreID is the product ID on the store selected (so it's unique)
                         onChange={() => handleCheckboxChange(d.StoreID)} // handling checkbox change
                         style={{marginLeft: '16px'}}
                         className="checkboxForCopyProduct"

@@ -6,7 +6,7 @@ function EditCustomerGroupName() {
   const [name, setName] = useState('');
  
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditCustomerGroupName')
+    fetch(`${process.env.REACT_APP_API_URL}/node/customers/viewEditCustomerGroupName`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -20,7 +20,7 @@ function EditCustomerGroupName() {
     if (name != originalName) {
       const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${customerGroupID}) to ${name}?`);
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/editCustomerGroupName', { customerGroupID, name })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/customers/editCustomerGroupName`, { customerGroupID, name })
           .then(res => {
             console.log(res);
             if (res.data[0][0]['success']) {

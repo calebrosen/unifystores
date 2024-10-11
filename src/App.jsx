@@ -7,8 +7,6 @@ import Stores from './components/stores/Stores.jsx';
 import StoresRadio from './components/stores/StoresRadio.jsx';
 import { StoreProvider } from './contexts/StoreContext.jsx';
 import './index.css';
-import AddNewAttribute from './pages/attributes/AddNewAttribute.jsx';
-import AddNewAttributeGroup from './pages/attributes/AddNewAttributeGroup.jsx';
 import Attributes from './pages/attributes/Attributes.jsx';
 import CopyAttributes from './pages/attributes/CopyAttributes.jsx';
 import Countries from './pages/countries/Countries.jsx';
@@ -102,8 +100,6 @@ const App = () => {
           <Route path="/products/EditProducts" element={<RequireAuth><HomeAndLogOutButtons><EditProducts /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/salesagent/editSalesAgents" element={<RequireAuth><HomeAndLogOutButtons><EditSalesAgents /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/salesagent/importSalesAgents" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ImportSalesAgents /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
-          <Route path="/attributes/AddNewAttributeGroup" element={<RequireAuth><HomeAndLogOutButtons><AddNewAttributeGroup /></HomeAndLogOutButtons></RequireAuth>}/>
-          <Route path="/attributes/AddNewAttribute" element={<RequireAuth><HomeAndLogOutButtons><AddNewAttribute /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes/CopyAttributes" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyAttributes /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes" element={<RequireAuth><HomeAndLogOutButtons><Attributes /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/CopyProductsToStores" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyProductsToStores /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>

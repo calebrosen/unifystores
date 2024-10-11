@@ -12,7 +12,7 @@ function AddNewCustomerGroup() {
     if (customerGroupName != '') {
       const confirmPush = confirm('Are you sure you want to add ' + customerGroupName + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/addNewCustomerGroup', { customerGroupName })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/customers/addNewCustomerGroup`, { customerGroupName })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

@@ -7,7 +7,7 @@ function ViewPushCustomerGroups() {
   const { selectedStore } = useContext(StoreContext);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditCustomerGroupName')
+    fetch(`${process.env.REACT_APP_API_URL}/node/customers/viewEditCustomerGroupName`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -19,7 +19,7 @@ function ViewPushCustomerGroups() {
       let name = e.target.value;
       const confirmPush = confirm('Are you sure you want to push customer group "' + name + '" to ' + selectedStore + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushCustomerGroups', { selectedStore, customerGroupID })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/customers/pushCustomerGroups`, { selectedStore, customerGroupID })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

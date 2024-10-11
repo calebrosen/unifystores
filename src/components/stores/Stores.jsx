@@ -4,7 +4,7 @@ function Stores({ children }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/fetchStores')
+    fetch(`${process.env.REACT_APP_API_URL}/node/stores/getStores`)
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));

@@ -8,7 +8,7 @@ function Login() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://127.0.0.1:8081/login', { username, password })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/auth/login`, { username, password })
             .then(res => {
                 if (res.data.token) {
                     localStorage.setItem('token', res.data.token);

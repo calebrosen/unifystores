@@ -25,7 +25,7 @@ function CopyProductsToStores() {
   };
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8081/getProductsToCopy")
+    fetch(`${process.env.REACT_APP_API_URL}/node/products/getProductsToCopy`)
       .then((res) => res.json())
       .then((data) => setProductsResponse(data[0]))
       .catch((err) => console.log("Fetch error:", err));
@@ -90,7 +90,7 @@ function CopyProductsToStores() {
 
       const tempProductIdsString = productIdsToCopy.toString();
       axios
-        .post("http://127.0.0.1:8081/getProductsForViewingCopy", {
+        .post(`${process.env.REACT_APP_API_URL}/node/products/getProductsForViewingCopy`, {
           tempProductIdsString,
         })
         .then((res) => {
@@ -127,7 +127,7 @@ function CopyProductsToStores() {
 
       // truncating table
       axios
-        .post("http://127.0.0.1:8081/truncateSelectedProductsToCopyTable")
+        .post(`${process.env.REACT_APP_API_URL}/node/products/truncateSelectedProductsToCopyTable`)
         .then((res) => {
           if (
             res.data &&
@@ -143,15 +143,15 @@ function CopyProductsToStores() {
 
               if (pID && model && mpn && force_copy !== undefined) {
                 return axios.post(
-                  "http://127.0.0.1:8081/insertIntoSelectedProductsToCopy",
+                  `${process.env.REACT_APP_API_URL}/node/products/insertIntoSelectedProductsToCopy`,
                   { pID, model, mpn, force_copy }
                 );
               } else {
                 alert("Something wasn't set. Check console!");
-                console.log("PID ", pID);
-                console.log("model ", model);
-                console.log("mpn ", mpn);
-                console.log("forcecopy ", force_copy);
+                console.log("PID: ", pID);
+                console.log("model: ", model);
+                console.log("mpn: ", mpn);
+                console.log("forcecopy:", force_copy);
                 return Promise.reject("Invalid product data");
               }
             });
@@ -172,7 +172,7 @@ function CopyProductsToStores() {
 
           // CopyProducts_GetTargetData procedure
           return axios.post(
-            "http://127.0.0.1:8081/CopyProducts_GetTargetData",
+            `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_GetTargetData`,
             {
               selectedStore,
             }
@@ -190,7 +190,7 @@ function CopyProductsToStores() {
             setLastMessage("successfully processed CopyProducts_GetTargetData - proceeding...");
             // CopyProducts_GetProductsToCopy procedure
             return axios.post(
-              "http://127.0.0.1:8081/CopyProducts_GetProductsToCopy"
+              `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_GetProductsToCopy`
             );
           } else {
             console.log(
@@ -218,7 +218,7 @@ function CopyProductsToStores() {
 
             // CopyProducts_CopyProductsToStore procedure
             return axios.post(
-              "http://127.0.0.1:8081/CopyProducts_CopyProductsToStore",
+              `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyProductsToStore`,
               { selectedStore }
             );
           } else {
@@ -269,7 +269,7 @@ function CopyProductsToStores() {
 
   const CopyImagesToStore = () => {
     axios
-      .post("http://127.0.0.1:8081/CopyProducts_CopyImagesToStore")
+      .post(`${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyImagesToStore`)
       .then((res) => {
         if (res.data && res.data[0]) {
           let images = res.data[0];
@@ -280,7 +280,7 @@ function CopyProductsToStores() {
             let imagePath = i.image;
             axios
               .post(
-                "http://127.0.0.1:8081/CopyProducts_CopyImagesToStore_Action",
+                `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyImagesToStore_Action`,
                 { selectedStore, imagePath }
               )
               .then((res) => {
@@ -327,7 +327,7 @@ function CopyProductsToStores() {
   const RefetchAllProducts = () => {
     const confirmRefetch = confirm('Are you sure you want to refetch all of the products?');
     if (confirmRefetch) {
-      fetch("http://127.0.0.1:8081/RefetchOCMasterTables")
+      fetch(`${process.env.REACT_APP_API_URL}/node/products/RefetchOCMasterTables`)
       .then((res) => res.json())
       .then((data) => alert('Refetched products.'))
       .then((data) => refresh())
@@ -353,7 +353,6 @@ function CopyProductsToStores() {
     }
   };
 
-  // re-checking the checkboxes when going back to step one
   useEffect(() => {
     if (step1) {
       GoBackToStepOne();

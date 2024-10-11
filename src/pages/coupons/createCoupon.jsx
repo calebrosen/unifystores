@@ -13,7 +13,7 @@ function CreateCoupon() {
   const couponCodeRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/fetchAgents')
+    fetch(`${process.env.REACT_APP_API_URL}/node/coupons/fetchAgents`)
       .then(res => res.json())
       .then(data => setAgents(data))
       .catch(err => console.log('Fetch error:', err));
@@ -40,7 +40,7 @@ function CreateCoupon() {
         console.log('Selected Agent before sending:', selectedAgent);
         console.log('Payload:', { selectedAgent, selectedStore, amount, couponCode });
 
-        axios.post('http://127.0.0.1:8081/createCoupon', { selectedAgent, selectedStore, amount, couponCode })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/coupons/createCoupon`, { selectedAgent, selectedStore, amount, couponCode })
           .then(res => {
             console.log('Response: ', res.data);
             if (res.status === 200) {

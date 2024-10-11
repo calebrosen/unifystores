@@ -1,71 +1,20 @@
-require("dotenv").config({ path: "./env/.env" });
-const express = require("express");
-const mysql = require("mysql");
-const cors = require("cors");
-const fs = require("fs");
-const { Client } = require("basic-ftp");
-const path = require("path");
 
+require("dotenv").config({ path: "./env/.env" });
+const express = require('express');
+const cors = require('cors');
 const app = express();
 app.use(express.json());
 app.use(cors());
+const mysql = require("mysql");
+const fs = require("fs");
+const { Client } = require("basic-ftp");
+const path = require("path");
 app.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();
 });
 
-const unify = mysql.createConnection({
-  host: process.env.UBUNTUHOST,
-  user: process.env.UBUNTUUSER,
-  password: process.env.UBUNTUPASSWORD,
-  database: process.env.UNIFYDB,
-  port: process.env.UBUNTUPORT,
-});
 
-const federated = mysql.createConnection({
-  host: process.env.UBUNTUHOST,
-  user: process.env.UBUNTUUSER,
-  password: process.env.UBUNTUPASSWORD,
-  database: process.env.FEDERATEDB,
-  port: process.env.UBUNTUPORT,
-});
-
-const copyProducts = mysql.createConnection({
-  host: process.env.UBUNTUHOST,
-  user: process.env.UBUNTUUSER,
-  password: process.env.UBUNTUPASSWORD,
-  database: process.env.COPYPRODUCTSDB,
-  port: process.env.UBUNTUPORT,
-});
-
-app.get("/", (re, res) => {
-  return res.json("from backend");
-});
-
-app.get("/sections", (req, res) => {
-  const sql = "Select `section`, `path` from sections";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/fetchStores", (req, res) => {
-  const sql = "Select * from managed_stores WHERE ms_status = 1";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/coupons", (req, res) => {
-  const sql =
-    "Select `subsection`, `path` from subsections WHERE `section` = 'Coupons'";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
 
 app.get("/information", (req, res) => {
   const sql =
@@ -283,160 +232,9 @@ app.post("/EditSalesAgent", (req, res) => {
   });
 });
 
-app.get("/customergroups", (req, res) => {
-  const sql =
-    "Select `subsection`, `path` from subsections WHERE `section` = 'Customer Groups'";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/addNewCustomerGroup", (req, res) => {
-  const sql = "CALL AddNewCustomerGroup(?)";
-  const values = [req.body.customerGroupName];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/viewEditCustomerGroupName", (req, res) => {
-  const sql = "CALL GetCustomerGroups();";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/editCustomerGroupName", (req, res) => {
-  const sql = "CALL UpdateCustomerGroupName(?, ?);";
-  const values = [req.body.customerGroupID, req.body.name];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/pushCustomerGroups", (req, res) => {
-  const sql = "CALL PushCustomerGroupToStore(?, ?)";
-  const values = [req.body.selectedStore, req.body.customerGroupID];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
 app.get("/salesagent", (req, res) => {
   const sql =
     "Select `subsection`, `path` from subsections WHERE `section` = 'Sales Agent'";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/fetchAgents", (req, res) => {
-  const sql = "Select `Agent`, `AgentID` from CouponAgentList WHERE Status = 1";
-  federated.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/createCoupon", (req, res) => {
-  const sql = "CALL CreateCoupon(?, ?, ?, ?);";
-  const values = [
-    req.body.selectedAgent,
-    req.body.selectedStore,
-    req.body.amount,
-    req.body.couponCode,
-  ];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.status(200).json(data);
-  });
-});
-
-app.post("/selectCoupons", (req, res) => {
-  const sql = "CALL SelectCoupons(?);";
-  const values = [req.body.selectedStore];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/updateCoupon", (req, res) => {
-  const sql = "CALL UpdateCoupon(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-  const values = [
-    req.body.selectedStore,
-    req.body.coupon_id,
-    req.body.name,
-    req.body.code,
-    req.body.type,
-    req.body.discount,
-    req.body.date_start,
-    req.body.date_end,
-    req.body.uses_total,
-    req.body.status,
-  ];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/deleteCoupon", (req, res) => {
-  const sql = "CALL DeleteCoupon(?, ?, ?);";
-  const values = [req.body.selectedStore, req.body.coupon_id, req.body.code];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/countries", (req, res) => {
-  const sql =
-    "Select `subsection`, `path` from subsections WHERE `section` = 'Countries'";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/getCountries", (req, res) => {
-  const sql = "Call GetCountries()";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/editCountryOnStore", (req, res) => {
-  const sql = "Call EditCountryOnStore(?, ?, ?)";
-  const values = [
-    req.body.selectedStore,
-    req.body.countryID,
-    req.body.selectedStatus,
-  ];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/disableCountry", (req, res) => {
-  const sql = "Call DisableCountryOnAllStores(?)";
-  const values = [req.body.selectedCountryID];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/viewEnabledCountries", (req, res) => {
-  const sql = "Call ViewEnabledCountries();";
   unify.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -484,68 +282,6 @@ app.post("/disableZone", (req, res) => {
 
 app.get("/viewEnabledZones", (req, res) => {
   const sql = "Call ViewEnabledZones();";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/attributes", (req, res) => {
-  const sql =
-    "SELECT `subsection`, `path` FROM subsections WHERE `section` = 'Attributes'";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-
-    return res.json(data);
-  });
-});
-
-app.get("/GetAttributes", (req, res) => {
-  const sql = "Call GetAttributes()";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/GetProductsForAttributeCopy", (req, res) => {
-  const sql = "Call GetProductsForAttributeCopy(?);";
-  const values = [req.body.selectedAttribute];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/PreviewProductsForAttributeCopy", (req, res) => {
-  const sql = "Call PreviewProductsForAttributeCopy(?, ?);";
-  const values = [req.body.selectedStore, req.body.selectedAttribute];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/GetAttributeGroups", (req, res) => {
-  const sql = "Select * from `attribute_group_description`";
-  unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/addNewAttributeGroup", (req, res) => {
-  const sql = "Call AddNewAttributeGroup(?);";
-  const values = [req.body.attributeGroupName];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/products", (req, res) => {
-  const sql =
-    "Select `subsection`, `path` from subsections WHERE `section` = 'products'";
   unify.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -631,90 +367,6 @@ app.post("/saveProductDescription", (req, res) => {
 app.post("/refetchProductDescriptions", (req, res) => {
   const sql = "CALL GetProductSummaryTables()";
   unify.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/RefetchOCMasterTables", (req, res) => {
-  const sql = "CALL uspStep1_GetMasterTablesCopy()";
-  copyProducts.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get("/getProductsToCopy", (req, res) => {
-  const sql = "CALL GetProductsForUnify()";
-  copyProducts.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/getProductsForViewingCopy", (req, res) => {
-  const sql = "CALL GetProductsForViewingCopy(?)";
-  const values = [req.body.tempProductIdsString];
-  copyProducts.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/insertIntoSelectedProductsToCopy", (req, res) => {
-  const sql = "CALL InsertIntoSelectedProductsToCopy(?, ?, ?, ?)";
-  const values = [
-    req.body.pID,
-    req.body.model,
-    req.body.mpn,
-    req.body.force_copy,
-  ];
-  copyProducts.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/truncateSelectedProductsToCopyTable", (req, res) => {
-  const sql = "CALL TruncateSelectedProductsToCopyTable()";
-  copyProducts.query(sql, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/CopyProducts_GetTargetData", (req, res) => {
-  const sql = "CALL uspStep2_GetTargetData(?)";
-  const values = [req.body.selectedStore];
-  copyProducts.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/CopyProducts_GetProductsToCopy", (req, res) => {
-  const sql = "CALL uspStep3_GetProductsToCopy()";
-  copyProducts.query(sql, (err, data) => {
-    if (err) {
-      console.log("Error:", err);
-      return res.json(err);
-    }
-    return res.json(data);
-  });
-});
-
-app.post("/CopyProducts_CopyProductsToStore", (req, res) => {
-  const sql = "CALL uspStep4_CopyProductsTo(?)";
-  const values = [req.body.selectedStore];
-  copyProducts.query(sql, values, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post("/CopyProducts_CopyImagesToStore", (req, res) => {
-  const sql = "CALL uspStep5_CopyImagesToStore()";
-  copyProducts.query(sql, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
@@ -860,28 +512,45 @@ async function moveImages(selectedStore, imagePath, step) {
   }
 }
 
+const attributeRoutes = require('./routes/attributes');
+const authRoutes = require('./routes/auth');
+const countriesRoutes = require('./routes/countries');
+const couponRoutes = require('./routes/coupons');
+const customerRoutes = require('./routes/customers');
+const dashboardRoutes = require('./routes/dashboard');
+// const filterRoutes = require('./routes/filters');
+// const informationRoutes = require('./routes/information');
+// const loginRoutes = require('./routes/login');
+// const manufacturerRoutes = require('./routes/manufacturers');
+// const orderRoutes = require('./routes/orders');
+const productRoutes = require('./routes/products');
+// const salesAgentRoutes = require('./routes/salesagents');
+// const sectionRoutes = require('./routes/sections');
+// const stockStatusRoutes = require('./routes/stockstatus');
+const storeRoutes = require('./routes/stores');
+// const zoneRoutes = require('./routes/zone');
 
 
-// maintaining login state
-const jwt = require("jsonwebtoken");
-const SECRET_KEY = "1RGS3CR3T";
+app.use('/node/auth', authRoutes);
+app.use('/node/attributes', attributeRoutes);
+app.use('/node/countries', countriesRoutes);
+app.use('/node/coupons', couponRoutes);
+app.use('/node/customers', customerRoutes);
+app.use('/node/dashboard', dashboardRoutes);
+// app.use('/node/filters', filterRoutes);
+// app.use('/node/information', informationRoutes);
+// app.use('/node/login', loginRoutes);
+// app.use('/node/manufacturers', manufacturerRoutes);
+// app.use('/node/orders', orderRoutes);
+app.use('/node/products', productRoutes);
+// app.use('/node/salesagents', salesAgentRoutes);
+// app.use('/node/sections', sectionRoutes);
+// app.use('/node/stockstatus', stockStatusRoutes);
+app.use('/node/stores', storeRoutes);
+// app.use('/node/zones', zoneRoutes);
 
-app.post("/login", (req, res) => {
-  const sql = "SELECT * FROM users WHERE username = ? AND pw = ?";
-  const values = [req.body.username, req.body.password];
-  unify.query(sql, values, (err, data) => {
-    if (err) return res.status(500).json({ message: "Login Failed" });
-    if (data.length > 0) {
-      const token = jwt.sign({ id: data[0].id }, SECRET_KEY, {
-        expiresIn: "6h",
-      });
-      return res.json({ message: "Login successful", token });
-    } else {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-  });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
-app.listen(8081, () => {
-  console.log("Server running on port 8081");
-});
