@@ -7,7 +7,7 @@ function ViewPushStockStatuses() {
   const { selectedStore } = useContext(StoreContext);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditStockStatusName')
+    fetch(`${process.env.REACT_APP_API_URL}/node/stockstatus/viewEditStockStatusName`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -19,7 +19,7 @@ function ViewPushStockStatuses() {
       let name = e.target.value;
       const confirmPush = confirm('Are you sure you want to push stock status "' + name + '" to ' + selectedStore + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushStockStatus', { selectedStore, stockStatusID })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/stockstatus/pushStockStatus`, { selectedStore, stockStatusID })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

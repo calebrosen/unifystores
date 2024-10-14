@@ -5,7 +5,7 @@ function EditPushOrderStatusName() {
   const [data, setData] = useState([]);
  
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditOrderStatusName')
+    fetch(`${process.env.REACT_APP_API_URL}/node/orders/viewEditOrderStatusName`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -17,7 +17,7 @@ function EditPushOrderStatusName() {
     if (editedName != originalName) {
       const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${order_status_id}) to ${editedName}?`);
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/updateOrderStatusName', { order_status_id, editedName })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/orders/updateOrderStatusName`, { order_status_id, editedName })
           .then(res => {
             console.log(res);
             if (res.data[0][0]['success']) {
@@ -57,7 +57,7 @@ function EditPushOrderStatusName() {
               </td>
               <td>
                 <button 
-                  className='darkRedButtonInlineMD' 
+                  className='darkRedButtonInlineMD'
                   onClick={() => editOrderStatusName(d.order_status_id, d.name)}>
                     Edit Name
                 </button>

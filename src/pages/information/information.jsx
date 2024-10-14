@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 function Information() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/information')
+    fetch(`${process.env.REACT_APP_API_URL}/node/information/getInformationSubsections`)
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));
   }, []);
 
   return (
-    <div id="informationContainre" className='subsectionContainer'>
+    <div id="informationContainer" className='subsectionContainer'>
       <p className='largeHeader'>SELECT A SUBSECTION</p>
         <div id="container">
           {data

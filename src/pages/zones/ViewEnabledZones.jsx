@@ -8,7 +8,7 @@ function ViewEnabledZones() {
     const { selectedStore } = useContext(StoreContext);
 
     function fetchEnabledZones() {
-        fetch('http://127.0.0.1:8081/viewEnabledZones')
+        fetch(`${process.env.REACT_APP_API_URL}/node/zones/viewEnabledZones`)
         .then(res => res.json())
         .then(data => setData(data[0]))
         .catch(err => console.log('Fetch error:', err));
@@ -22,7 +22,7 @@ function ViewEnabledZones() {
         const selectedZoneID = e.target.id;
         const confirmEdit = confirm('Are you sure you would like to set ' + selectedZoneName + ' (ID: ' +  selectedZoneID + ') to status 0 on all stores?');
         if (confirmEdit) {
-            axios.post('http://127.0.0.1:8081/disableZone', { selectedZoneID })
+            axios.post(`${process.env.REACT_APP_API_URL}/node/zones/disableZone`, { selectedZoneID })
             .then(res => {
                 if (res.data[0][0]['success']) {
                   alert(res.data[0][0]['success']);

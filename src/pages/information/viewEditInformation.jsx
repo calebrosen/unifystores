@@ -9,7 +9,7 @@ function ViewEditInformation() {
   
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditInformation')
+    fetch(`${process.env.REACT_APP_API_URL}/node/information/viewEditInformation`)
       .then(res => res.json())
       .then(data => setInformation(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -35,7 +35,7 @@ function ViewEditInformation() {
     if (selectedInformation !== '') {
       const confirmSave = window.confirm('Are you sure you want to save ' + selectedInformation + '?');
       if (confirmSave && selectedInformation != '') {
-        axios.post('http://127.0.0.1:8081/saveInformation', { selectedInformation, inputValue })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/information/saveInformation`, { selectedInformation, inputValue })
         .then(res => alert(res.request.response))
         .catch(err => console.log('Error:', err));
       }

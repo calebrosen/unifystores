@@ -5,7 +5,7 @@ function EditPushStockStatusName() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditStockStatusName')
+    fetch(`${process.env.REACT_APP_API_URL}/node/stockstatus/viewEditStockStatusName`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -17,7 +17,7 @@ function EditPushStockStatusName() {
     if (editedName != originalName) {
       const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${stock_status_id}) to ${editedName}?`);
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/updateStockStatusName', { stock_status_id, editedName })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/stockstatus/updateStockStatusName`, { stock_status_id, editedName })
           .then(res => {
             console.log(res);
             if (res.data[0][0]['success']) {

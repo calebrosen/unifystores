@@ -5,7 +5,7 @@ function EditPushManufacturerName() {
   const [data, setData] = useState([]);
  
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditManufacturers')
+    fetch(`${process.env.REACT_APP_API_URL}/node/manufacturers/viewEditManufacturers`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -17,12 +17,12 @@ function EditPushManufacturerName() {
     if (editedName != originalName) {
       const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${manufacturerID}) to ${editedName}?`);
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/updateManufacturerName', { manufacturerID, editedName })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/manufacturers/updateManufacturerName`, { manufacturerID, editedName })
           .then(res => {
             console.log(res);
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);
-            } 
+            }
           })
           .catch(err => alert('Error:', err));
       }
@@ -57,7 +57,7 @@ function EditPushManufacturerName() {
               </td>
               <td>
                 <button 
-                  className='darkRedButtonInlineMD' 
+                  className='darkRedButtonInlineMD'
                   onClick={() => editManufacturerName(d.manufacturer_id, d.name)}>
                     Edit Name
                 </button>

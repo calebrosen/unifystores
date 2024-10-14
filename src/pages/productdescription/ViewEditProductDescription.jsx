@@ -17,14 +17,14 @@ function ViewEditProductDescription() {
   const [buttonStatus, setButtonStatus] = useState('');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditProductDescription')
+    fetch(`${process.env.REACT_APP_API_URL}/node/products/viewEditProductDescription`)
       .then(res => res.json())
       .then(data => setProductDescription(data[0]))
       .catch(err => console.log('Fetch error:', err));
   }, []);
   
   function fetchProductDescription(difID) {
-    axios.post('http://127.0.0.1:8081/getProductDescDifferences', { difID })
+    axios.post(`${process.env.REACT_APP_API_URL}/node/products/getProductDescDifferences`, { difID })
       .then(res => {
         if (res.data[0]) {
           const fetchedDescriptions = res.data[0];
@@ -70,7 +70,7 @@ function ViewEditProductDescription() {
       if (confirmSave) {
         //disabling all buttons
         DisableButtons();
-        axios.post('http://127.0.0.1:8081/saveProductDescription', { storeId, selectedMPN, selectedModel, descriptionToSave})
+        axios.post(`${process.env.REACT_APP_API_URL}/node/products/saveProductDescription`, { storeId, selectedMPN, selectedModel, descriptionToSave})
         .then(res => {
           if (res.data[0][0]['success']) {
             alert(`successfully updated ${selectedMPN}`);
@@ -112,7 +112,7 @@ function ViewEditProductDescription() {
         const confirmRefetch3 = confirm('Are you really really sure you want to refetch the data?');
         if (confirmRefetch3) {
           alert('This will take a while... Hang in there.');
-          axios.post('http://127.0.0.1:8081/refetchProductDescriptions')
+          axios.post(`${process.env.REACT_APP_API_URL}/node/products/refetchProductDescriptions`)
           .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

@@ -42,7 +42,7 @@ function ReleaseProducts() {
 
     const fetchContent = () => {
       if (selectedStore) {
-        axios.post('http://127.0.0.1:8081/getProductsForRelease', { selectedStore })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/products/getProductsForRelease`, { selectedStore })
           .then(res => {
             if (res.data[0]) {
               setData(res.data[0]);
@@ -65,7 +65,7 @@ function ReleaseProducts() {
       e.preventDefault();
       const confirmRelease = confirm(`Are you sure you want to release ${releaseQuantity} of ${selectedProductName} (${selectedMPN}) on ${selectedStore}?`);
       if (confirmRelease) {
-          axios.post('http://127.0.0.1:8081/releaseProductOnStore', { selectedStore, releaseQuantity, productID, selectedMPN })
+          axios.post(`${process.env.REACT_APP_API_URL}/node/products/releaseProductOnStore`, { selectedStore, releaseQuantity, productID, selectedMPN })
           .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

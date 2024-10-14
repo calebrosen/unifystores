@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 function ProductDescription() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/productdescription')
+    fetch(`${process.env.REACT_APP_API_URL}/node/products/getProductDescriptionSubsections`)
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));

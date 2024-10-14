@@ -13,7 +13,7 @@ function EditSalesAgents() {
   Modal.setAppElement("#root");
 
   function fetchAgents() {
-    fetch("http://127.0.0.1:8081/getSalesAgents")
+    fetch(`${process.env.REACT_APP_API_URL}/node/salesagents/getSalesAgents`)
     .then((res) => res.json())
     .then((data) => setData(data[0]))
     .catch((err) => console.log("Fetch error:", err));
@@ -99,7 +99,7 @@ function EditSalesAgents() {
     e.preventDefault();
     const confirmChanges = confirm(`Are you sure you want to save? (ID: ${selectedID})`);
     if (confirmChanges) {
-      axios.post('http://127.0.0.1:8081/EditSalesAgent', { selectedID, selectedFName, selectedLName, selectedStatus })
+      axios.post(`${process.env.REACT_APP_API_URL}/node/salesagents/EditSalesAgent`, { selectedID, selectedFName, selectedLName, selectedStatus })
       .then(res => {
           if (res.data[0][0]['success']) {
             alert(res.data[0][0]['success']);

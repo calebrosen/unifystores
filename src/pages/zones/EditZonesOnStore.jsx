@@ -19,7 +19,7 @@ function EditZonesOnStore() {
     };
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8081/getZones')
+        fetch(`${process.env.REACT_APP_API_URL}/node/zones/getZones`)
             .then(res => res.json())
             .then(data => setData(data[0]))
             .catch(err => console.log('Fetch error:', err));
@@ -55,7 +55,7 @@ function EditZonesOnStore() {
         const confirmEdit = confirm('Are you sure you would like to set ' + zoneName + ' to status ' + selectedStatus + ' on ' + selectedStore + '?');
 
         if (confirmEdit) {
-            axios.post('http://127.0.0.1:8081/editZonesOnStore', { selectedStore, zoneID, selectedStatus })
+            axios.post(`${process.env.REACT_APP_API_URL}/node/zones/editZonesOnStore`, { selectedStore, zoneID, selectedStatus })
             .then(res => {
                 console.log(res);
                 if (res.data[0][0]['success']) {

@@ -8,7 +8,7 @@ function PushInformation() {
   const { selectedStore } = useContext(StoreContext);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditInformation')
+    fetch(`${process.env.REACT_APP_API_URL}/node/information/viewEditInformation`)
       .then(res => res.json())
       .then(data => setInformation(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -18,7 +18,7 @@ function PushInformation() {
     if (selectedInformation !== '' && selectedStore !== '') {
       const confirmPush = window.confirm('Are you sure you want to push ' + selectedInformation + ' to ' + selectedStore + '?');
       if (confirmPush && selectedInformation != '') {
-        axios.post('http://127.0.0.1:8081/pushInformation', { selectedStore, selectedInformation })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/information/pushInformation`, { selectedStore, selectedInformation })
         .then(res => { console.log(res) })
         .catch(err => console.log('Error:', err));
       }

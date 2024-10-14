@@ -12,7 +12,7 @@ function AddNewManufacturer() {
     if (manufacturerName != '') {
       const confirmPush = confirm('Are you sure you want to add ' + manufacturerName + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/addNewManufacturer', { manufacturerName })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/manufacturers/addNewManufacturer`, { manufacturerName })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

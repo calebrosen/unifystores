@@ -7,7 +7,7 @@ function ViewPushOrderStatuses() {
   const { selectedStore } = useContext(StoreContext);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditOrderStatusName')
+    fetch(`${process.env.REACT_APP_API_URL}/node/orders/viewEditOrderStatusName`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -19,7 +19,7 @@ function ViewPushOrderStatuses() {
       let name = e.target.value;
       const confirmPush = confirm('Are you sure you want to push order status ' + name + ' to ' + selectedStore + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushOrderStatus', { selectedStore, orderStatusID })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/orders/pushOrderStatus`, { selectedStore, orderStatusID })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

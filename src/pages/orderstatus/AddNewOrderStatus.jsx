@@ -12,7 +12,7 @@ function AddNewOrderStatus() {
     if (orderStatusName != '') {
       const confirmPush = confirm('Are you sure you want to add ' + orderStatusName + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/addNewOrderStatus', { orderStatusName })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/orders/addNewOrderStatus`, { orderStatusName })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

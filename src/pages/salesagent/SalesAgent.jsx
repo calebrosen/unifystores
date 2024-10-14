@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 function SalesAgent() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/salesagent')
+    fetch(`${process.env.REACT_APP_API_URL}/node/salesagents/getSalesagentSubsections`)
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => console.log('Fetch error:', err));

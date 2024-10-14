@@ -11,7 +11,7 @@ function ImportSalesAgents() {
   const ImportToStore = () => {
     const confirmImport = confirm(`Are you sure you want to import ALL Sales Agents to ${selectedStore}? This will not import anyone who is already there.`)
     if (confirmImport) {
-      axios.post('http://127.0.0.1:8081/ImportSalesAgents', { selectedStore })
+      axios.post(`${process.env.REACT_APP_API_URL}/node/salesagents/ImportSalesAgents`, { selectedStore })
       .then(res => {
           if (res.data[0][0]['success']) {
             alert(res.data[0][0]['success']);

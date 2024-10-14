@@ -4,6 +4,7 @@ const fs = require("fs");
 const { Client } = require("basic-ftp");
 const path = require("path");
 
+/* PRODUCTS */
 // Loading all subsections
 exports.getProductSubsections = async (req, res) => {
   try {
@@ -309,7 +310,44 @@ async function moveImages(selectedStore, imagePath, step) {
   }
 }
 
-exports.pushCustomerGroups = async (req, res) => {
+exports.getProductsForRelease = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL GetProductForRelease(?)";
+    const values = [req.body.selectedStore];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+exports.releaseProductOnStore = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL ReleaseProductOnStore(?, ?, ?, ?)";
+    const values = [
+      req.body.selectedStore,
+      req.body.releaseQuantity,
+      req.body.productID,
+      req.body.selectedMPN,
+    ];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+exports.releaseProductOnStore = async (req, res) => {
   try {
     const db = await connectToDB();
     const sql = "CALL PushCustomerGroupToStore(?, ?)";
@@ -325,11 +363,46 @@ exports.pushCustomerGroups = async (req, res) => {
   }
 };
 
-exports.pushCustomerGroups = async (req, res) => {
+/* PRODUCT DESCRIPTION */
+
+// Loading all subsections
+exports.getProductDescriptionSubsections = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
-    const values = [req.body.selectedStore, req.body.customerGroupID];
+    const sql = "Select `subsection`, `path` from subsections WHERE `section` = 'Product Description'";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// loading the edit page
+exports.viewEditProductDescription = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL GetProduct_summary_dif_table;";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// getting differences on selected product (in the modal)
+exports.getProductDescDifferences = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL GetProduct_description_differences(?);";
+    const values = [req.body.difID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -341,11 +414,17 @@ exports.pushCustomerGroups = async (req, res) => {
   }
 };
 
-exports.pushCustomerGroups = async (req, res) => {
+// saving to stores
+exports.saveProductDescription = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
-    const values = [req.body.selectedStore, req.body.customerGroupID];
+    const sql = "CALL PushProductDescriptionToStores(?, ?, ?, ?);";
+    const values = [
+      req.body.storeId,
+      req.body.selectedMPN,
+      req.body.selectedModel,
+      req.body.descriptionToSave,
+    ];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -357,44 +436,12 @@ exports.pushCustomerGroups = async (req, res) => {
   }
 };
 
-exports.pushCustomerGroups = async (req, res) => {
+// refetching from OCMaster
+exports.refetchProductDescriptions = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
-    const values = [req.body.selectedStore, req.body.customerGroupID];
-    db.query(sql, values, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
-  }
-};
-
-exports.pushCustomerGroups = async (req, res) => {
-  try {
-    const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
-    const values = [req.body.selectedStore, req.body.customerGroupID];
-    db.query(sql, values, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
-  }
-};
-
-exports.pushCustomerGroups = async (req, res) => {
-  try {
-    const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
-    const values = [req.body.selectedStore, req.body.customerGroupID];
-    db.query(sql, values, (err, data) => {
+    const sql = "CALL GetProductSummaryTables()";
+    db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
     });

@@ -7,7 +7,7 @@ function ViewPushManufacturers() {
   const { selectedStore } = useContext(StoreContext);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8081/viewEditManufacturers')
+    fetch(`${process.env.REACT_APP_API_URL}/node/manufacturers/viewEditManufacturers`)
       .then(res => res.json())
       .then(data => setData(data[0]))
       .catch(err => console.log('Fetch error:', err));
@@ -19,7 +19,7 @@ function ViewPushManufacturers() {
       let name = e.target.value;
       const confirmPush = confirm('Are you sure you want to push ' + name + ' to ' + selectedStore + '?');
       if (confirmPush) {
-        axios.post('http://127.0.0.1:8081/pushManufacturer', { selectedStore, manufacturerID })
+        axios.post(`${process.env.REACT_APP_API_URL}/node/manufacturers/pushManufacturer`, { selectedStore, manufacturerID })
         .then(res => {
             if (res.data[0][0]['success']) {
               alert(res.data[0][0]['success']);

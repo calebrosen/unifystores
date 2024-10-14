@@ -21,7 +21,7 @@ function PartDiagramsPushToStores() {
   })
 
   function pushToStoresAction() {
-      axios.post('http://127.0.0.1:8081/pushPartDiagrams', { selectedStore })
+      axios.post(`${process.env.REACT_APP_API_URL}/node/partdiagrams/pushPartDiagrams`, { selectedStore })
       .then(res => {
           alert(res.data);
       })
