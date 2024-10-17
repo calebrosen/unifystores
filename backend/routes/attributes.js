@@ -14,4 +14,7 @@ router.post('/getProductsForAttributeCopy', controller.getProductsForAttributeCo
 // Previewing products on the selected store that will receive the selected attribute (matched by Model and MPN)
 router.post('/previewProductsForAttributeCopy', controller.previewProductsForAttributeCopy);
 
+// Actually copying attributes from OCMaster to the selected store
+router.post('/copyAttributesFromOCMasterToStore', controller.copyAttributesFromOCMasterToStore);
+
 module.exports = router;

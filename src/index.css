@@ -860,3 +860,12 @@ tbody td:last-of-type {
   font-size: 2rem;
   font-weight: 700;
 }
+
+.lineBreakSpanContainer {
+  line-break: auto;
+  max-width: 80%;
+  font-size: 19px;
+  display: inline-block;
+  word-wrap:break-word;
+  word-break:break-all;
+}

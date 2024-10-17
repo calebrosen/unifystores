@@ -52,6 +52,24 @@ exports.getProductsForAttributeCopy = async (req, res) => {
 };
 
 // Getting all products on OCMaster with selected attribute
+exports.copyAttributesFromOCMasterToStore = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "Call CopyAttributesFromOCMasterToStore(?, ?, ?);";
+    const values = [req.body.selectedStore, req.body.selectedAttribute, req.body.productIdsString];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+
+// Copying attributes from OCMaster to the selected store
 exports.previewProductsForAttributeCopy = async (req, res) => {
   try {
     const db = await connectToDB();
