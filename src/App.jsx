@@ -20,6 +20,7 @@ import CustomerGroups from './pages/customergroups/customergroups.jsx';
 import EditCustomerGroupName from './pages/customergroups/EditCustomerGroupName.jsx';
 import ViewPushCustomerGroups from './pages/customergroups/ViewPushCustomerGroups.jsx';
 import Dashboard from './pages/dashboard/dashboard.jsx';
+import Filters from './pages/filters/Filters.jsx';
 import Information from './pages/information/information.jsx';
 import PushInformation from './pages/information/pushInformation.jsx';
 import ViewEditInformation from './pages/information/viewEditInformation.jsx';
@@ -99,6 +100,7 @@ const App = () => {
           <Route path="/attributes/CopyAttributes" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyAttributes /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes" element={<RequireAuth><HomeAndLogOutButtons><Attributes /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/CopyProductsToStores" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyProductsToStores /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/filters" element={<RequireAuth><HomeAndLogOutButtons><Filters /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>

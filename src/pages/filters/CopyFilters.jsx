@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../contexts/StoreContext";
 
-const CopyAttributes = () => {
+const CopyFilters = () => {
   const [data, setData] = useState([]);
   const [selectedAttribute, setSelectedAttribute] = useState("");
   const { selectedStore } = useContext(StoreContext);
@@ -326,4 +326,4 @@ const CopyAttributes = () => {
   }
 };
 
-export default CopyAttributes;
+export default CopyFilters;

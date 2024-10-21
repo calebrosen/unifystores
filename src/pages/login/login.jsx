@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -16,6 +17,12 @@ function Login() {
                     console.log("Login successful");
                 } else {
                     console.log("Login failed");
+                    Swal.fire({
+                        title: "Login failed",
+                        text: "Either your login is incorrect, the node went down, or the database is down.",
+                        icon: "error",
+                    });
+                      
                 }
             })
             .catch(err => console.log(err));
@@ -25,6 +32,9 @@ function Login() {
         <div className='d-flex justify-content-center align-items-center' style={{ minHeight: '90vh' }}>
             <div className='p-3 bg-white w-25 rounded'>
                 <form onSubmit={handleSubmit}>
+                    <h2 className='centeredh2'>
+                        For IT Team Use ONLY
+                    </h2>
                     <div className='mb-3'>
                         <label htmlFor="username">Username</label>
                         <input type="text" id="username" placeholder="Enter your username" className='form-control' onChange={e => setUsername(e.target.value)} />

@@ -629,6 +629,12 @@ tbody td:last-of-type {
   justify-content: center;
 }
 
+.centeredh2 {
+  text-align: center;
+  padding: 1rem;
+  justify-content: center;
+}
+
 .Modal {
   position: fixed;
   top: 50%;
