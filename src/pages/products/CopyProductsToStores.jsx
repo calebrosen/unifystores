@@ -25,10 +25,13 @@ function CopyProductsToStores() {
   };
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/node/products/getProductsToCopy`)
-      .then((res) => res.json())
-      .then((data) => setProductsResponse(data[0]))
-      .catch((err) => console.log("Fetch error:", err));
+    fetch(`${process.env.REACT_APP_API_URL}/node/products/RefetchOCMasterTables`)
+      .then(
+        fetch(`${process.env.REACT_APP_API_URL}/node/products/getProductsToCopy`)
+          .then((res) => res.json())
+          .then((data) => setProductsResponse(data[0]))
+          .catch((err) => console.log("Fetch error:", err))
+      )
   }, []);
 
   const handleMPNSearch = (e) => {

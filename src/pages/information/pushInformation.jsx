@@ -19,7 +19,12 @@ function PushInformation() {
       const confirmPush = window.confirm('Are you sure you want to push ' + selectedInformation + ' to ' + selectedStore + '?');
       if (confirmPush && selectedInformation != '') {
         axios.post(`${process.env.REACT_APP_API_URL}/node/information/pushInformation`, { selectedStore, selectedInformation })
-        .then(res => { console.log(res) })
+        .then(res => { if (res.data[0][0]['success']) {
+          alert('success');
+          console.log(res);
+        } else {
+          alert('It didnt work');
+        }})
         .catch(err => console.log('Error:', err));
       }
     } else { alert('Try selecting one first.');}
