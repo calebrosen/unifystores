@@ -52,6 +52,9 @@ function ViewEditProductDescription() {
 
   function closeModal() {
     setIsOpen(false);
+    setSelectedMPN('');
+    setSelectedModel('');
+    setDescriptions([]);
   }
 
   const handleSearch = (event) => {
@@ -70,6 +73,8 @@ function ViewEditProductDescription() {
       if (confirmSave) {
         //disabling all buttons
         DisableButtons();
+
+        //posting
         axios.post(`${process.env.REACT_APP_API_URL}/node/products/saveProductDescription`, { storeId, selectedMPN, selectedModel, descriptionToSave})
         .then(res => {
           if (res.data[0][0]['success']) {
@@ -95,7 +100,6 @@ function ViewEditProductDescription() {
   const EnableButtons = () => {
     setButtonStatus('');
   }
-
 
   const handleDescriptionChange = (storeId, value) => {
     setDescriptionValues(prev => ({
@@ -215,7 +219,7 @@ function ViewEditProductDescription() {
                         <textarea
                           value={descriptionValues[d.store_id]}
                           className='textAreaAuto'
-                          onChange={(e) => handleDescriptionChange(d.store_id, e.target.value)} 
+                          onChange={(e) => handleDescriptionChange(d.store_id, e.target.value)}
                         />
                       ) : (
                         <span className='preview' dangerouslySetInnerHTML={{ __html: descriptionValues[d.store_id] }} />
