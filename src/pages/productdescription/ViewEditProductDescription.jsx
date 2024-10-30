@@ -55,6 +55,7 @@ function ViewEditProductDescription() {
     setSelectedMPN('');
     setSelectedModel('');
     setDescriptions([]);
+    setDescriptionValues({});
   }
 
   const handleSearch = (event) => {
@@ -125,7 +126,7 @@ function ViewEditProductDescription() {
             }
             console.log(res);
           })
-          .catch(err => console.error('Error saving description:', err));
+          .catch(err => console.error('Error refetching descriptions:', err));
         }
       }
     }

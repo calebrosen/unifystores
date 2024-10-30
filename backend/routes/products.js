@@ -60,6 +60,6 @@ router.post('/getProductDescDifferences', controller.getProductDescDifferences);
 router.post('/saveProductDescription', controller.saveProductDescription);
 
 // refetching from OCMaster
-router.get('/refetchProductDescriptions', controller.refetchProductDescriptions);
+router.post('/refetchProductDescriptions', controller.refetchProductDescriptions);
 
 module.exports = router;
