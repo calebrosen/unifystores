@@ -451,3 +451,53 @@ exports.refetchProductDescriptions = async (req, res) => {
       .json({ message: "Database connection failed", error });
   }
 };
+
+exports.searchForProducts = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL SearchForProductsAdvanced(?,?,?,?,?)";
+    const values = [req.body.name, req.body.mpn, req.body.model, req.body.status, req.body.hidden];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// for loading individual product description table per product
+exports.GetProductDescriptionInfo = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL GetProductDescriptionInfo(?)";
+    const values = [req.body.OCMProductID];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// updating product description/name/meta
+exports.UpdateProductDescriptionName = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL UpdateProductDescription(?, ?, ?, ?, ?)";
+    const values = [req.body.OCMProductID, req.body.newName, req.body.newDescription, req.body.newMetaKeywords, req.body.newMetaDescription];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};

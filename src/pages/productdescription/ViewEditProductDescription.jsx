@@ -5,7 +5,7 @@ import isAuthenticated from '../../components/auth';
 
 Modal.setAppElement('#root');
 
-function ViewEditProductDescription() {
+function EditSingleProductDescription() {
   const [productDescription, setProductDescription] = useState([]);
   const [activeTab, setActiveTab] = useState('preview');
   const [searchQuery, setSearchQuery] = useState('');
@@ -237,4 +237,4 @@ function ViewEditProductDescription() {
   );
 }
 
-export default ViewEditProductDescription;
+export default EditSingleProductDescription;

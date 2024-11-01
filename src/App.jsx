@@ -35,6 +35,7 @@ import OrderStatus from './pages/orderstatus/orderstatus.jsx';
 import ViewPushOrderStatuses from './pages/orderstatus/ViewPushOrderStatuses.jsx';
 import PartDiagrams from './pages/partdiagrams/partdiagrams.jsx';
 import PartDiagramsPushToStores from './pages/partdiagrams/pushPartDiagrams.jsx';
+import EditSingleProductDescription from './pages/productdescription/EditSingleDescription.jsx';
 import ProductDescription from './pages/productdescription/productdescription.jsx';
 import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
 import CopyProductsToStores from './pages/products/CopyProductsToStores.jsx';
@@ -95,6 +96,7 @@ const App = () => {
           <Route path="/products" element={<RequireAuth><HomeAndLogOutButtons><Products /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/ReleaseProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ReleaseProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>} />
           <Route path="/productdescription/EditDescription" element={<RequireAuth><HomeAndLogOutButtons><ViewEditProductDescription /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/productdescription/EditSingleDescription" element={<RequireAuth><HomeAndLogOutButtons><EditSingleProductDescription/></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/salesagent/editSalesAgents" element={<RequireAuth><HomeAndLogOutButtons><EditSalesAgents /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/salesagent/importSalesAgents" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><ImportSalesAgents /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes/CopyAttributes" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyAttributes /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>

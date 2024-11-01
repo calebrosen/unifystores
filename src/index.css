@@ -351,6 +351,23 @@ body {
   border: 1px solid darkred;
 }
 
+.inputBox5 {
+  margin-top:2rem;
+  font-size:2rem;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid rgb(163, 163, 163);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
+.inputBox5:hover:active::selection::after {
+  margin-top:2rem;
+  font-size:2rem;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  border: 1px solid darkred;
+}
+
 .labelInputBox2 {
   font-size:2rem;
 }
@@ -515,7 +532,7 @@ body {
 .saveButtonLG {
   text-align: center;
   appearance: none;
-  width: auto; 
+  width: auto;
   height: 40px;
   border: 2px solid green;
   border-radius: 4px;
@@ -789,6 +806,7 @@ tbody td:last-of-type {
 .textAreaAuto {
   width: 100%;
   height: auto;
+  border-radius: 6px;
   text-wrap: auto;
 }
 
@@ -874,4 +892,21 @@ tbody td:last-of-type {
   display: inline-block;
   word-wrap:break-word;
   word-break:break-all;
+}
+
+.labelForInput {
+  font-size: 2rem;
+}
+
+.textAreaAutoLarger {
+  width: 100%;
+  font-size: 2rem;
+  height: auto;
+  border-radius: 6px;
+  text-wrap: auto;
+}
+
+
+.inline {
+  display: inline-block;
 }

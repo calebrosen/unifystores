@@ -62,4 +62,13 @@ router.post('/saveProductDescription', controller.saveProductDescription);
 // refetching from OCMaster
 router.post('/refetchProductDescriptions', controller.refetchProductDescriptions);
 
+// searching for product
+router.post('/searchForProducts', controller.searchForProducts);
+
+// getting product description fields
+router.post('/GetProductDescriptionInfo', controller.GetProductDescriptionInfo);
+
+// updating product description/name/meta
+router.post('/UpdateProductDescriptionName', controller.UpdateProductDescriptionName);
+
 module.exports = router;
