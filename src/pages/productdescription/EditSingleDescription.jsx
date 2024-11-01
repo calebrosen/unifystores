@@ -187,7 +187,6 @@ function EditSingleProductDescription() {
         { name, mpn, model, status, hidden }
       )
       .then((res) => {
-        console.log(res);
         setSearchedProducts(res.data[0]);
       })
       .catch((err) => console.error("Error saving description:", err));
@@ -226,6 +225,9 @@ function EditSingleProductDescription() {
 
   return (
     <div>
+    <div className="centered">
+      <span className='xlHeader'>Edit Product Description Table</span>
+    </div>
       <form>
         <div className="centeredContainer marginBottom4rem">
           <label className="labelForInput">
@@ -331,7 +333,7 @@ function EditSingleProductDescription() {
         <div>
           <div>
             <h1>
-              ••• Model: {selectedModel} ••• MPN: {selectedMPN} ••• Label:{" "}
+              Model: {selectedModel} ••• MPN: {selectedMPN} ••• Label:{" "}
               {productLabel}{" "}
             </h1>
             {/* Name */}
