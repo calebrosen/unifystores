@@ -12,6 +12,7 @@ function EditSingleProductDescription() {
   const [selectedModel, setSelectedModel] = useState("");
   const [productLabel, setProductLabel] = useState("");
   const [searchedProducts, setSearchedProducts] = useState([]);
+  const [searchType, setSearchType] = useState(1);
   const [OCMProductID, setOCMProductID] = useState('');
   //
   // product description that is set on load of the modal
@@ -61,10 +62,6 @@ function EditSingleProductDescription() {
           } else {
             console.error("Description not found");
           }
-          console.log("Name: ", name);
-          console.log("Description: ", description);
-          console.log("Meta description: ", metaDescription);
-          console.log("Meta keywords: ", metaKeywords);
         } else {
           console.error("No data found in response");
         }
@@ -181,10 +178,11 @@ function EditSingleProductDescription() {
 
   // searching for products using field values
   const searchProducts = (name, mpn, model, hidden, status) => {
+    console.log(searchType);
     axios
       .post(
         `${process.env.REACT_APP_API_URL}/node/products/searchForProducts`,
-        { name, mpn, model, status, hidden }
+        { name, mpn, model, status, hidden, searchType }
       )
       .then((res) => {
         setSearchedProducts(res.data[0]);
@@ -222,6 +220,16 @@ function EditSingleProductDescription() {
       alert("User is logged out. Please refresh to log back in.");
     }
   };
+
+  const handleUnunifiedCheckbox = (e) => {
+    console.log(e.target.checked);
+    if (e.target.checked) {
+      setSearchType(0)
+    }
+    else {
+      setSearchType(1)
+    }
+  }
 
   return (
     <div>
@@ -282,6 +290,7 @@ function EditSingleProductDescription() {
           </label>
         </div>
         <div className="centered">
+          <label>Ununified Only? <input type="checkbox" onChange={handleUnunifiedCheckbox}></input></label>&nbsp;&nbsp;&nbsp;
           <button
             type="submit"
             onClick={handleSearch}

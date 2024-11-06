@@ -455,8 +455,8 @@ exports.refetchProductDescriptions = async (req, res) => {
 exports.searchForProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL SearchForProductsAdvanced(?,?,?,?,?)";
-    const values = [req.body.name, req.body.mpn, req.body.model, req.body.status, req.body.hidden];
+    const sql = "CALL SearchForProductsAdvanced(?,?,?,?,?,?)";
+    const values = [req.body.name, req.body.mpn, req.body.model, req.body.status, req.body.hidden, req.body.searchType];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
