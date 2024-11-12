@@ -40,7 +40,7 @@
     }
 
     if (isset($_POST['cancel'])) {
-        header("Location: /part_diagrams/part_diagrams_edit/index.php");
+        header("Location: index.php");
     }
 
 ?>

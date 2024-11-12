@@ -1,21 +1,15 @@
 'use strict';
 
-const domain = 'localhost';
+const domain = window.location.host;
 
 function App() {
   const [selectedModel, setSelectedModel] = React.useState([]);
   const [parts, setParts] = React.useState([]);
 
-  React.useEffect(() => {
-    // You can perform side effects here based on selectedModel changes
-  }, [selectedModel]);
-
-  React.useEffect(() => {
-    // You can perform side effects here based on parts changes
-  }, [parts]);
 
   const getModel = (model) => {
     let url = `http://${domain}/unify/src/pages/partdiagrams/php/part_diagrams_local/php/get_model.php?model=${model}`;
+    console.log(url);
     fetch(url)
       .then((response) => response.json())
       .then((result) => {

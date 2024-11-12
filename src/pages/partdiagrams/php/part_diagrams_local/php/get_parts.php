@@ -13,9 +13,9 @@ switch ($method) {
     case 'GET':
       $sql = "SELECT DISTINCT PR.grid_column_start, PR.grid_column_end, PR.grid_row_start, PR.grid_row_end, PR.description,
       P.product_id, P.model, P.quantity, P.image, P.price, PD.name, PD.tag, round(P.price *.9,2) AS special_price, 'Dummy Keyword'
-      FROM part_diagrams_model_part_relations PR  
-      INNER JOIN product P ON P.product_id = PR.part_id 
-      INNER JOIN product_description PD ON PD.product_id = P.product_id
+      FROM part_diagrams_model_part_relations PR
+      INNER JOIN oc_master.product P ON P.product_id = PR.part_id
+      INNER JOIN oc_master.product_description PD ON PD.product_id = P.product_id
       WHERE PR.model_id = '$model_id'";
       break;
 }

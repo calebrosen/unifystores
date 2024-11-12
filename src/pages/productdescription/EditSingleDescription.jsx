@@ -59,6 +59,7 @@ function EditSingleProductDescription() {
             let tempDescription = decodeHtmlEntities(description);
 
             setDescription(tempDescription);
+            setNewDescription(tempDescription);
           } else {
             console.error("Description not found");
           }
@@ -118,6 +119,17 @@ function EditSingleProductDescription() {
 
   //opening modal actions
   const openModal = (e) => {
+    setSelectedMPN("");
+    setSelectedModel("");
+    setProductLabel("");
+    setDescription("");
+    setNewDescription("");
+    setName("");
+    setNewName("");
+    setMetaDescription("");
+    setNewMetaDescription("");
+    setMetaKeywords("");
+    setNewMetaKeywords("");
     const OCMProductID = e.target.id;
     fetchProductDescriptionInfo(OCMProductID);
     setOCMProductID(OCMProductID);
@@ -142,6 +154,16 @@ function EditSingleProductDescription() {
     setMetaKeywords("");
     setNewMetaKeywords("");
     setIsOpen(false);
+  }
+
+  const ProductDescriptionPreview = () => {
+    return (
+      <div>
+      <h3>Preview</h3>
+      <div className='productDescriptionPreview' dangerouslySetInnerHTML={{__html:newDescription}}>
+      </div>
+      </div>
+    )
   }
 
   // this function updates the new value variables on change (pass it the event (e), and the field name that is changed)
@@ -354,13 +376,15 @@ function EditSingleProductDescription() {
             ></textarea>
             {/* Description */}
             <h2>Product Description</h2>
+            <h3>Code</h3>
               <textarea
                 defaultValue={description}
                 className="textAreaAuto"
                 onChange={(e) => handleValuesChange(e, "description")}
               />
+            <ProductDescriptionPreview/>
             {/* Meta Description */}
-            <h3>Meta Description</h3>
+            <h2>Meta Description</h2>
             <textarea
               maxLength={155}
               className="textAreaAuto"
@@ -368,7 +392,7 @@ function EditSingleProductDescription() {
               onChange={(e) => handleValuesChange(e, "metaDescription")}
             ></textarea>
             {/* Meta Keywords */}
-            <h3>Meta Keywords</h3>
+            <h2>Meta Keywords</h2>
             <textarea
               className="textAreaAuto"
               defaultValue={metaKeywords}
