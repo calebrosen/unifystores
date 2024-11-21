@@ -20,9 +20,19 @@ function ModifyCoupons() {
   };
 
   const openModal = (coupon) => {
+    // filling date fields
+    coupon.date_start = SQLToJSDate(coupon.date_start);
+    coupon.date_end = SQLToJSDate(coupon.date_end);
+  
     setCurrentCoupon(coupon);
     setIsModalOpen(true);
   };
+  
+  
+
+  const SQLToJSDate = (sqlDate) => {
+    return new Date(sqlDate).toISOString().substring(0, 10);
+  }
 
   const closeModal = () => {
     setIsModalOpen(false);
