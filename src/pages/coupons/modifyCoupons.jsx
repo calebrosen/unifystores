@@ -21,14 +21,13 @@ function ModifyCoupons() {
 
   const openModal = (coupon) => {
     // filling date fields
-    coupon.date_start = SQLToJSDate(coupon.date_start);
-    coupon.date_end = SQLToJSDate(coupon.date_end);
+    let tmpCoupon = {...coupon};
+    tmpCoupon.date_start = SQLToJSDate(coupon.date_start);
+    tmpCoupon.date_end = SQLToJSDate(coupon.date_end);
   
-    setCurrentCoupon(coupon);
+    setCurrentCoupon(tmpCoupon);
     setIsModalOpen(true);
   };
-  
-  
 
   const SQLToJSDate = (sqlDate) => {
     return new Date(sqlDate).toISOString().substring(0, 10);
