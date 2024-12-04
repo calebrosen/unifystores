@@ -92,20 +92,24 @@ function CopyProductsToStores() {
       HideStoreSelection();
 
       const tempProductIdsString = productIdsToCopy.toString();
-      axios
-        .post(`${process.env.REACT_APP_API_URL}/node/products/getProductsForViewingCopy`, {
-          tempProductIdsString,
-        })
-        .then((res) => {
-          if (res.data) {
-            console.log(res.data);
-            setViewProductsToCopy(res.data[0]);
-          } else {
-            alert("Something went wrong.");
-          }
-          console.log(res);
-        })
-        .catch((err) => alert("Error:", err));
+      if (tempProductIdsString) {
+        axios
+          .post(`${process.env.REACT_APP_API_URL}/node/products/getProductsForViewingCopy`, {
+            tempProductIdsString,
+          })
+          .then((res) => {
+            if (res.data) {
+              console.log(res.data);
+              setViewProductsToCopy(res.data[0]);
+            } else {
+              alert("Something went wrong.");
+            }
+            console.log(res);
+          })
+          .catch((err) => alert("Error caught:", err));
+      } else {
+        console.log('no tempProductIdsString');
+      }
     } else {
       alert("Select a store to copy the products to.");
     }
@@ -248,7 +252,7 @@ function CopyProductsToStores() {
             );
             setLastMessage("successfully processed CopyProducts_CopyProductsToStore - proceeding...");
             CopyImagesToStore();
-            setLastMessage("Completed. Copying images now...");
+            setLastMessage("Copying images now...");
             setStep2(false);
             setStep3(true);
           } else {
@@ -359,6 +363,13 @@ function CopyProductsToStores() {
   useEffect(() => {
     if (step1) {
       GoBackToStepOne();
+        fetch(`${process.env.REACT_APP_API_URL}/node/products/RefetchOCMasterTables`)
+          .then(
+            fetch(`${process.env.REACT_APP_API_URL}/node/products/getProductsToCopy`)
+              .then((res) => res.json())
+              .then((data) => setProductsResponse(data[0]))
+              .catch((err) => console.log("Fetch error:", err))
+          )
     }
   }, [step1]);
 
@@ -393,10 +404,6 @@ function CopyProductsToStores() {
           <p className="xlHeader marginTop3rem">
             SELECT WHICH PRODUCTS TO COPY
           </p>
-          <div>
-            <button className='darkRedButtonInlineMD' onClick={RefetchAllProducts} style={{margin: "1rem 0 2rem 0"}}>Refetch products
-            </button>
-          </div>
           {productIdsToCopy && productIdsToCopy.length > 0 && (
             <div>
               <span style={{ fontSize: "24px" }}>Product ID's selected: </span>

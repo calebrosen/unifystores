@@ -12,16 +12,7 @@ function SyncProducts() {
   const [step3, setStep3] = useState(false);
   const { selectedStore } = useContext(StoreContext);
   const [viewProductsToSync, setViewProductsToSync] = useState([]);
-  const [forceSyncState, setForceSyncState] = useState({});
   const [lastMessage, setLastMessage] = useState("");
-
-  // update checkbox state for each product
-  const handleCheckboxChange = (productId) => {
-    setForceSyncState((prevState) => ({
-      ...prevState,
-      [productId]: !prevState[productId],
-    }));
-  };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/node/products/RefetchOCMasterTables`)
@@ -323,21 +314,6 @@ function SyncProducts() {
       })
       .catch((err) => alert("Error when copying images:", err));
   };
-  
-  const RefetchAllProducts = () => {
-    const confirmRefetch = confirm('Are you sure you want to refetch all of the products?');
-    if (confirmRefetch) {
-      fetch(`${process.env.REACT_APP_API_URL}/node/products/RefetchOCMasterTables`)
-      .then((res) => res.json())
-      .then((data) => alert('Refetched products.'))
-      .then((data) => refresh())
-      .catch((err) => console.log("Fetch error:", err));
-    }
-  }
-
-  function refresh() {
-    location.reload();
-  }
 
   const GoBackOneStep = () => {
     setLastMessage('');
@@ -381,10 +357,6 @@ function SyncProducts() {
           <p className="xlHeader marginTop3rem">
             SELECT WHICH PRODUCTS TO SYNC
           </p>
-          <div>
-            <button className='darkRedButtonInlineMD' onClick={RefetchAllProducts} style={{margin: "1rem 0 2rem 0"}}>Refetch products
-            </button>
-          </div>
           {productIdsToSync && productIdsToSync.length > 0 && (
             <div>
               <span style={{ fontSize: "24px" }}>Product ID's selected: </span>
