@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../contexts/StoreContext";
 
-function PushCategories() {
+function CopyCategories() {
   const [data, setData] = useState([]);
-  const [categoryIDsToPush, setCategoryIDsToPush] = useState([]);
+  const [categoryIDsToCopy, setCategoryIDsToCopy] = useState([]);
   const [categoriesPreview, setCategoriesPreview] = useState([]);
   const [step, setStep] = useState(1);
+  const [nameSearch, setNameSearch] = useState('');
   const { selectedStore } = useContext(StoreContext);
 
   useEffect(() => {
@@ -18,40 +19,8 @@ function PushCategories() {
       .catch((err) => console.log("Fetch error:", err));
   }, []);
 
-  const pushToStore = (e) => {
-    if (selectedStore) {
-      const categoryID = e.target.id;
-      const name = e.target.value;
-      const confirmPush = confirm(
-        'Are you sure you want to push category "' +
-          name +
-          '" to ' +
-          selectedStore +
-          "?"
-      );
-      if (confirmPush) {
-        axios
-          .post(
-            `${process.env.REACT_APP_API_URL}/node/categories/pushCategories`,
-            { selectedStore, categoryID }
-          )
-          .then((res) => {
-            if (res.data[0][0]["success"]) {
-              alert(res.data[0][0]["success"]);
-            } else {
-              alert("Something went wrong.");
-            }
-            console.log(res);
-          })
-          .catch((err) => alert("Error:", err));
-      }
-    } else {
-      alert("Try selecting a store first.");
-    }
-  };
-
   const ClearSelection = () => {
-    setCategoryIDsToPush([]);
+    setCategoryIDsToCopy([]);
     const allCheckboxes = document.querySelectorAll(
       "input[class='checkboxForCopyProduct']"
     );
@@ -60,15 +29,25 @@ function PushCategories() {
     });
   };
 
-  const UpdateCategoriesToPushList = (e) => {
+  const FilterCategories = (e) => {
+    setNameSearch(e.target.value);
+  }
+
+  const FilteredCategories = data.filter((d) =>
+    (d.name && d.name.toLowerCase().includes(nameSearch.toLowerCase()))
+    ||
+    (d.parent_name && d.parent_name.toLowerCase().includes(nameSearch.toLowerCase()))
+  );
+
+  const UpdateCategoriesToCopyList = (e) => {
     const categoryIDForList = e.currentTarget.getAttribute(
       "data-custom-category-id"
     );
     const checked = e.target.checked;
     if (checked) {
-      setCategoryIDsToPush((prev) => [...prev, categoryIDForList]);
+      setCategoryIDsToCopy((prev) => [...prev, categoryIDForList]);
     } else {
-      setCategoryIDsToPush((prev) =>
+      setCategoryIDsToCopy((prev) =>
         prev.filter((categoryID) => categoryID !== categoryIDForList)
       );
     }
@@ -76,11 +55,15 @@ function PushCategories() {
 
   const ChangeStep = (step) => {
     setStep(step);
-    if (step === 2) {
+    if (step === 1) {
+      setCategoryIDsToCopy([]);
+      setCategoriesPreview([]);
+    }
+    else if (step === 2) {
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/node/categories/InsertCategoryIDsToCopy`,
-          { categoryIDsToPush }
+          { categoryIDsToCopy }
         )
         .then(() => {
           fetch(
@@ -98,16 +81,53 @@ function PushCategories() {
     }
   };
 
+  const CopyCategoriesAction = () => {
+    if (selectedStore) {
+      const confirmCopyCategories = confirm(`Are you sure you want to copy these categories to ${selectedStore}?`);
+      if (confirmCopyCategories) {
+        axios.post(
+          `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_GetTargetData`,
+          {
+            selectedStore,
+          }
+        )
+        .then((res) => {
+          if (res.data[0][0]["success"]) {
+            fetch(
+              `${process.env.REACT_APP_API_URL}/node/categories/CopyCategoriesAction`
+            )
+            .then((res) => res.json())
+            .then((data) => {
+              if (data[0][0]["success"]) {
+                alert("success");
+                ChangeStep(1);
+              }
+            })
+            .catch((err) =>
+              console.log("Error copying categories:", err)
+            );
+          } else {
+            alert("Something went wrong while getting target data.");
+          }
+          console.log(res);
+        })
+        .catch((err) => alert("Error:", err));
+      }
+    } else {
+      alert('Select a store.');
+    }
+  }
+
   return (
     <>
       {/* First step (selecting categories) */}
       {step == 1 && (
         <div id="categoryContainer" className="subsectionContainer">
-          <div className="xlHeader marginTop4rem">Push Categories</div>
-          {categoryIDsToPush && categoryIDsToPush.length > 0 && (
+          <div className="xlHeader marginTop4rem">Copy Categories</div>
+          {categoryIDsToCopy && categoryIDsToCopy.length > 0 && (
             <div>
               <span style={{ fontSize: "24px" }}>Category ID's selected: </span>
-              {categoryIDsToPush.map((d, i) => (
+              {categoryIDsToCopy.map((d, i) => (
                 <span key={i} style={{ fontSize: "20px" }}>
                   {d}&nbsp;
                 </span>
@@ -129,11 +149,18 @@ function PushCategories() {
               </div>
             </div>
           )}
-
+          <div>
+            <input
+              className="marginTop3rem inputBox1"
+              label="Search by Name or Parent Name"
+              placeholder="Search by Name or Parent Name"
+              onChange={FilterCategories}
+            />
+          </div>
           <table className="marginTop2rem">
             <thead>
               <tr>
-                <th>Push</th>
+                <th>Copy</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Parent</th>
@@ -142,7 +169,7 @@ function PushCategories() {
               </tr>
             </thead>
             <tbody>
-              {data.map((d, i) => (
+              {FilteredCategories.map((d, i) => (
                 <tr key={i}>
                   <td>
                     &nbsp;&nbsp;&nbsp;
@@ -150,7 +177,7 @@ function PushCategories() {
                       type="checkbox"
                       className="checkboxForCopyProduct"
                       data-custom-category-id={d.category_id}
-                      onClick={UpdateCategoriesToPushList}
+                      onClick={UpdateCategoriesToCopyList}
                     />
                   </td>
                   <td>{d.category_id}</td>
@@ -165,12 +192,19 @@ function PushCategories() {
         </div>
       )}
 
-      {/* Second step */}
-      {step === 2 && categoriesPreview && categoriesPreview.length > 0 ? (
+    {/* Second step */}
+    {step === 2 && categoriesPreview && categoriesPreview.length > 0 &&
     <div id="categoryContainer" className="subsectionContainer">
       <div className="xlHeader marginTop4rem">Review Categories</div>
       <div>
-        <button className="saveButtonLG marginTop2rem">Proceed</button>
+        <button className="saveButtonLG marginTop2rem" onClick={CopyCategoriesAction}>Proceed</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button
+            className="deleteButtonLG marginTop2rem"
+            onClick={() => ChangeStep(1)}
+        >
+        Go Back
+        </button>
       </div>
 
       <table className="marginTop2rem">
@@ -194,11 +228,9 @@ function PushCategories() {
         </tbody>
       </table>
     </div>
-    ) : (
-      <p>No categories available to preview.</p>
-    )}
+    }
     </>
   );
 }
 
-export default PushCategories;
+export default CopyCategories;

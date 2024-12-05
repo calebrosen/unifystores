@@ -11,4 +11,6 @@ router.post('/InsertCategoryIDsToCopy', controller.InsertCategoryIDsToCopy);
 
 router.get('/GenerateCategoriesForPreviews', controller.GenerateCategoriesForPreviews);
 
+router.get('/CopyCategoriesAction', controller.CopyCategoriesAction);
+
 module.exports = router;

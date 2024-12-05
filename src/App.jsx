@@ -52,7 +52,7 @@ import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
 import Zones from './pages/zones/Zones.jsx';
 import SyncProducts from './pages/products/SyncProducts.jsx';
 import Categories from './pages/categories/Categories.jsx';
-import PushCategories from './pages/categories/PushCategories.jsx';
+import CopyCategories from './pages/categories/CopyCategories.jsx';
 
 const App = () => {
   return (
@@ -106,7 +106,7 @@ const App = () => {
           <Route path="/products/SyncProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><SyncProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/filters" element={<RequireAuth><HomeAndLogOutButtons><Filters /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/categories" element={<RequireAuth><HomeAndLogOutButtons><Categories /></HomeAndLogOutButtons></RequireAuth>}/>
-          <Route path="/categories/PushCategories" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><PushCategories /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/categories/CopyCategories" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyCategories /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>
