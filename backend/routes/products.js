@@ -71,4 +71,10 @@ router.post('/GetProductDescriptionInfo', controller.GetProductDescriptionInfo);
 // updating product description/name/meta
 router.post('/UpdateProductDescriptionName', controller.UpdateProductDescriptionName);
 
+
+/* DISCONTINUED PRODUCTS */
+
+// Getting discontinued products
+router.get('/DiscontinuedDisabledProducts', controller.DiscontinuedDisabledProducts);
+
 module.exports = router;

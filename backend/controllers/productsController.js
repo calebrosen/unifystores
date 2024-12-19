@@ -501,3 +501,23 @@ exports.UpdateProductDescriptionName = async (req, res) => {
       .json({ message: "Database connection failed", error });
   }
 };
+
+
+/* DISCONTINUED PRODUCTS / WHILE SUPPLIES LAST */
+
+// getting discontinued / while supplies last products to display
+exports.GetProductDescriptionInfo = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL GetProductDescriptionInfo(?)";
+    const values = [req.body.OCMProductID];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
