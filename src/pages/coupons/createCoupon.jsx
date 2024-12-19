@@ -61,11 +61,23 @@ function CreateCoupon() {
   };
 
   const copyToClipboard = (code) => {
-    navigator.clipboard.writeText(code).then(() => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code)
+        .then(() => {
+          alert("Coupon code copied: " + code);
+        })
+        .catch(err => {
+          console.log('Failed to copy: ', err);
+        });
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = code;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
       alert("Coupon code copied: " + code);
-    }).catch(err => {
-      console.log('Failed to copy: ', err);
-    });
+    }
   };
 
   return (
