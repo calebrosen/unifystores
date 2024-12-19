@@ -310,6 +310,50 @@ async function moveImages(selectedStore, imagePath, step) {
   }
 }
 
+/* START OF UPDATE PRODUCTS */
+
+//truncating table to insert product data
+exports.truncateSelectedProductsToUpdateTable = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql =
+      "CALL copyProductsToStore.TruncateSelectedProductsToUpdateTable()";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+
+// Inserting into for product update
+exports.insertIntoSelectedProductsToUpdate = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql =
+      "CALL copyProductsToStore.InsertIntoSelectedProductsToUpdate(?, ?, ?)";
+    const values = [
+      req.body.pID,
+      req.body.model,
+      req.body.mpn
+    ];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+
+
 exports.getProductsForRelease = async (req, res) => {
   try {
     const db = await connectToDB();
@@ -506,11 +550,44 @@ exports.UpdateProductDescriptionName = async (req, res) => {
 /* DISCONTINUED PRODUCTS / WHILE SUPPLIES LAST */
 
 // getting discontinued / while supplies last products to display
-exports.GetProductDescriptionInfo = async (req, res) => {
+exports.DiscontinuedDisabledProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetProductDescriptionInfo(?)";
-    const values = [req.body.OCMProductID];
+    const sql = "CALL work_area_db.GetDiscontinuedOrDisabledProducts()";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// Updating discontinued products reason or replacedby
+exports.UpdateDiscontinuedOrDisabledProducts = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL work_area_db.UpdateDiscontinuedOrDisabledProducts(?, ?, ?)";
+    const values = [req.body.selectedMPN, req.body.selectedReason, req.body.selectedReplacedBy];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+// Adding new discontinued/disabled product
+exports.AddDiscontinuedOrDisabledProduct = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL work_area_db.AddDiscontinuedOrDisabledProduct(?, ?, ?)";
+    const values = [req.body.selectedMPN, req.body.selectedReason, req.body.selectedReplacedBy];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);

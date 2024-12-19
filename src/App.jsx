@@ -9,6 +9,8 @@ import { StoreProvider } from './contexts/StoreContext.jsx';
 import './index.css';
 import Attributes from './pages/attributes/Attributes.jsx';
 import CopyAttributes from './pages/attributes/CopyAttributes.jsx';
+import Categories from './pages/categories/Categories.jsx';
+import CopyCategories from './pages/categories/CopyCategories.jsx';
 import Countries from './pages/countries/Countries.jsx';
 import EditCountriesOnStore from './pages/countries/EditCountriesOnStore.jsx';
 import ViewEnabledCountries from './pages/countries/ViewEnabledCountries.jsx';
@@ -40,6 +42,7 @@ import ProductDescription from './pages/productdescription/productdescription.js
 import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
 import CopyProductsToStores from './pages/products/CopyProductsToStores.jsx';
 import Products from './pages/products/Products.jsx';
+import UpdateProducts from './pages/products/UpdateProducts.jsx';
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
 import EditSalesAgents from './pages/salesagent/editSalesAgents.jsx';
 import ImportSalesAgents from './pages/salesagent/importSalesAgents.jsx';
@@ -50,9 +53,8 @@ import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx
 import EditZonesOnStore from './pages/zones/EditZonesOnStore.jsx';
 import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
 import Zones from './pages/zones/Zones.jsx';
-import SyncProducts from './pages/products/SyncProducts.jsx';
-import Categories from './pages/categories/Categories.jsx';
-import CopyCategories from './pages/categories/CopyCategories.jsx';
+import DiscontinuedWhileSuppliesLast from './pages/products/DiscontinuedWhileSuppliesLast.jsx';
+
 
 const App = () => {
   return (
@@ -103,7 +105,8 @@ const App = () => {
           <Route path="/attributes/CopyAttributes" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyAttributes /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/attributes" element={<RequireAuth><HomeAndLogOutButtons><Attributes /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/products/CopyProductsToStores" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyProductsToStores /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
-          <Route path="/products/SyncProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><SyncProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/products/UpdateProducts" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><UpdateProducts /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/products/DiscontinuedWhileSuppliesLast" element={<RequireAuth><HomeAndLogOutButtons><DiscontinuedWhileSuppliesLast /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/filters" element={<RequireAuth><HomeAndLogOutButtons><Filters /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/categories" element={<RequireAuth><HomeAndLogOutButtons><Categories /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/categories/CopyCategories" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyCategories /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>

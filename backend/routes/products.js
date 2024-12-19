@@ -45,6 +45,19 @@ router.post('/getProductsForRelease', controller.getProductsForRelease);
 router.post('/releaseProductOnStore', controller.releaseProductOnStore);
 
 
+
+
+// Updating products
+
+// Truncating product data table
+router.post('/truncateSelectedProductsToUpdateTable', controller.truncateSelectedProductsToUpdateTable);
+
+// Inserting products to update into table
+router.post('/insertIntoSelectedProductsToUpdate', controller.insertIntoSelectedProductsToUpdate);
+
+
+
+
 /* PRODUCT DESCRIPTIONS */
 
 // Getting sections
@@ -75,6 +88,12 @@ router.post('/UpdateProductDescriptionName', controller.UpdateProductDescription
 /* DISCONTINUED PRODUCTS */
 
 // Getting discontinued products
-router.get('/DiscontinuedDisabledProducts', controller.DiscontinuedDisabledProducts);
+router.get('/GetDiscontinuedDisabledProducts', controller.DiscontinuedDisabledProducts);
+
+// Updating discontinued products (reason or replaced by)
+router.post('/UpdateDiscontinuedOrDisabledProducts', controller.UpdateDiscontinuedOrDisabledProducts);
+
+// Adding discontinued product
+router.post('/AddDiscontinuedOrDisabledProduct', controller.AddDiscontinuedOrDisabledProduct);
 
 module.exports = router;

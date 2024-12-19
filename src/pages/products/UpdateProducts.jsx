@@ -2,16 +2,16 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../contexts/StoreContext";
 
-function SyncProducts() {
+function UpdateProducts() {
   const [productsResponse, setProductsResponse] = useState([]);
-  const [productIdsToSync, setProductIdsToSync] = useState([]);
+  const [productIdsToUpdate, setProductIdsToUpdate] = useState([]);
   const [mpnSearchQuery, setMpnSearchQuery] = useState("");
   const [nameSearchQuery, setNameSearchQuery] = useState("");
   const [step1, setStep1] = useState(true);
   const [step2, setStep2] = useState(false);
   const [step3, setStep3] = useState(false);
   const { selectedStore } = useContext(StoreContext);
-  const [viewProductsToSync, setViewProductsToSync] = useState([]);
+  const [viewProductsToUpdate, setViewProductsToUpdate] = useState([]);
   const [lastMessage, setLastMessage] = useState("");
 
   useEffect(() => {
@@ -40,16 +40,16 @@ function SyncProducts() {
       d.Name.toLowerCase().includes(nameSearchQuery.toLowerCase())
   );
 
-  const UpdateProductsToSyncList = (e) => {
+  const UpdateProductsToUpdateList = (e) => {
     const productIDForList = e.currentTarget.getAttribute(
       "data-custom-product-id"
     );
     const checkedState = e.target.checked;
 
     if (checkedState) {
-      setProductIdsToSync((prev) => [...prev, productIDForList]);
+      setProductIdsToUpdate((prev) => [...prev, productIDForList]);
     } else {
-      setProductIdsToSync((prev) =>
+      setProductIdsToUpdate((prev) =>
         prev.filter((id) => id !== productIDForList)
       );
     }
@@ -66,7 +66,7 @@ function SyncProducts() {
   };
 
   const ClearSelection = () => {
-    setProductIdsToSync([]);
+    setProductIdsToUpdate([]);
     const allCheckboxes = document.querySelectorAll(
       "input[class='checkboxForCopyProduct']"
     );
@@ -81,7 +81,7 @@ function SyncProducts() {
       setStep2(true);
       HideStoreSelection();
 
-      const tempProductIdsString = productIdsToSync.toString();
+      const tempProductIdsString = productIdsToUpdate.toString();
       axios
         .post(`${process.env.REACT_APP_API_URL}/node/products/getProductsForViewingCopy`, {
           tempProductIdsString,
@@ -89,7 +89,7 @@ function SyncProducts() {
         .then((res) => {
           if (res.data) {
             console.log(res.data);
-            setViewProductsToSync(res.data[0]);
+            setViewProductsToUpdate(res.data[0]);
           } else {
             alert("Something went wrong.");
           }
@@ -97,17 +97,17 @@ function SyncProducts() {
         })
         .catch((err) => alert("Error:", err));
     } else {
-      alert("Select a store to sync the products to.");
+      alert("Select a store to update the products to.");
     }
   };
 
   const ProceedToStep3 = () => {
-    let confirmSync = confirm(
+    let confirmUpdate = confirm(
       "Are you POSITIVE? There is no going back. Well, there is, but it will just be a lot of work."
     );
 
-    if (confirmSync) {
-      const productList = viewProductsToSync.map((product) => ({
+    if (confirmUpdate) {
+      const productList = viewProductsToUpdate.map((product) => ({
         product_id: product.product_id,
         model: product.model,
         mpn: product.mpn
@@ -119,7 +119,7 @@ function SyncProducts() {
 
       // truncating table
       axios
-        .post(`${process.env.REACT_APP_API_URL}/node/products/truncateSelectedProductsToCopyTable`)
+        .post(`${process.env.REACT_APP_API_URL}/node/products/truncateSelectedProductsToUpdateTable`)
         .then((res) => {
           if (
             res.data &&
@@ -135,7 +135,7 @@ function SyncProducts() {
 
               if (pID && model && mpn !== undefined) {
                 return axios.post(
-                  `${process.env.REACT_APP_API_URL}/node/products/insertIntoSelectedProductsToCopy`,
+                  `${process.env.REACT_APP_API_URL}/node/products/insertIntoSelectedProductsToUpdate`,
                   { pID, model, mpn }
                 );
               } else {
@@ -159,9 +159,10 @@ function SyncProducts() {
           }
         })
         .then(() => {
+          setLastMessage("All products inserted successfully - proceeding...");
           console.log("All products inserted successfully");
 
-          // CopyProducts_GetTargetData procedure
+          // CopyProducts_GetTargetData procedure - this is the same one as the copy products one because we need the same target data regardless
           return axios.post(
             `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_GetTargetData`,
             {
@@ -343,7 +344,7 @@ function SyncProducts() {
     if (allCheckboxes) {
       allCheckboxes.forEach((checkbox) => {
         let id = checkbox.getAttribute("data-custom-product-id");
-        if (productIdsToSync.includes(id)) {
+        if (productIdsToUpdate.includes(id)) {
           checkbox.checked = true;
         }
       });
@@ -355,12 +356,12 @@ function SyncProducts() {
       <div>
         <div className="centered">
           <p className="xlHeader marginTop3rem">
-            SELECT WHICH PRODUCTS TO SYNC
+            SELECT WHICH PRODUCTS TO UPDATE
           </p>
-          {productIdsToSync && productIdsToSync.length > 0 && (
+          {productIdsToUpdate && productIdsToUpdate.length > 0 && (
             <div>
               <span style={{ fontSize: "24px" }}>Product ID's selected: </span>
-              {productIdsToSync.map((d, i) => (
+              {productIdsToUpdate.map((d, i) => (
                 <span key={i} style={{ fontSize: "20px" }}>
                   {d}&nbsp;
                 </span>
@@ -403,7 +404,7 @@ function SyncProducts() {
           <table className="marginTop3rem">
             <thead>
               <tr>
-                <th>Sync</th>
+                <th>Update</th>
                 <th>ID</th>
                 <th>Model</th>
                 <th>MPN</th>
@@ -422,7 +423,7 @@ function SyncProducts() {
                       type="checkbox"
                       className="checkboxForCopyProduct"
                       data-custom-product-id={d.ProductID}
-                      onClick={UpdateProductsToSyncList}
+                      onClick={UpdateProductsToUpdateList}
                     ></input>
                   </td>
                   <td>{d.ProductID}</td>
@@ -448,7 +449,7 @@ function SyncProducts() {
           </button>
         </div>
         <div className="xlHeader">
-          Are you SURE these are the correct product(s) to sync to{" "}
+          Are you SURE these are the correct product(s) to update to{" "}
           {selectedStore}?
         </div>
         <table className="marginTop3rem">
@@ -463,7 +464,7 @@ function SyncProducts() {
             </tr>
           </thead>
           <tbody>
-            {viewProductsToSync.map((d, i) => (
+            {viewProductsToUpdate.map((d, i) => (
               <tr key={i}>
                 <td>{d.product_id}</td>
                 <td>{d.model}</td>
@@ -498,4 +499,4 @@ function SyncProducts() {
   }
 }
 
-export default SyncProducts;
+export default UpdateProducts;
