@@ -116,6 +116,7 @@ function DiscontinuedWhileSuppliesLast() {
 
   return (
     <div>
+    <div className='infoText'>Simply add a discontinued product to this, and when the quantity of the product reaches 0, the product will be disabled on all stores (including OCMaster), removed from options (if applicable) and marked as discontinued.</div>
       <div className="centeredContainer">
         <button className="darkRedButton" onClick={openAddNewModal}>Add New</button>
       </div>

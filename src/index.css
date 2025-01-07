@@ -780,6 +780,12 @@ tbody td:last-of-type {
   color: darkred;
 }
 
+.infoText {
+  margin: 2rem 25% 0rem 25%;
+  font-size: 2rem;
+  text-align: center;
+}
+
 .largeModal {
   position: fixed;
   top: 50%;
