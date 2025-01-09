@@ -10,7 +10,6 @@ function CreateCoupon() {
   const [generatedCouponCode, setGeneratedCouponCode] = useState('');
   const { selectedStore } = useContext(StoreContext);
   const adminInput = useRef(null);
-  const couponCodeRef = useRef(null);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/node/coupons/fetchAgents`)
@@ -28,38 +27,53 @@ function CreateCoupon() {
     }
   };
 
+  function isFloat(n) {
+    return Number(n) === n && n % 1 !== 0;
+  }
+
+
   const createCouponAction = () => {
     if (selectedAgent === 'ADMIN' && couponCode === '') {
-      alert('You selected admin you so must enter a coupon code.');
+      alert('You selected admin, you must enter a coupon code.');
       return;
     }
+  
+    // assigning to temp variable
+    let tempCode = couponCode;
+    console.log(tempCode)
+
+    if (selectedAgent !== 'ADMIN' && tempCode !== '') {
+      console.log('Clearing coupon code');
+      tempCode = null;
+    }
+  
     if (selectedStore && amount) {
-      const userConfirmed = confirm("Are you sure you want to create a coupon for $" + amount + " on " + selectedStore + "?");
-      
+      const userConfirmed = confirm(`Are you sure you want to create a coupon for $${amount} on ${selectedStore}?`);
+  
       if (userConfirmed) {
         console.log('Selected Agent before sending:', selectedAgent);
-        console.log('Payload:', { selectedAgent, selectedStore, amount, couponCode });
-
-        axios.post(`${process.env.REACT_APP_API_URL}/node/coupons/createCoupon`, { selectedAgent, selectedStore, amount, couponCode })
+        console.log('Payload:', { selectedAgent, selectedStore, amount, tempCode });
+  
+        axios.post(`${process.env.REACT_APP_API_URL}/node/coupons/createCoupon`, { selectedAgent, selectedStore, amount, couponCode: tempCode })
           .then(res => {
-            console.log('Response: ', res.data);
+            console.log('Response:', res.data);
             if (res.status === 200) {
               const coupon = res.data[0][0]['CouponCode'];
               setGeneratedCouponCode(coupon);
               copyToClipboard(coupon);
             } else {
-              console.log("Unexpected response status:", res.status);
+              console.log('Unexpected response status:', res.status);
             }
           })
           .catch(err => console.log('Error:', err));
       } else {
-        console.log("User canceled the coupon creation.");
+        console.log('User canceled the coupon creation.');
       }
     } else {
       alert('You either forgot to select a store or input an amount.');
     }
   };
-
+  
   const copyToClipboard = (code) => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(code)
