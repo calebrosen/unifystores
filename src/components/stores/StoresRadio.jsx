@@ -19,12 +19,13 @@ function StoresRadio({ children }) {
   return (
     <div id="storeContainer">
     <div id="storesRadioInner">
-      <p className='selectStoresHeader'>SELECT STORE TO AFFECT</p>
+      <p className='text-5xl font-bold text-neutral-100 mb-6'>SELECT STORE TO AFFECT</p>
+      <div className="flex flex-row gap-7 justify-content-center">
       {
         data
           .sort((a, b) => a.ms_short_name.localeCompare(b.ms_short_name)) // alphabetically sorting
           .map((d, i) => (
-            <span key={i} className='storeSelection'>
+            <span key={i}>
               <input
                 type="radio"
                 name="storeSelection"
@@ -35,10 +36,11 @@ function StoresRadio({ children }) {
                 checked={selectedStore === d.ms_short_name}
                 onChange={handleStoreChange}
               />
-              <label htmlFor={`select${d.ms_short_name}`} className='storeLabel'> {d.ms_short_name} </label>
+              <label htmlFor={`select${d.ms_short_name}`} className="text-white mx-2 text-4xl"> {d.ms_short_name} </label>
             </span>
           ))
       }
+      </div>
       </div>
       {children}
     </div>

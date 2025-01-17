@@ -91,7 +91,7 @@ function EditCountriesOnStore() {
         <div id="countriesContainer" className='subsectionContainer'>
             {/*searchable input */}
             <input 
-                className='marginTop3rem inputBox1'
+                className="bg-slate-700 p-3 mt-8 rounded-lg text-white text-4xl"
                 label='Search for Countries'
                 placeholder='Search for Countries'
                 value={searchQuery}
@@ -110,7 +110,7 @@ function EditCountriesOnStore() {
                     <tr key={i}>
                         <td>{d.country_id}</td>
                         <td>{d.name}</td>
-                        <td>&nbsp;<button className='darkRedButtonInline' data-status={d.status} id={d.country_id} value={d.name} onClick={editStatusOnStore}>Edit</button></td>
+                        <td>&nbsp;<button className="text-white bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-2xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105" data-status={d.status} id={d.country_id} value={d.name} onClick={editStatusOnStore}>Edit</button></td>
                     </tr>
                 ))}
                 </tbody>
@@ -120,19 +120,19 @@ function EditCountriesOnStore() {
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="Edit Country"
-                className="Modal"
+                className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/5 max-w-[500px] bg-slate-700 text-white p-5 rounded-lg shadow-lg z-50"
                 overlayClassName="Overlay"
             >
             {countryID && (
             <form onSubmit={editStatusOnStoreAction} className="editCouponForm">
-                <p className='mediumHeader'>Change Status of {countryName}</p>
-                <select type="text" defaultValue={countryStatus} className='selectBox2 marginBottom2rem'>
+                <p className="text-4xl font-medium text-white">Change Status of {countryName}</p>
+                <select type="text" defaultValue={countryStatus} className="bg-slate-800 text-white rounded-lg my-5 text-3xl p-2">
                     <option value='1'>Enabled</option>
                     <option value='0'>Disabled</option>
                 </select>
-                <div className="spaceBetween">
-                <button type="submit" className='saveButton'>Save</button>
-                <button type="button" onClick={closeModal} className='closeButton'>Close</button>
+                <div className="flex justify-between">
+                <button type="submit" className="text-white bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-3 me-2 mb-2 transition hover:scale-105">Save</button>
+                <button type="button" onClick={closeModal} className="text-white bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-3 me-2 mb-2 transition hover:scale-105">Close</button>
                 </div>
             </form>
             )}

@@ -166,10 +166,13 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
-          <p className="xlHeader marginTop3rem">SELECT AN ATTRIBUTE TO COPY</p>
+          <div className="mt-4 mb-28">
+            <span className="font-sans bg-gradient-to-r from-cyan-800 to-slate-800 text-white font-medium py-6 px-8 rounded-xl text-6xl shadow-lg transform hover:scale-105 transition-transform duration-300">SELECT AN ATTRIBUTE TO COPY
+            </span>
+          </div>
           <select
             id="selectAttributeGroup"
-            className="selectBox1"
+            className="p-2 bg-slate-700 text-white text-3xl rounded-lg mb-12"
             onChange={HandleChangeAttribute}
           >
             <option></option>
@@ -183,7 +186,7 @@ const CopyAttributes = () => {
           </select>
           <div>
             <button
-              className="darkRedButton marginTop4rem"
+              className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105"
               onClick={PreviewCopyAction}
             >
               Proceed
@@ -196,20 +199,20 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
-          <h1 style={{ fontWeight: "700" }}>Selected: {selectedStore}</h1>
-          <p className="xlHeader marginTop3rem">
+          <h1 className="text-5xl my-4 text-white font-bold">Selected: {selectedStore}</h1>
+          <p className="text-white text-4xl mt-12 font-semibold">
             Products with the boxes checked will be copied to
           </p>
-          <div className="spaceApart">
-            <button className="darkRedButton" onClick={GoBack}>
+          <div className="flex flex-row gap-8 my-8 justify-content-center">
+            <button className="text-white bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
               Go back
             </button>
-            <button className="darkRedButton" onClick={CopyAttributesFromOCMToStoreAction}>Proceed</button>
+            <button className="text-white bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={CopyAttributesFromOCMToStoreAction}>Proceed</button>
           </div>
-          <p className="miniInfoText marginTop3rem">
+          <p className="text-4xl mt-8 mb-4 text-white font-bold">
             T stands for Target | OCM stands for OCMaster
           </p>
-          <div style={{fontSize: '22px', padding: '8px', color: 'firebrick'}}>Product IDs selected:</div>
+          <div className="text-3xl mt-14 text-white font-bold">Product IDs selected:</div>
           <div className='lineBreakSpanContainer'>
           {Array.from(checkedItems) &&
             Array.from(checkedItems).length > 0 &&
@@ -219,8 +222,8 @@ const CopyAttributes = () => {
               </span>
           ))}</div>
           <div>
-            <button onClick={UnSelectAll} className='darkRedButtonInlineMD' style={{margin: '15px'}}>Uncheck all</button>
-            <button onClick={SelectAll} className='darkRedButtonInlineMD' style={{margin: '15px'}}>Check all</button>
+            <button onClick={UnSelectAll} className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Uncheck all</button>
+            <button onClick={SelectAll} className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Check all</button>
           </div>
           <table className="marginTop4rem">
             <thead>
@@ -286,14 +289,14 @@ const CopyAttributes = () => {
       <div>
         <div className="centered">
           <div className="spaceApart">
-            <button className="darkRedButton" onClick={GoBack}>
+            <button className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
               Go back
             </button>
-            <button className="darkRedButton" onClick={PreviewProductsToAffect}>
+            <button className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={PreviewProductsToAffect}>
               Proceed
             </button>
           </div>
-          <p className="xlHeader marginTop3rem">
+          <p className="text-white text-5xl mt-12 font-semibold">
             Products on OCMaster with Attribute ID {selectedAttribute}
           </p>
           <table className="marginTop4rem">

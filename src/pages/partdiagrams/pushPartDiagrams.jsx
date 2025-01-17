@@ -21,25 +21,30 @@ function PartDiagramsPushToStores() {
   })
 
   function pushToStoresAction() {
+    let confirmPush = confirm(`Are you sure you want to push part diagrams to ${selectedStore}?`);
+    if (confirmPush) {
       axios.post(`${process.env.REACT_APP_API_URL}/node/partdiagrams/pushPartDiagrams`, { selectedStore })
       .then(res => {
-          alert(res.data);
+          console.log(res);
       })
       .catch(err => alert('Error:', err));
+    }
   }
 
   return (
   <div>
     <div id="partDiagramsContainer" className='subsectionContainer'>
       <div id="explain" className='marginTop3rem regText'>
-        <span className="smHeader">This will push:</span><br />
+        <span className="text-4xl text-white font-bold my-3">This will push:</span><br />
+        <div className="text-3xl my-4 text-white">
         All part diagrams models<br />
         All individual parts on each model<br />
         All part options (part that has more than one option, normally depending on date manufactured)<br />
         All product tags (this is used for the badge and comes from product description. (Ex: "Burner", or "Knob"))
+        </div>
       </div>
       <div>
-        <button className='hiddenButton darkRedButton marginTop3rem' id='pushButton' onClick={pushToStoresAction}></button>
+        <button className="text-white bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 mt-4 me-2 mb-2 transition hover:scale-105" id='pushButton' onClick={pushToStoresAction}></button>
       </div>
     </div>
   </div>

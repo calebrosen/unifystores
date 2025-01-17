@@ -116,13 +116,13 @@ function DiscontinuedWhileSuppliesLast() {
 
   return (
     <div>
-    <div className='infoText'>Simply add a discontinued product to this, and when the quantity of the product reaches 0, the product will be disabled on all stores (including OCMaster), removed from options (if applicable) and marked as discontinued.</div>
+    <div className='centered text-white text-4xl mt-8 max-w-7xl mx-auto bg-slate-700 rounded-lg p-4'>Simply add a discontinued product to this, and when the quantity of the product reaches 0, the product will be disabled on all stores (including OCMaster), removed from options (if applicable) and marked as discontinued.</div>
       <div className="centeredContainer">
-        <button className="darkRedButton" onClick={openAddNewModal}>Add New</button>
+        <button className="text-white bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={openAddNewModal}>Add New</button>
       </div>
       <div className="centeredContainer">
         <input
-          className="inputBox1"
+          className="bg-slate-700 p-3 rounded-lg text-white text-4xl"
           label="Search by MPN"
           placeholder="Search by MPN"
           value={mpnSearch}
