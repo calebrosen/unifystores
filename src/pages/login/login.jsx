@@ -67,7 +67,7 @@ function Login() {
               type="password"
               id="password"
               placeholder="Enter your password"
-              class="w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
+              className="w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>

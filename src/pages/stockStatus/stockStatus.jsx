@@ -1,4 +1,4 @@
-/*import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function StockStatus() {
   const [data, setData] = useState([]);
@@ -39,4 +39,4 @@ function StockStatus() {
   );
 }
 
-export default StockStatus;*/
+export default StockStatus;

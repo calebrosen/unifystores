@@ -1,4 +1,4 @@
-/*import axios from 'axios';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 function EditPushStockStatusName() {
@@ -70,4 +70,4 @@ function EditPushStockStatusName() {
   );
 }
 
-export default EditPushStockStatusName;*/
+export default EditPushStockStatusName;

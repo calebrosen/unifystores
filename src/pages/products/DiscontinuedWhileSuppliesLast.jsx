@@ -65,7 +65,11 @@ function DiscontinuedWhileSuppliesLast() {
           if (res.data[0][0]["success"]) {
             alert(res.data[0][0]["success"]);
             location.reload();
-          } else {
+          }
+          else if (res.data[0][0]["duplicate"]) {
+            alert("Product is already in list");
+          }
+            else {
             alert("Something went wrong.");
           }
           console.log(res);

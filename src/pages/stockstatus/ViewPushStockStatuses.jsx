@@ -1,4 +1,4 @@
-/*import axios from 'axios';
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../contexts/StoreContext';
 
@@ -62,4 +62,3 @@ function ViewPushStockStatuses() {
 }
 
 export default ViewPushStockStatuses;
-*/
