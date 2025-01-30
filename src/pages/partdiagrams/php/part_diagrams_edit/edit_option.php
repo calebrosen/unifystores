@@ -11,7 +11,7 @@
 
     $query = "SELECT O.id, O.model_id, PM.model, O.part_id, O.option_part_id, P.model AS option_part, O.description
               FROM part_diagrams_part_options O 
-              INNER JOIN product P ON O.part_id = P.product_id
+              INNER JOIN oc_master.product P ON O.part_id = P.product_id
               INNER JOIN part_diagrams_models PM ON O.model_id = PM.model_id 
               WHERE O.model_id = $the_model_id AND O.part_id = $the_part_id AND O.option_part_id = $the_option_part_id";
 
@@ -91,7 +91,7 @@
     <div>
        <select name="option_part_id">           
             <?php
-                $query = "SELECT DISTINCT P.product_id, P.model, P.status, PD.name FROM product P INNER JOIN product_description PD ON P.product_id = PD.product_id WHERE P.status = 1 ORDER BY P.model";
+                $query = "SELECT DISTINCT P.product_id, P.model, P.status, PD.name FROM oc_master.product P INNER JOIN oc_master.product_description PD ON P.product_id = PD.product_id WHERE P.status = 1 ORDER BY P.model";
                 $select_products = mysqli_query($connection, $query);    
                 while($row = mysqli_fetch_assoc($select_products)) {
                     $part_id = $row['product_id'];

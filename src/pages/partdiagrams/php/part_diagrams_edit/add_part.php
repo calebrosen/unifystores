@@ -32,7 +32,7 @@ if (isset($_POST['create_part'])) {
         // If the query failed, handle the error
         $error_message = mysqli_error($connection);
         error_log("MySQL Error: " . $error_message);
-        echo "<p class='bg-danger text-white p-3'>Error creating part: " . $error_message . "</p>";
+        echo "<p class='bg-danger text-neutral-200 p-3'>Error creating part: " . $error_message . "</p>";
     } else {
         // The query executed successfully, show success message
         echo "<p class='bg-info text-danger p-3'>Part Created. <a href='parts.php?model_id={$model_id}&model={$model}'>View Parts</a></p>";
@@ -59,7 +59,7 @@ if (isset($_POST['cancel'])) {
     <div>
        <select name="part_id" id="part_id" onchange="updatePartModel()">           
             <?php //CHANGE CATEGORY ID
-                $query = "SELECT distinct P.product_id, P.model, P.status, PD.name FROM product P INNER JOIN product_description PD ON P.product_id = PD.product_id  WHERE P.status = 1 ORDER BY P.model";
+                $query = "SELECT distinct P.product_id, P.model, P.status, PD.name FROM oc_master.product P INNER JOIN oc_master.product_description PD ON P.product_id = PD.product_id  WHERE P.status = 1 ORDER BY P.model";
                 $select_products = mysqli_query($connection, $query);    
                 while($row = mysqli_fetch_assoc($select_products)) {
                     $part_id = $row['product_id'];

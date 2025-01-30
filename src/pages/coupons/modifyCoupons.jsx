@@ -81,7 +81,7 @@ function ModifyCoupons() {
   return (
     <div>
       <div className="centeredContainer">
-        <button className='darkRedButton' onClick={selectCoupons}>Select Coupons</button>
+        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 h-100 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-4 transition hover:scale-105" onClick={selectCoupons}>Select Coupons</button>
       </div>
       <div className="centeredContainer">
         {coupons.length > 0 ? (
@@ -120,7 +120,7 @@ function ModifyCoupons() {
             </tbody>
           </table>
         ) : (
-          <p>No coupons available</p>
+          <p className="text-neutral-200 text-2xl">No coupons available</p>
         )}
       </div>
 
@@ -128,47 +128,47 @@ function ModifyCoupons() {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Edit Coupon"
-        className="Modal"
+        shouldCloseOnOverlayClick={true}
+        className="w-1/3 bg-slate-700 text-white rounded-lg p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         overlayClassName="Overlay"
       >
         {currentCoupon && (
-          <form onSubmit={handleEdit} className="editCouponForm">
-            <label>
-              Name:&nbsp;
-              <input type="text" name="name" value={currentCoupon.name} onChange={handleChange} />
+          <form onSubmit={handleEdit} className="block mb-2">
+          <label className="text-neutral-200 text-2xl block mb-3">
+              Name
+              <input type="text" name="name" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl" value={currentCoupon.name} onChange={handleChange} />
             </label>
-            <label>
-              Code:&nbsp;
-              <input type="text" name="code" value={currentCoupon.code} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Code
+              <input type="text" name="code" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl"  value={currentCoupon.code} onChange={handleChange} />
             </label>
-            <label>
-              Discount:&nbsp;
-              <input type="text" name="discount" value={currentCoupon.discount} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Discount
+              <input type="text" name="discount" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl" value={currentCoupon.discount} onChange={handleChange} />
             </label>
-            <label>
-              Type (F/P):&nbsp;
-              <input type="text" name="type" value={currentCoupon.type} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Type (F/P)
+              <input type="text" name="type" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl"  value={currentCoupon.type} onChange={handleChange} />
             </label>
-            <label>
-              Starting Date:&nbsp;
-              <input type="date" name="date_start" value={currentCoupon.date_start} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Starting Date
+              <input type="date" name="date_start" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl"  value={currentCoupon.date_start} onChange={handleChange} />
             </label>
-            <label>
-              Ending Date:&nbsp;
-              <input type="date" name="date_end" value={currentCoupon.date_end} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Ending Date
+              <input type="date" name="date_end" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl"  value={currentCoupon.date_end} onChange={handleChange} />
             </label>
-            <label>
-              Total Uses:&nbsp;
-              <input type="number" name="uses_total" value={currentCoupon.uses_total} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Total Uses
+              <input type="number" name="uses_total" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl"  value={currentCoupon.uses_total} onChange={handleChange} />
             </label>
-            <label>
-              Status:&nbsp;
-              <input type="text" name="status" value={currentCoupon.status} onChange={handleChange} />
+            <label className="text-neutral-200 text-2xl block mb-3">
+              Status
+              <input type="text" name="status" className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-2xl"  value={currentCoupon.status} onChange={handleChange} />
             </label>
             <div className="spaceBetween">
-              <button type="submit" className='saveButton'>Save</button>
-              <button type="button" onClick={closeModal} className='closeButton'>Close</button>
-              <button type="button" onClick={deleteCoupon} className='deleteButton'>Delete</button>
+              <button type="submit" className="bg-green-600 rounded-xl p-2.5 text-neutral-200 text-3xl hover:bg-green-700">Save</button>
+              <button type="button" onClick={deleteCoupon} className="bg-red-600 rounded-xl p-2.5 text-neutral-200 text-3xl hover:bg-red-700">Delete</button>
             </div>
           </form>
         )}

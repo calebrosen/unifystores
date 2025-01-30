@@ -9,7 +9,7 @@
 
                 $query = "SELECT PD.id, PD.model_id, PM.model, PD.part_id, P.model AS part, PDES.tag, PD.description, PD.grid_column_start, PD.grid_column_end, PD.grid_row_start, PD.grid_row_end 
                           FROM part_diagrams_model_part_relations PD 
-                          INNER JOIN product P ON PD.part_id = P.product_id
+                          INNER JOIN oc_master.product P ON PD.part_id = P.product_id
                           INNER JOIN product_description PDES ON PD.part_id = PDES.product_id
                           INNER JOIN part_diagrams_models PM ON PD.model_id = PM.model_id 
                           WHERE PD.model_id = {$the_model_id}

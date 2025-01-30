@@ -10,8 +10,8 @@
 
     $query = "SELECT PD.id, PD.model_id, PM.model, PD.part_id, P.model AS part, PD.description, PD.grid_column_start, PD.grid_column_end, PD.grid_row_start, PD.grid_row_end 
               FROM part_diagrams_model_part_relations PD 
-              INNER JOIN product P ON PD.part_id = P.product_id
-              INNER JOIN part_diagrams_models PM ON PD.model_id = PM.model_id 
+              INNER JOIN oc_master.product P ON PD.part_id = P.product_id
+              INNER JOIN oc_master.part_diagrams_models PM ON PD.model_id = PM.model_id 
               WHERE PD.model_id = $the_model_id AND PD.part_id = $the_part_id";
 
     $select_parts_by_id = mysqli_query($connection, $query);

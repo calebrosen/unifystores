@@ -167,12 +167,12 @@ const CopyAttributes = () => {
       <div>
         <div className="centered">
           <div className="mt-4 mb-28">
-            <span className="font-sans bg-gradient-to-r from-cyan-800 to-slate-800 text-white font-medium py-6 px-8 rounded-xl text-6xl shadow-lg transform hover:scale-105 transition-transform duration-300">SELECT AN ATTRIBUTE TO COPY
+            <span className="fonbg-gradient-to-r from-cyan-800 to-slate-800 text-neutral-200 font-medium py-6 px-8 rounded-xl text-6xl shadow-lg transform hover:scale-105 transition-transform duration-300">SELECT AN ATTRIBUTE TO COPY
             </span>
           </div>
           <select
             id="selectAttributeGroup"
-            className="p-2 bg-slate-700 text-white text-3xl rounded-lg mb-12"
+            className="p-2 bg-slate-700 text-neutral-200 text-3xl rounded-lg mb-12"
             onChange={HandleChangeAttribute}
           >
             <option></option>
@@ -186,7 +186,7 @@ const CopyAttributes = () => {
           </select>
           <div>
             <button
-              className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105"
+              className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105"
               onClick={PreviewCopyAction}
             >
               Proceed
@@ -199,20 +199,20 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
-          <h1 className="text-5xl my-4 text-white font-bold">Selected: {selectedStore}</h1>
-          <p className="text-white text-4xl mt-12 font-semibold">
+          <h1 className="text-5xl my-4 text-neutral-200 font-bold">Selected: {selectedStore}</h1>
+          <p className="text-neutral-200 text-4xl mt-12 font-semibold">
             Products with the boxes checked will be copied to
           </p>
           <div className="flex flex-row gap-8 my-8 justify-content-center">
-            <button className="text-white bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
+            <button className="text-neutral-200 bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
               Go back
             </button>
-            <button className="text-white bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={CopyAttributesFromOCMToStoreAction}>Proceed</button>
+            <button className="text-neutral-200 bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={CopyAttributesFromOCMToStoreAction}>Proceed</button>
           </div>
-          <p className="text-4xl mt-8 mb-4 text-white font-bold">
+          <p className="text-4xl mt-8 mb-4 text-neutral-200 font-bold">
             T stands for Target | OCM stands for OCMaster
           </p>
-          <div className="text-3xl mt-14 text-white font-bold">Product IDs selected:</div>
+          <div className="text-3xl mt-14 text-neutral-200 font-bold">Product IDs selected:</div>
           <div className='lineBreakSpanContainer'>
           {Array.from(checkedItems) &&
             Array.from(checkedItems).length > 0 &&
@@ -222,8 +222,8 @@ const CopyAttributes = () => {
               </span>
           ))}</div>
           <div>
-            <button onClick={UnSelectAll} className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Uncheck all</button>
-            <button onClick={SelectAll} className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Check all</button>
+            <button onClick={UnSelectAll} className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Uncheck all</button>
+            <button onClick={SelectAll} className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Check all</button>
           </div>
           <table className="marginTop4rem">
             <thead>
@@ -289,14 +289,14 @@ const CopyAttributes = () => {
       <div>
         <div className="centered">
           <div className="spaceApart">
-            <button className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
+            <button className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
               Go back
             </button>
-            <button className="text-white bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={PreviewProductsToAffect}>
+            <button className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={PreviewProductsToAffect}>
               Proceed
             </button>
           </div>
-          <p className="text-white text-5xl mt-12 font-semibold">
+          <p className="text-neutral-200 text-5xl mt-12 font-semibold">
             Products on OCMaster with Attribute ID {selectedAttribute}
           </p>
           <table className="marginTop4rem">

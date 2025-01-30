@@ -33,7 +33,7 @@ function EditPushOrderStatusName() {
 
   return (
     <div id="orderStatusContainer" className='subsectionContainer'>
-      <p className='xlHeader'>Edit Order Status Name</p>
+      <p className="text-6xl bold underline text-neutral-200">Edit Order Status Name</p>
       <table className='marginTop3rem'>
         <thead>
           <tr>
@@ -52,12 +52,12 @@ function EditPushOrderStatusName() {
                   id={`orderStatusID${d.order_status_id}`}
                   defaultValue={d.name}
                   name={d.name}
-                  className='textBox1'
+                  className="bg-slate-700 rounded-lg text-neutral-200 p-2"
                 />
               </td>
               <td>
-                <button 
-                  className='darkRedButtonInlineMD'
+                <button
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105"
                   onClick={() => editOrderStatusName(d.order_status_id, d.name)}>
                     Edit Name
                 </button>

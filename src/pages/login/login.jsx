@@ -39,19 +39,19 @@ function Login() {
     >
       <div className="p-5 bg-slate-700 w-45 rounded">
         <form onSubmit={handleLogin}>
-          <h2 className="centered text-6xl p-3 font-mono text-white font-bold">
+          <h2 className="centered text-6xl p-3 text-neutral-200 font-bold">
             For IT Team Use ONLY
           </h2>
           <div className="mt-5 mb-4">
             <label
               htmlFor="username"
-              className="text-white font-mono block text-3xl"
+              className="text-neutral-200 block text-3xl"
             >
               Username
             </label>
             <input
               type="text"
-              className="font-mono w-100 Font-mono bg-slate-800 px-2 py-2.5 text-neutral-900 rounded-lg text-white text-3xl"
+              className="w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
               placeholder="Enter your username"
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -59,7 +59,7 @@ function Login() {
           <div className="mb-5">
             <label
               htmlFor="password"
-              className="text-white font-mono block text-3xl"
+              className="text-neutral-200 block text-3xl"
             >
               Password
             </label>
@@ -67,11 +67,11 @@ function Login() {
               type="password"
               id="password"
               placeholder="Enter your password"
-              class="font-mono w-100 Font-mono bg-slate-800 px-2 py-2.5 text-neutral-900 rounded-lg text-white text-3xl"
+              class="w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="text-white bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium font-mono rounded-xl text-3xl font-semibold py-2.5 mb-2 transition hover:scale-105 w-100">
+          <button type="submit" className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2.5 mb-2 transition hover:scale-105 w-100">
             Login
           </button>
         </form>

@@ -33,7 +33,7 @@ function EditPushManufacturerName() {
 
   return (
     <div id="manufacturersContainer" className='subsectionContainer'>
-      <p className='xlHeader'>Edit Manufacturer Name</p>
+      <p className="text-neutral-200 text-5xl mt-5 bold underline">Edit Manufacturer Name</p>
       <table className='marginTop3rem'>
         <thead>
           <tr>

@@ -32,14 +32,14 @@ function AddNewOrderStatus() {
   return (
     <div>
       <div className='centered'>
-        <p className='largeHeader marginTop2rem'>
+        <p className="text-5xl bold underline text-neutral-200">
           INPUT AN ORDER STATUS NAME
         </p>
         <div id="manufacturersContainer" className='subsectionContainer'>
-          <input className='inputBox1' onChange={updateOrderStatusName}></input>
+          <input className="bg-slate-800 p-2 text-neutral-900 mt-5 rounded-lg h-100 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700" onChange={updateOrderStatusName}></input>
         </div>
         <div>
-          <button className='darkRedButton marginTop4rem' onClick={addOrderStatusAction}>Add Order Status</button>
+          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 mt-5 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" onClick={addOrderStatusAction}>Add Order Status</button>
         </div>
       </div>
     </div>

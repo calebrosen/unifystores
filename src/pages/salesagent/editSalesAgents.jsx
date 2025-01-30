@@ -39,47 +39,39 @@ function EditSalesAgents() {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        style={{
-          content: {
-            width: "auto",
-            height: "auto",
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          },
-        }}
+        className="w-1/3 bg-slate-700 text-white rounded-lg p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        overlayClassName={"Overlay"}
       >
       <form onSubmit={SaveChanges}>
         <div>
           <h1>
-            <span style={{ color: "rgb(172, 26, 26)" }}>Edit {selectedFName} {selectedLName}</span>
+            <span className="text-white text-4xl">Edit {selectedFName} {selectedLName}</span>
           </h1>
-          <div>
-            <label className="labelInputBox2">
-              First Name{" "}
+          <div className="mt-5">
+            <label className="text-2xl text-white">
+              First Name
               <input
-                className="inputBox4"
+                className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
                 defaultValue={selectedFName}
                 onChange={(e) => setSelectedFName(e.target.value)}
               ></input>
             </label>
           </div>
-          <div>
-            <label className="labelInputBox2">
+          <div className="my-2">
+          <label className="text-2xl text-white">
               Last Name{" "}
               <input
-                className="inputBox4"
+                className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
                 defaultValue={selectedLName}
                 onChange={(e) => setSelectedLName(e.target.value)}
               ></input>
             </label>
           </div>
-          <div>
-            <label className="labelInputBox2">
+          <div className="my-2">
+          <label className="text-2xl text-white">
               Status{" "}
               <select
-                className="selectBox1"
+                className="block w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
                 defaultValue={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
               >
@@ -88,7 +80,7 @@ function EditSalesAgents() {
               </select>
             </label>
           </div>
-          <button className="saveButtonLG marginTop4rem">Save</button>
+          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2 px-3 transition hover:scale-105 mt-4">Save</button>
         </div>
         </form>
       </Modal>
@@ -118,7 +110,7 @@ function EditSalesAgents() {
   return (
     <div>
       <div className="centered">
-        <p className="xlHeader marginTop2rem">Edit Sales Agents</p>
+        <p className="text-white text-6xl bold underline">Edit Sales Agents</p>
         <div id="salesAgentContainer">
           <table className="marginTop3rem">
             <thead>
@@ -144,7 +136,7 @@ function EditSalesAgents() {
                       data-custom-firstname={d.firstname}
                       data-custom-lastname={d.lastname}
                       data-custom-status={d.status}
-                      className="darkRedButtonInlineMD"
+                      className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-2xl font-semibold p-2 transition hover:scale-105"
                     >
                       Edit
                     </button>

@@ -39,8 +39,8 @@ function ViewEnabledCountries() {
 
     return (
         <div id="countriesContainer" className='subsectionContainer'>
-            <p className='xlHeader'>Enabled Countries (Except USA)</p>
-            <table className='marginTop3rem'>
+            <p className="text-neutral-200 text-6xl bold underline">Enabled Countries (Except USA)</p>
+            <table className="mt-5">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -53,7 +53,7 @@ function ViewEnabledCountries() {
                     <tr key={i}>
                         <td>{d.country_id}</td>
                         <td>{d.name}</td>
-                        <td>&nbsp;<button className='darkRedButtonInline' data-status={d.status} id={d.country_id} value={d.name} onClick={disableCountry}>Disable</button></td>
+                        <td><button  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-2xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105" data-status={d.status} id={d.country_id} value={d.name} onClick={disableCountry}>Disable</button></td>
                     </tr>
                 ))}
                 </tbody>

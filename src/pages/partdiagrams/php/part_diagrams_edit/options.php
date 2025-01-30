@@ -13,8 +13,8 @@
 
         $query = "SELECT DISTINCT O.id, O.option_part_id, O.model_id, O.description, P.model
         FROM  part_diagrams_part_options O 
-        INNER JOIN product P ON P.product_id = O.option_part_id 
-        INNER JOIN product_description PD ON PD.product_id = P.product_id 
+        INNER JOIN oc_master.product P ON P.product_id = O.option_part_id 
+        INNER JOIN oc_master.product_description PD ON PD.product_id = P.product_id 
         WHERE O.part_id = {$part_id} AND O.model_id = {$model_id}";
 
         $select_options_query = mysqli_query($connection, $query);

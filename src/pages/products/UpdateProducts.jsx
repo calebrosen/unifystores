@@ -355,27 +355,27 @@ function UpdateProducts() {
     return (
       <div>
         <div className="centered">
-          <p className="xlHeader marginTop3rem">
+          <p className="text-6xl underline bold text-neutral-200 mt-20">
             SELECT WHICH PRODUCTS TO UPDATE
           </p>
           {productIdsToUpdate && productIdsToUpdate.length > 0 && (
-            <div>
-              <span style={{ fontSize: "24px" }}>Product ID's selected: </span>
+            <div className="mt-4">
+              <span className="text-4xl text-neutral-200">Product ID's selected: </span>
               {productIdsToUpdate.map((d, i) => (
-                <span key={i} style={{ fontSize: "20px" }}>
+                <span key={i} className="text-4xl text-neutral-200">
                   {d}&nbsp;
                 </span>
               ))}
-              <div>
+              <div className="mt-10">
                 <button
-                  className="saveButtonLG marginTop2rem"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105"
                   onClick={ProceedToStep2}
                 >
                   Proceed
                 </button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button
-                  className="deleteButtonLG marginTop2rem"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105"
                   onClick={ClearSelection}
                 >
                   Clear Selection
@@ -386,14 +386,14 @@ function UpdateProducts() {
         </div>
         <div className="centeredContainer">
           <input
-            className="marginTop3rem inputBox1"
+            className="bg-slate-800 px-2 py-3 m-0 text-neutral-800 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700"
             label="Search by Name"
             placeholder="Search by Name"
             value={nameSearchQuery}
             onChange={handleNameSearch}
           />
           <input
-            className="marginTop3rem inputBox1"
+            className="bg-slate-800 px-2 py-3 m-0 text-neutral-800 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700"
             label="Search by MPN"
             placeholder="Search by MPN"
             value={mpnSearchQuery}
@@ -444,11 +444,11 @@ function UpdateProducts() {
     return (
       <div>
         <div className="goBack">
-          <button className="GoBackButton" onClick={GoBackOneStep}>
+          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105" onClick={GoBackOneStep}>
             Go Back
           </button>
         </div>
-        <div className="xlHeader">
+        <div className="text-neutral-200 text-6xl mt-3 bold underline">
           Are you SURE these are the correct product(s) to update to{" "}
           {selectedStore}?
         </div>
@@ -477,12 +477,12 @@ function UpdateProducts() {
           </tbody>
         </table>
         <button
-          className="correctProductsConfirmButton"
+          className="text-neutral-200 mt-5 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105"
           onClick={ProceedToStep3}
         >
           YES! These are the correct products.
         </button>
-        <div className="lastMessageCopy">{lastMessage}</div>
+        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   } else if (step3) {
@@ -493,7 +493,7 @@ function UpdateProducts() {
             Go Back
           </button>
         </div>
-        <div className="lastMessageCopy">{lastMessage}</div>
+        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   }

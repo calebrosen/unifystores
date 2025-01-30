@@ -19,7 +19,7 @@ function StoresRadio({ children }) {
   return (
     <div id="storeContainer">
     <div id="storesRadioInner">
-      <p className='text-5xl font-bold text-neutral-100 mb-6'>SELECT STORE TO AFFECT</p>
+      <p className="text-6xl font-bold text-neutral-200 mb-6">SELECT STORE TO AFFECT</p>
       <div className="flex flex-row gap-7 justify-content-center">
       {
         data
@@ -36,7 +36,7 @@ function StoresRadio({ children }) {
                 checked={selectedStore === d.ms_short_name}
                 onChange={handleStoreChange}
               />
-              <label htmlFor={`select${d.ms_short_name}`} className="text-white mx-2 text-4xl"> {d.ms_short_name} </label>
+              <label htmlFor={`select${d.ms_short_name}`} className="text-neutral-200 mx-2 text-5xl"> {d.ms_short_name} </label>
             </span>
           ))
       }

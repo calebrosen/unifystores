@@ -21,7 +21,7 @@ function goToHomepage() {
 
     return (
         <div className="transition-all duration-300 transform sticky top-[1.25%] left-[1.38%]">
-            <span className='bg-slate-700 text-white border-neutral-600 py-2.5 px-3 border-1 rounded-lg text-2xl'>
+            <span className='bg-slate-700 text-neutral-200 border-neutral-600 py-2.5 px-3 border-1 rounded-lg text-2xl'>
                 <a onClick={goToHomepage} className="cursor-pointer hover:no-underline hover:text-cyan-500"><FontAwesomeIcon icon={faHouse} /> Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a onClick={goBack} className="cursor-pointer hover:no-underline hover:text-cyan-500"><FontAwesomeIcon icon={faArrowLeft} /> Back</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a onClick={logout} className="cursor-pointer hover:no-underline hover:text-cyan-500"><FontAwesomeIcon icon={faRightFromBracket} /> Logout</a>

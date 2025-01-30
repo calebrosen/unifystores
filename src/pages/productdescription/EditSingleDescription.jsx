@@ -256,40 +256,40 @@ function EditSingleProductDescription() {
   return (
     <div>
     <div className="centered">
-      <span className='xlHeader'>Edit Product Description Table</span>
+      <span className="my-5 text-white text-6xl bold underline">Edit Product Description Table</span>
     </div>
       <form>
         <div className="centeredContainer marginBottom4rem">
-          <label className="labelForInput">
-            Name: &nbsp;
+          <label className="text-white text-3xl">
+            Name:&nbsp;
             <input
-              className="marginTop2rem inputBox5"
+              className="bg-slate-700 rounded-lg text-neutral-200 p-2"
               placeholder="Name"
               name="productName"
             />
           </label>
-          <label className="labelForInput">
+          <label className="text-white text-3xl">
             MPN: &nbsp;
             <input
-              className="marginTop2rem inputBox5"
+              className="bg-slate-700 rounded-lg text-neutral-200 p-2"
               label="MPN"
               placeholder="MPN"
               name="productMPN"
             />
           </label>
-          <label className="labelForInput">
+          <label className="text-white text-3xl">
             Model: &nbsp;
             <input
-              className="marginTop2rem inputBox5"
+              className="bg-slate-700 rounded-lg text-neutral-200 p-2"
               label="Model"
               placeholder="Model"
               name="productModel"
             />
           </label>
-          <label className="labelForInput">
+          <label className="text-white text-3xl">
             Status: &nbsp;
             <select
-              className="marginTop2rem inputBox5"
+              className="bg-slate-700 rounded-lg text-neutral-200 p-2"
               type="select"
               name="productStatus"
             >
@@ -298,10 +298,10 @@ function EditSingleProductDescription() {
               <option value="0">Disabled</option>
             </select>
           </label>
-          <label className="labelForInput">
+          <label className="text-white text-3xl">
             Hidden: &nbsp;
             <select
-              className="marginTop2rem inputBox5"
+              className="bg-slate-700 rounded-lg text-neutral-200 p-2"
               type="select"
               name="productHidden"
             >
@@ -312,11 +312,11 @@ function EditSingleProductDescription() {
           </label>
         </div>
         <div className="centered">
-          <label>Ununified Only? <input type="checkbox" onChange={handleUnunifiedCheckbox}></input></label>&nbsp;&nbsp;&nbsp;
+          <label className="text-white text-2xl">Ununified Only? <input type="checkbox" onChange={handleUnunifiedCheckbox}></input></label>&nbsp;&nbsp;&nbsp;
           <button
             type="submit"
             onClick={handleSearch}
-            className="darkRedButtonInlineMD"
+            className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-2 transition hover:scale-105"
           >
             Search
           </button>
@@ -345,7 +345,7 @@ function EditSingleProductDescription() {
                   data-custom-mpn={d.MPN}
                   data-custom-label={d.Label}
                   id={d.productID}
-                  className="darkRedButtonInlineMD"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105"
                   onClick={openModal}
                 >
                   View/Edit
@@ -360,26 +360,30 @@ function EditSingleProductDescription() {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Description Modal"
+        overlayClassName={"Overlay"}
+        className="w-3/5 bg-slate-700 text-white rounded-lg p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div>
           <div>
-            <h1>
+            <h1 className="text-white text-4xl bold">
               Model: {selectedModel} ••• MPN: {selectedMPN} ••• Label:{" "}
               {productLabel}{" "}
             </h1>
+            <br />
             {/* Name */}
             <h2>Product Name</h2>
             <textarea
-              className="textAreaAutoLarger"
+              className="bg-slate-800 text-white p-2 mt-2 mb-10 w-full h-auto"
               defaultValue={name}
               onChange={(e) => handleValuesChange(e, "name")}
             ></textarea>
             {/* Description */}
             <h2>Product Description</h2>
+            <br></br>
             <h3>Code</h3>
               <textarea
                 defaultValue={description}
-                className="textAreaAuto"
+                className="bg-slate-800 text-white p-2 mt-2 w-full h-auto"
                 onChange={(e) => handleValuesChange(e, "description")}
               />
             <ProductDescriptionPreview/>
@@ -387,20 +391,20 @@ function EditSingleProductDescription() {
             <h2>Meta Description</h2>
             <textarea
               maxLength={155}
-              className="textAreaAuto"
+              className="bg-slate-800 text-white p-2 mt-2 mb-10 w-full h-auto"
               defaultValue={metaDescription}
               onChange={(e) => handleValuesChange(e, "metaDescription")}
             ></textarea>
             {/* Meta Keywords */}
             <h2>Meta Keywords</h2>
             <textarea
-              className="textAreaAuto"
+              className="bg-slate-800 text-white p-2 mt-2 mb-10 w-full h-auto"
               defaultValue={metaKeywords}
               onChange={(e) => handleValuesChange(e, "metaKeywords")}
             ></textarea>
           </div>
-          <div className="centered marginTop3rem">
-            <button className="saveButtonLG" onClick={saveProductDescription}>Save</button>
+          <div className="centered">
+            <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2 px-3 transition hover:scale-105" onClick={saveProductDescription}>Save</button>
           </div>
         </div>
       </Modal>

@@ -393,7 +393,7 @@ function CopyProductsToStores() {
       title: "What does Force Copy mean?",
       text: "Force copy means that even if the product already exists, it will copy it over. Otherwise, it will not copy it over. For example, if you are copying a E660i-9EAN, and the store already has an E660i-9EAN (even though the item descriptions may be different), it will not copy it unless this box is checked.",
       icon: "question",
-      customClass: "sweetalert-lg-info",
+      customClass: "sweetalert-lg-info bg-slate-600 text-neutral-200",
     });
   };
 
@@ -401,27 +401,27 @@ function CopyProductsToStores() {
     return (
       <div>
         <div className="centered">
-          <p className="xlHeader marginTop3rem">
+          <p className="text-6xl underline bold text-neutral-200 mt-20">
             SELECT WHICH PRODUCTS TO COPY
           </p>
           {productIdsToCopy && productIdsToCopy.length > 0 && (
-            <div>
-              <span style={{ fontSize: "24px" }}>Product ID's selected: </span>
+            <div className="mt-4">
+              <span className="text-4xl text-neutral-200">Product ID's selected: </span>
               {productIdsToCopy.map((d, i) => (
-                <span key={i} style={{ fontSize: "20px" }}>
+                <span key={i} className="text-4xl text-neutral-200">
                   {d}&nbsp;
                 </span>
               ))}
-              <div>
+              <div className="mt-10">
                 <button
-                  className="saveButtonLG marginTop2rem"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105"
                   onClick={ProceedToStep2}
                 >
                   Proceed
                 </button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button
-                  className="deleteButtonLG marginTop2rem"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105"
                   onClick={ClearSelection}
                 >
                   Clear Selection
@@ -432,14 +432,14 @@ function CopyProductsToStores() {
         </div>
         <div className="centeredContainer">
           <input
-            className="marginTop3rem inputBox1"
+            className="bg-slate-800 px-2 py-3 m-0 text-neutral-800 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700"
             label="Search by Name"
             placeholder="Search by Name"
             value={nameSearchQuery}
             onChange={handleNameSearch}
           />
           <input
-            className="marginTop3rem inputBox1"
+            className="bg-slate-800 px-2 py-3 m-0 text-neutral-800 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700"
             label="Search by MPN"
             placeholder="Search by MPN"
             value={mpnSearchQuery}
@@ -464,10 +464,9 @@ function CopyProductsToStores() {
               {filteredProducts.map((d, i) => (
                 <tr key={i}>
                   <td>
-                    &nbsp;&nbsp;&nbsp;{" "}
                     <input
                       type="checkbox"
-                      className="checkboxForCopyProduct"
+                      className="w-10 h-10 rounded-lg bg-white"
                       data-custom-product-id={d.ProductID}
                       onClick={UpdateProductsToCopyList}
                     ></input>
@@ -490,11 +489,11 @@ function CopyProductsToStores() {
     return (
       <div>
         <div className="goBack">
-          <button className="GoBackButton" onClick={GoBackOneStep}>
+          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105" onClick={GoBackOneStep}>
             Go Back
           </button>
         </div>
-        <div className="xlHeader">
+        <div className="text-neutral-200 text-6xl mt-3 bold underline">
           Are you SURE these are the correct product(s) to copy to{" "}
           {selectedStore}?
         </div>
@@ -502,22 +501,23 @@ function CopyProductsToStores() {
           <thead>
             <tr>
               <th onClick={ExplainForceCopy}>
-                Force Copy{" "}
+                Force Copy <span className="inline-block vertical-align-middle align-items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="23"
-                  width="23"
+                  height="15"
+                  width="15"
                   viewBox="0 0 512 512"
                 >
                   <path
-                    fill="#005eff"
+                    fill="#fff"
                     d="M504 256c0 137-111 248-248 248S8 393 8 256C8 119.1 119 8 256 8s248 111.1 248 248z"
                   />
                   <path
-                    fill="#ffffff"
+                    fill="#3fa9f5"
                     d="M262.7 90c-54.5 0-89.3 23-116.5 63.8-3.5 5.3-2.4 12.4 2.7 16.3l34.7 26.3c5.2 3.9 12.6 3 16.7-2.1 17.9-22.7 30.1-35.8 57.3-35.8 20.4 0 45.7 13.1 45.7 33 0 15-12.4 22.7-32.5 34C247.1 238.5 216 254.9 216 296v4c0 6.6 5.4 12 12 12h56c6.6 0 12-5.4 12-12v-1.3c0-28.5 83.2-29.6 83.2-106.7 0-58-60.2-102-116.5-102zM256 338c-25.4 0-46 20.6-46 46 0 25.4 20.6 46 46 46s46-20.6 46-46c0-25.4-20.6-46-46-46z"
                   />
                 </svg>
+                </span>
               </th>
               <th>ID</th>
               <th>Model</th>
@@ -534,7 +534,7 @@ function CopyProductsToStores() {
                   &nbsp;&nbsp;&nbsp;{" "}
                   <input
                     type="checkbox"
-                    className="checkboxForCopyProduct"
+                    className="w-10 h-10 rounded-lg bg-white"
                     checked={!!forceCopyState[d.product_id]}
                     onChange={() => handleCheckboxChange(d.product_id)}
                   ></input>
@@ -550,23 +550,23 @@ function CopyProductsToStores() {
           </tbody>
         </table>
         <button
-          className="correctProductsConfirmButton"
+          className="text-neutral-200 mt-5 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105"
           onClick={ProceedToStep3}
         >
           YES! These are the correct products.
         </button>
-        <div className="lastMessageCopy">{lastMessage}</div>
+        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   } else if (step3) {
     return (
       <div>
         <div className="goBack">
-          <button className="GoBackButton" onClick={GoBackOneStep}>
+          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105" onClick={GoBackOneStep}>
             Go Back
           </button>
         </div>
-        <div className="lastMessageCopy">{lastMessage}</div>
+        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   }

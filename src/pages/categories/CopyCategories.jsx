@@ -123,25 +123,24 @@ function CopyCategories() {
       {/* First step (selecting categories) */}
       {step == 1 && (
         <div id="categoryContainer" className="subsectionContainer">
-          <div className="xlHeader marginTop4rem">Copy Categories</div>
           {categoryIDsToCopy && categoryIDsToCopy.length > 0 && (
             <div>
-              <span style={{ fontSize: "24px" }}>Category ID's selected: </span>
+              <p className="text-3xl text-neutral-200 mt-8">Category ID's selected: </p>
               {categoryIDsToCopy.map((d, i) => (
-                <span key={i} style={{ fontSize: "20px" }}>
+                <span key={i} className="text-neutral-200 text-3xl">
                   {d}&nbsp;
                 </span>
               ))}
-              <div>
+              <div className="mt-10">
                 <button
-                  className="saveButtonLG marginTop2rem"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-3 px-3 me-2 mb-2 transition hover:scale-105"
                   onClick={() => ChangeStep(2)}
                 >
                   Proceed
                 </button>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button
-                  className="deleteButtonLG marginTop2rem"
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-3 px-3 me-2 mb-2 transition hover:scale-105"
                   onClick={ClearSelection}
                 >
                   Clear Selection
@@ -151,7 +150,7 @@ function CopyCategories() {
           )}
           <div>
             <input
-              className="marginTop3rem inputBox1"
+              className="bg-slate-700 p-3 rounded-lg text-neutral-200 text-4xl mt-4 w-25"
               label="Search by Name or Parent Name"
               placeholder="Search by Name or Parent Name"
               onChange={FilterCategories}
@@ -197,7 +196,7 @@ function CopyCategories() {
     <div id="categoryContainer" className="subsectionContainer">
       <div className="xlHeader marginTop4rem">Review Categories</div>
       <div>
-        <button className="saveButtonLG marginTop2rem" onClick={CopyCategoriesAction}>Proceed</button>
+        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-2xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105" onClick={CopyCategoriesAction}>Proceed</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button
             className="deleteButtonLG marginTop2rem"

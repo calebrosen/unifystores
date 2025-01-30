@@ -6,6 +6,7 @@ body {
   padding: 25px;
   margin: 0;
   width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   background-color: #131c27;
   color: #333;
   font: 'Interim'
@@ -671,8 +672,9 @@ tbody tr:hover {
   transform: translate(-50%, -50%);
   width: 80%;
   max-width: 500px;
-  background: white;
+  background: #354054;
   padding: 20px;
+  color: #f8f8f8;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   z-index: 1000;
@@ -685,7 +687,7 @@ tbody tr:hover {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999; 
+  z-index: 999;
 }
 
 .spaceBetween {
