@@ -66,10 +66,7 @@ function DiscontinuedWhileSuppliesLast() {
             alert(res.data[0][0]["success"]);
             location.reload();
           }
-          else if (res.data[0][0]["duplicate"]) {
-            alert("Product is already in list");
-          }
-            else {
+          else {
             alert("Something went wrong.");
           }
           console.log(res);
@@ -93,6 +90,8 @@ function DiscontinuedWhileSuppliesLast() {
           console.log(res);
           if (res.data[0][0]["success"]) {
             alert(res.data[0][0]["success"]);
+          } else if (res.data[0][0]["duplicate"]) {
+            alert("Product is already in list");
           } else {
             alert("Something went wrong.");
           }
