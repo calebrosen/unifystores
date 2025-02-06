@@ -11,7 +11,7 @@ function Coupons() {
 
   return (
     
-    <div id="couponContainer" className='subsectionContainer'>
+    <div id="couponContainer" className='text-center'>
       <div className="text-center mb-12">
         <span className="inline-block bg-gradient-to-r from-cyan-800 to-slate-800 text-neutral-200 font-medium py-6 px-8 rounded-xl text-6xl shadow-lg transform hover:scale-105 transition-transform duration-300">
           Select a Subsection

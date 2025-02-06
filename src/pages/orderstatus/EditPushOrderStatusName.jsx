@@ -32,9 +32,9 @@ function EditPushOrderStatusName() {
   }
 
   return (
-    <div id="orderStatusContainer" className='subsectionContainer'>
-      <p className="text-6xl bold underline text-neutral-200">Edit Order Status Name</p>
-      <table className='marginTop3rem'>
+    <div id="orderStatusContainer" className='text-center'>
+      <p className="text-6xl font-bold underline text-neutral-200">Edit Order Status Name</p>
+      <table className='mt-5'>
         <thead>
           <tr>
             <th>ID</th>

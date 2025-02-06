@@ -143,270 +143,6 @@ body {
   font-weight: 700;
 }
 
-.largeHeader {
-  font-size:2.55rem;
-  color: rgb(172, 26, 26);
-  text-decoration: underline;
-  font-weight: 700;
-}
-
-.xlHeader {
-  font-size:3.55rem;
-  color: rgb(172, 26, 26);
-  text-decoration: underline;
-  font-weight: 700;
-}
-
-.xxlHeader {
-  font-size:4.25rem;
-  color: rgb(172, 26, 26);
-  text-decoration: underline;
-  font-weight: 700;
-}
-
-
-.mediumHeader {
-  font-size:2.25rem;
-  color: rgb(172, 26, 26);
-  text-decoration: underline;
-  font-weight: 700;
-}
-
-.smHeader {
-  font-size:1.95rem;
-  color: rgb(172, 26, 26);
-  text-decoration: underline;
-  font-weight: 700;
-}
-
-.subsectionContainer {
-  text-align: center;
-}
-
-.marginTopAndBottom {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
-
-.tableButton {
-  border: 1px solid #3a3a3a;
-  border-radius: 4px;
-}
-
-.hiddenButton {
-  visibility: hidden;
-}
-
-.marginTop4rem {
-  margin-top: 4rem;
-}
-
-.marginTop3rem {
-  margin-top: 3rem;
-}
-
-.marginTop2rem {
-  margin-top: 2rem;
-}
-
-.marginTop1rem {
-  margin-top: 1rem;
-}
-
-.agentSelection  {
-  appearance: none;
-  padding: 3px 2em 3px 8px;
-  border: 2px solid gray;
-  font-size:2.3rem;
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-  width: auto;
-  background-color: white;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7 10l5 5 5-5" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3C/path%3E%3C/svg%3E');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 20px;
-}
-
-.agentSelection select:hover {
-  border-color: darkgreen;
-}
-
-.agentSelection select:focus {
-  border-color: green;
-}
-
-.editPreviewButton {
-  background-color: white;
-  color: darkred;
-  border: 1px solid #3b3b3b;
-  font-size:2.35rem;
-  border-radius: 4px;
-}
-
-.editPreviewButton:hover:active {
-  background-color: darkred;
-  color: white;
-  border: 1px solid #3b3b3b;
-  border-radius: 4px;
-}
-
-.agentSelection select option {
-  background-color: white;
-  color: black;
-}
-
-.hugeInput {
-  width:100%;
-  height:70vh;
-  border-radius: 4px;
-}
-
-.selectBox1 {
-  margin-top:2rem;
-  font-size:2.35rem;
-  padding: 2px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.marginBottom1rem {
-  margin-bottom:1rem;
-}
-
-.marginBottom2rem {
-  margin-bottom:2rem;
-}
-
-.marginBottom3rem {
-  margin-bottom:3rem;
-}
-
-.marginBottom4rem {
-  margin-bottom:4rem;
-}
-
-.selectBox1:hover:active::selection::after {
-  margin-top:2rem;
-  font-size:2.35rem;
-  padding: 2px;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.selectBox2 {
-  margin-top:2rem;
-  font-size:2rem;
-  padding: 2px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.selectBox2:hover:active::selection::after {
-  margin-top:2rem;
-  padding: 2px;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.inputBox1 {
-  margin-top:2rem;
-  font-size:2.45rem;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.inputBox1:hover:active::selection::after {
-  margin-top:2rem;
-  font-size:2.45rem;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.inputBox3 {
-  margin-top:2rem;
-  font-size:2.8rem;
-  width:80%;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.inputBox3:hover:active::selection::after {
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.inputBox4 {
-  margin-top:2rem;
-  font-size:2.6rem;
-  width:50%;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.inputBox4:hover:active::selection::after {
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.inputBox5 {
-  margin-top:2rem;
-  font-size:2rem;
-  padding: 4px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.inputBox5:hover:active::selection::after {
-  margin-top:2rem;
-  font-size:2rem;
-  border-radius: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.labelInputBox2 {
-  font-size:2rem;
-}
-
-.spaceAroundSpan {
-  padding: 8px;
-}
-.inputBox2 {
-  margin-top:2rem;
-  font-size:1.75rem;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid rgb(163, 163, 163);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-}
-
-.inputBox2:hover:active::selection::after {
-  margin-top:2rem;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-  border: 1px solid darkred;
-}
-
-.regText {
-  font-size:1.5rem;
-}
-
 .textBoxCoupon  {
   appearance: none;
   padding: 3px 8px 3px 8px;
@@ -717,22 +453,6 @@ tbody tr:hover {
   min-width: 100px;
 }
 
-.deleteButton:hover {
-  color:darkred;
-  background-color: rgb(228, 228, 228);
-  font-weight: 800;
-  padding: 5px 7px;
-  border-radius: 4px;
-}
-
-.deleteButton {
-  color:white;
-  background-color: darkred;
-  font-weight: 800;
-  padding: 5px 7px;
-  border-radius: 4px;
-}
-
 .saveButton {
   font-weight: 800;
   padding: 5px 7px;
@@ -776,11 +496,6 @@ tbody tr:hover {
   color: firebrick;
 }
 
-.blackBold {
-  font-weight: 750;
-  color:black;
-}
-
 .infoTextHelp {
   margin-top: 1rem;
   color: darkred;
@@ -792,35 +507,8 @@ tbody tr:hover {
   text-align: center;
 }
 
-.largeModal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 75%;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
-
-.largeOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999; 
-}
-
 .tinyTh {
   width: 2%;
-}
-
-.bold {
-  font-weight: bold;
 }
 
 .textAreaAuto {
@@ -843,12 +531,6 @@ tbody tr:hover {
 .checkboxForCopyProduct {
   margin-left: 5px;
   transform: scale(2.5);
-}
-
-.biggerCheckbox {
-  transform: scale(2);
-  position: relative;
-  display: flexbox;
 }
 
 .spaceApart {

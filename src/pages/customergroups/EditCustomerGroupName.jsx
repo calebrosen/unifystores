@@ -17,7 +17,7 @@ function EditCustomerGroupName() {
   }
 
   const editCustomerGroupName = (customerGroupID, originalName) => {
-    if (name != originalName) {
+    if (name != originalName && name != '') {
       const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${customerGroupID}) to ${name}?`);
       if (confirmPush) {
         axios.post(`${process.env.REACT_APP_API_URL}/node/customers/editCustomerGroupName`, { customerGroupID, name })
@@ -35,9 +35,9 @@ function EditCustomerGroupName() {
   }
 
   return (
-    <div id="customerGroupsContainer" className='subsectionContainer'>
-      <p className='xlHeader'>Edit Customer Group Name</p>
-      <table className='marginTop3rem'>
+    <div id="customerGroupsContainer" className='text-center'>
+      <p className="text-6xl text-white font-bold underline my-4">Edit Customer Group Name</p>
+      <table className='mt-5'>
         <thead>
           <tr>
             <th>ID</th>
@@ -55,13 +55,13 @@ function EditCustomerGroupName() {
                   id={`customerGroupID${d.customer_group_id}`}
                   defaultValue={d.name}
                   name={d.name}
-                  className='textBox1'
+                  className="bg-slate-700 p-2 rounded-lg text-neutral-200 text-4xl"
                   onChange={updateName}
                 />
               </td>
               <td>
-                <button 
-                  className='darkRedButtonInlineMD' 
+                <button
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105"
                   onClick={() => editCustomerGroupName(d.customer_group_id, d.name)}>
                     Edit Name
                 </button>

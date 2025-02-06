@@ -166,7 +166,7 @@ const CopyFilters = () => {
     return (
       <div>
         <div className="centered">
-          <p className="xlHeader marginTop3rem">SELECT AN ATTRIBUTE TO COPY</p>
+          <p className="xlHeader mt-5">SELECT AN ATTRIBUTE TO COPY</p>
           <select
             id="selectAttributeGroup"
             className="selectBox1"
@@ -183,7 +183,7 @@ const CopyFilters = () => {
           </select>
           <div>
             <button
-              className="darkRedButton marginTop4rem"
+              className="darkRedButton mt-5"
               onClick={PreviewCopyAction}
             >
               Proceed
@@ -197,7 +197,7 @@ const CopyFilters = () => {
       <div>
         <div className="centered">
           <h1 style={{ fontWeight: "700" }}>Selected: {selectedStore}</h1>
-          <p className="xlHeader marginTop3rem">
+          <p className="xlHeader mt-5">
             Products with the boxes checked will be copied to
           </p>
           <div className="spaceApart">
@@ -206,7 +206,7 @@ const CopyFilters = () => {
             </button>
             <button className="darkRedButton" onClick={CopyAttributesFromOCMToStoreAction}>Proceed</button>
           </div>
-          <p className="miniInfoText marginTop3rem">
+          <p className="miniInfoText mt-5">
             T stands for Target | OCM stands for OCMaster
           </p>
           <div style={{fontSize: '22px', padding: '8px', color: 'firebrick'}}>Product IDs selected:</div>
@@ -222,7 +222,7 @@ const CopyFilters = () => {
             <button onClick={UnSelectAll} className='darkRedButtonInlineMD' style={{margin: '15px'}}>Uncheck all</button>
             <button onClick={SelectAll} className='darkRedButtonInlineMD' style={{margin: '15px'}}>Check all</button>
           </div>
-          <table className="marginTop4rem">
+          <table className="mt-5">
             <thead>
               <tr>
                 <th>Copy</th>
@@ -293,10 +293,10 @@ const CopyFilters = () => {
               Proceed
             </button>
           </div>
-          <p className="xlHeader marginTop3rem">
+          <p className="xlHeader mt-5">
             Products on OCMaster with Attribute ID {selectedAttribute}
           </p>
-          <table className="marginTop4rem">
+          <table className="mt-5">
             <thead>
               <tr>
                 <th>ID</th>

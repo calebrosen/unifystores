@@ -38,9 +38,9 @@ function ViewEnabledZones() {
     }
 
     return (
-        <div id="zonesContainer" className='subsectionContainer'>
-            <p className='xlHeader'>Enabled Zones (Except the 50 States)</p>
-            <table className='marginTop3rem'>
+        <div id="zonesContainer" className='text-center'>
+            <p className="text-6xl text-white font-bold underline">Enabled Zones (Except the 50 States)</p>
+            <table className='mt-5'>
                 <thead>
                     <tr>
                         <th>ID</th>

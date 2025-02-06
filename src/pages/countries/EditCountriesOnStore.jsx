@@ -88,7 +88,7 @@ function EditCountriesOnStore() {
     }
 
     return (
-        <div id="countriesContainer" className='subsectionContainer'>
+        <div id="countriesContainer" className='text-center'>
             {/*searchable input */}
             <input 
                 className="bg-slate-700 p-3 mt-8 rounded-lg text-neutral-200 text-4xl"
@@ -97,7 +97,7 @@ function EditCountriesOnStore() {
                 value={searchQuery}
                 onChange={handleSearch}
             />
-            <table className='marginTop3rem'>
+            <table className='mt-5'>
                 <thead>
                     <tr>
                         <th>ID</th>

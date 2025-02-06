@@ -32,10 +32,10 @@ function AddNewSalesAgent() {
   return (
     <div>
       <div className='centered'>
-        <p className="mt-5 text-white text-5xl bold">
+        <p className="mt-5 text-white text-5xl font-bold">
           INPUT A SALES AGENT NAME (Formatted like "Caleb R")
         </p>
-        <div id="salesAgentContainer" className='subsectionContainer'>
+        <div id="salesAgentContainer" className='text-center'>
           <input className="bg-slate-800 mt-5 px-2 py-2 m-0 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700" onChange={updateSalesAgentName}></input>
         </div>
         <div>

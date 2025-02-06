@@ -225,7 +225,7 @@ const CopyAttributes = () => {
             <button onClick={UnSelectAll} className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Uncheck all</button>
             <button onClick={SelectAll} className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Check all</button>
           </div>
-          <table className="marginTop4rem">
+          <table className="mt-5">
             <thead>
               <tr>
                 <th>Copy</th>
@@ -299,7 +299,7 @@ const CopyAttributes = () => {
           <p className="text-neutral-200 text-5xl mt-12 font-semibold">
             Products on OCMaster with Attribute ID {selectedAttribute}
           </p>
-          <table className="marginTop4rem">
+          <table className="mt-5">
             <thead>
               <tr>
                 <th>ID</th>

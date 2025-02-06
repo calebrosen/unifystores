@@ -38,8 +38,8 @@ function ViewEnabledCountries() {
     }
 
     return (
-        <div id="countriesContainer" className='subsectionContainer'>
-            <p className="text-neutral-200 text-6xl bold underline">Enabled Countries (Except USA)</p>
+        <div id="countriesContainer" className='text-center'>
+            <p className="text-neutral-200 text-6xl font-bold underline">Enabled Countries (Except USA)</p>
             <table className="mt-5">
                 <thead>
                     <tr>

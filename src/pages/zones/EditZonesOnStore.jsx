@@ -70,16 +70,16 @@ function EditZonesOnStore() {
     }
 
     return (
-        <div id="zonesContainer" className='subsectionContainer'>
+        <div id="zonesContainer" className='text-center'>
             {/*searchable input */}
             <input 
-                className='marginTop3rem inputBox1' 
+                className="bg-slate-700 p-2 text-neutral-900 rounded-lg h-100 mt-4 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700"
                 label='Search for Zones' 
                 placeholder='Search for Zones'
                 value={searchQuery} 
                 onChange={handleSearch} 
             />
-            <table className='marginTop3rem'>
+            <table className='mt-5'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -92,7 +92,7 @@ function EditZonesOnStore() {
                     <tr key={i}>
                         <td>{d.zone_id}</td>
                         <td>{d.name}</td>
-                        <td>&nbsp;<button className='darkRedButtonInline' data-status={d.status} id={d.zone_id} value={d.name} onClick={editStatusOnStore}>Edit</button></td>
+                        <td>&nbsp;<button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 text-white focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105" data-status={d.status} id={d.zone_id} value={d.name} onClick={editStatusOnStore}>Edit</button></td>
                     </tr>
                 ))}
                 </tbody>
@@ -107,14 +107,14 @@ function EditZonesOnStore() {
             >
             {zoneID && (
             <form onSubmit={editStatusOnStoreAction} className="editCouponForm">
-                <p className='mediumHeader'>Change Status of {zoneName}</p>
-                <select type="text" defaultValue={zoneStatus} className='selectBox2 marginBottom2rem'>
+                <p className="text-4xl text-white font-bold underline mb-4">Change Status of {zoneName}</p>
+                <select type="text" defaultValue={zoneStatus} className="bg-slate-600 my-4 p-2 text-neutral-900 rounded-lg h-100 mt-4 text-white placeholder:text-neutral-300 text-3xl border-1 border-slate-700">
                     <option value='1'>Enabled</option>
                     <option value='0'>Disabled</option>
                 </select>
-                <div className="spaceBetween">
-                <button type="submit" className='saveButton'>Save</button>
-                <button type="button" onClick={closeModal} className='closeButton'>Close</button>
+                <div className="flex justify-between mt-4">
+                <button type="submit" className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2 px-3 transition hover:scale-105">Save</button>
+                <button type="button" onClick={closeModal} className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2 px-3 transition hover:scale-105">Close</button>
                 </div>
             </form>
             )}

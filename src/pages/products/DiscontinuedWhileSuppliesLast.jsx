@@ -132,7 +132,7 @@ function DiscontinuedWhileSuppliesLast() {
           onChange={updateSearchTerm}
         />
       </div>
-      <table className="marginTop3rem">
+      <table className="mt-5">
         <thead>
           <tr>
             <th>MPN</th>
@@ -177,12 +177,12 @@ function DiscontinuedWhileSuppliesLast() {
         className="w-3/5 bg-slate-700 text-white rounded-lg p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="centeredContainer">
-          <span className="text-white text-6xl bold underline">{selectedMPN}</span>
+          <span className="text-white text-6xl font-bold underline">{selectedMPN}</span>
         </div>
 
         <div>
           <p>
-            <span className="text-white text-4xl bold">Reason</span>
+            <span className="text-white text-4xl font-bold">Reason</span>
             <textarea
               className="bg-slate-800 text-white rounded-xl w-full p-1 mt-1"
               defaultValue={selectedReason}
@@ -190,7 +190,7 @@ function DiscontinuedWhileSuppliesLast() {
             />
           </p>
           <p className="mt-4">
-          <span className="text-white text-4xl bold">Replaced By</span>
+          <span className="text-white text-4xl font-bold">Replaced By</span>
             <textarea
               className="bg-slate-800 text-white rounded-xl w-full p-1 mt-1"
               defaultValue={selectedReplacedBy}
@@ -214,12 +214,12 @@ function DiscontinuedWhileSuppliesLast() {
         overlayClassName={"Overlay"}
       >
         <p className="my-4">
-        <span className="text-white text-4xl bold">MPN</span>
+        <span className="text-white text-4xl font-bold">MPN</span>
           <br/>
           <input onChange={handleMPNChange} className="bg-slate-800 text-white rounded-xl w-full p-1 mt-1"></input>
         </p>
         <p className="my-4">
-          <span className="text-white text-4xl bold">Reason</span>
+          <span className="text-white text-4xl font-bold">Reason</span>
             <textarea
               className="bg-slate-800 text-white rounded-xl w-full p-1 mt-1"
               defaultValue={selectedReason}
@@ -227,7 +227,7 @@ function DiscontinuedWhileSuppliesLast() {
             />
           </p>
           <p className="my-4">
-          <span className="text-white text-4xl bold">Replaced By</span>
+          <span className="text-white text-4xl font-bold">Replaced By</span>
             <textarea
               className="bg-slate-800 text-white rounded-xl w-full p-1 mt-1"
               defaultValue={selectedReplacedBy}

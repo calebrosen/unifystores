@@ -37,7 +37,7 @@ function PushInformation() {
   return (
     <div>
       <div className='centered'>
-        <p className="mt-20 text-5xl text-neutral-200 bold underline">
+        <p className="mt-20 text-5xl text-neutral-200 font-bold underline">
           SELECT WHICH INFORMATION TO PUSH
         </p>
         <select className="bg-slate-800 mt-8 px-2 py-3 text-neutral-200 h-100 rounded-lg text-neutral-200 text-3xl border-1 border-slate-700" id="selectInformation" defaultValue="" onChange={updateSetInformation}>

@@ -37,8 +37,8 @@ function ViewPushCustomerGroups() {
 
   return (
     
-    <div id="customerGroupContainer" className='subsectionContainer'>
-      <table className='marginTop3rem'>
+    <div id="customerGroupContainer" className='text-center'>
+      <table className='mt-5'>
         <thead>
           <tr>
             <th>ID</th>
@@ -51,7 +51,7 @@ function ViewPushCustomerGroups() {
             <tr key={i}>
               <td>{d.customer_group_id}</td>
               <td>{d.name}</td>
-              <td>&nbsp;<button className='darkRedButtonInline' id={d.customer_group_id} value={d.name} onClick={pushToStore}>Push to Store</button></td>
+              <td><button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105" id={d.customer_group_id} value={d.name} onClick={pushToStore}>Push to Store</button></td>
             </tr>
           ))}
         </tbody>

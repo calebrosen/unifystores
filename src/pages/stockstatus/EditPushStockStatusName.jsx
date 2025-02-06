@@ -32,9 +32,9 @@ function EditPushStockStatusName() {
   }
 
   return (
-    <div id="stockStatusContainer" className='subsectionContainer'>
-      <p className='xlHeader'>Edit Stock Status Name</p>
-      <table className='marginTop3rem'>
+    <div id="stockStatusContainer" className='text-center'>
+      <p className="text-6xl font-bold underline text-white">Edit Stock Status Name</p>
+      <table className="mt-5">
         <thead>
           <tr>
             <th>ID</th>
@@ -52,12 +52,12 @@ function EditPushStockStatusName() {
                   id={`stockStatusID${d.stack_status_id}`}
                   defaultValue={d.name}
                   name={d.name}
-                  className='textBox1'
+                  className="bg-slate-700 p-2 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700"
                 />
               </td>
               <td>
                 <button 
-                  className='darkRedButtonInlineMD' 
+                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105"
                   onClick={() => editStockStatusName(d.stock_status_id, d.name)}>
                     Edit Name
                 </button>

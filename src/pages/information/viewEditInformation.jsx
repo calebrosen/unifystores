@@ -50,7 +50,7 @@ function ViewEditInformation() {
   return (
     <div>
       <div className='centered'>
-        <p className="mt-10 text-5xl text-neutral-200 bold underline">
+        <p className="mt-10 text-5xl text-neutral-200 font-bold underline">
           SELECT WHICH INFORMATION TO LOAD
         </p>
         <select className="bg-slate-800 mt-8 px-2 py-3 text-neutral-200 h-100 rounded-lg text-neutral-200 text-3xl border-1 border-slate-700" id="selectInformation" defaultValue="" onChange={loadInputBox}>
@@ -63,11 +63,11 @@ function ViewEditInformation() {
         </select>
       </div>
 
-      <div className='tab-buttons marginTopAndBottom'>
+      <div className='tab-buttons my-5'>
         <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" onClick={() => setActiveTab('edit')}>Edit</button>
         &nbsp;&nbsp;
         <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" onClick={() => setActiveTab('preview')}>Preview</button>
-        <p className="text-3xl text-neutral-200 mt-5">Available placeholders are <span className="bold">&#123;WEBSITE&#125;</span> (Ex: FireplaceandGrill.com) and <span className="bold">&#123;EMAILDOMAIN&#125;</span> (Ex: @fireplaceandgrill.com)</p>
+        <p className="text-3xl text-neutral-200 mt-5">Available placeholders are <span className="font-bold">&#123;WEBSITE&#125;</span> (Ex: FireplaceandGrill.com) and <span className="bold">&#123;EMAILDOMAIN&#125;</span> (Ex: @fireplaceandgrill.com)</p>
       </div>
 
       {activeTab === 'edit' ? (

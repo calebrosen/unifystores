@@ -112,7 +112,7 @@ function EditSalesAgents() {
       <div className="centered">
         <p className="text-white text-6xl bold underline">Edit Sales Agents</p>
         <div id="salesAgentContainer">
-          <table className="marginTop3rem">
+          <table className="mt-5">
             <thead>
               <tr>
                 <th>ID</th>

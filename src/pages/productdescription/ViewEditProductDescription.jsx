@@ -1,59 +1,65 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-import isAuthenticated from '../../components/auth';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
+import isAuthenticated from "../../components/auth";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 function EditSingleProductDescription() {
   const [productDescription, setProductDescription] = useState([]);
-  const [activeTab, setActiveTab] = useState('preview');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState("preview");
+  const [searchQuery, setSearchQuery] = useState("");
   const [descriptions, setDescriptions] = useState([]);
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [selectedMPN, setSelectedMPN] = useState('');
-  const [selectedModel, setSelectedModel] = useState('');
+  const [selectedMPN, setSelectedMPN] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
   const [descriptionValues, setDescriptionValues] = useState({});
-  const [buttonStatus, setButtonStatus] = useState('');
+  const [buttonStatus, setButtonStatus] = useState("");
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/node/products/viewEditProductDescription`)
-      .then(res => res.json())
-      .then(data => setProductDescription(data[0]))
-      .catch(err => console.log('Fetch error:', err));
+    fetch(
+      `${process.env.REACT_APP_API_URL}/node/products/viewEditProductDescription`
+    )
+      .then((res) => res.json())
+      .then((data) => setProductDescription(data[0]))
+      .catch((err) => console.log("Fetch error:", err));
   }, []);
-  
+
   function fetchProductDescription(difID) {
-    axios.post(`${process.env.REACT_APP_API_URL}/node/products/getProductDescDifferences`, { difID })
-      .then(res => {
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/node/products/getProductDescDifferences`,
+        { difID }
+      )
+      .then((res) => {
         if (res.data[0]) {
           const fetchedDescriptions = res.data[0];
           setDescriptions(fetchedDescriptions);
 
           const initialValues = {};
-          fetchedDescriptions.forEach(d => {
+          fetchedDescriptions.forEach((d) => {
             initialValues[d.store_id] = d.product_description;
           });
           setDescriptionValues(initialValues);
         }
       })
-      .catch(err => console.error('Error:', err));
+      .catch((err) => console.error("Error:", err));
   }
 
   const openModal = (e) => {
     const difIDTemp = e.target.id;
-    const tempSelectedMPN = e.target.getAttribute('data-custom-mpn');
-    const tempSelectedModel = e.target.getAttribute('data-custom-model');
+    const tempSelectedMPN = e.target.getAttribute("data-custom-mpn");
+    const tempSelectedModel = e.target.getAttribute("data-custom-model");
     setSelectedMPN(tempSelectedMPN);
     setSelectedModel(tempSelectedModel);
     fetchProductDescription(difIDTemp);
     setIsOpen(true);
-  }
+  };
 
   function closeModal() {
     setIsOpen(false);
-    setSelectedMPN('');
-    setSelectedModel('');
+    setSelectedMPN("");
+    setSelectedModel("");
     setDescriptions([]);
     setDescriptionValues({});
   }
@@ -70,83 +76,102 @@ function EditSingleProductDescription() {
     const CheckAuth = isAuthenticated();
     if (CheckAuth == true) {
       const descriptionToSave = descriptionValues[storeId];
-      const confirmSave = confirm('Are you sure you want to save this description?');
+      const confirmSave = confirm(
+        "Are you sure you want to save this description?"
+      );
       if (confirmSave) {
         //disabling all buttons
         DisableButtons();
 
         //posting
-        axios.post(`${process.env.REACT_APP_API_URL}/node/products/saveProductDescription`, { storeId, selectedMPN, selectedModel, descriptionToSave})
-        .then(res => {
-          if (res.data[0][0]['success']) {
-            alert(`successfully updated ${selectedMPN}`);
-          } else {
-            alert("Something went wrong.");
-          }
-          //enabling all buttons
-          EnableButtons();
-          console.log(res);
-        })
-        .catch(err => console.error('Error saving description:', err));
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/node/products/saveProductDescription`,
+            { storeId, selectedMPN, selectedModel, descriptionToSave }
+          )
+          .then((res) => {
+            if (res.data[0][0]["success"]) {
+              alert(`successfully updated ${selectedMPN}`);
+            } else {
+              alert("Something went wrong.");
+            }
+            //enabling all buttons
+            EnableButtons();
+            console.log(res);
+          })
+          .catch((err) => console.error("Error saving description:", err));
       }
     } else {
-      alert('User is logged out. Please refresh to log back in.');
+      alert("User is logged out. Please refresh to log back in.");
     }
   };
 
   const DisableButtons = () => {
-    setButtonStatus('disabled');
-  }
+    setButtonStatus("disabled");
+  };
 
   const EnableButtons = () => {
-    setButtonStatus('');
-  }
+    setButtonStatus("");
+  };
 
   const handleDescriptionChange = (storeId, value) => {
-    setDescriptionValues(prev => ({
+    setDescriptionValues((prev) => ({
       ...prev,
-      [storeId]: value
+      [storeId]: value,
     }));
   };
 
   const refetchContent = () => {
-    const confirmRefetch1 = confirm('Are you sure you want to refetch the data?');
+    const confirmRefetch1 = confirm(
+      "Are you sure you want to refetch the data?"
+    );
     if (confirmRefetch1) {
-      const confirmRefetch2 = confirm('Are you really sure you want to refetch the data?');
+      const confirmRefetch2 = confirm(
+        "Are you really sure you want to refetch the data?"
+      );
       if (confirmRefetch2) {
-        const confirmRefetch3 = confirm('Are you really really sure you want to refetch the data?');
+        const confirmRefetch3 = confirm(
+          "Are you really really sure you want to refetch the data?"
+        );
         if (confirmRefetch3) {
-          alert('This will take a while... Hang in there.');
-          axios.post(`${process.env.REACT_APP_API_URL}/node/products/refetchProductDescriptions`)
-          .then(res => {
-            if (res.data[0][0]['success']) {
-              alert(res.data[0][0]['success']);
-            } else {
-              alert("Something went wrong.");
-            }
-            console.log(res);
-          })
-          .catch(err => console.error('Error refetching descriptions:', err));
+          alert("This will take a while... Hang in there.");
+          axios
+            .post(
+              `${process.env.REACT_APP_API_URL}/node/products/refetchProductDescriptions`
+            )
+            .then((res) => {
+              if (res.data[0][0]["success"]) {
+                alert(res.data[0][0]["success"]);
+              } else {
+                alert("Something went wrong.");
+              }
+              console.log(res);
+            })
+            .catch((err) =>
+              console.error("Error refetching descriptions:", err)
+            );
         }
       }
     }
-  }
+  };
 
   return (
     <div>
-      <div className='centered'>
-        <button className='darkRedButton' onClick={refetchContent}>Refetch content</button>
+      <div className="centered">
+        <button className="darkRedButton" onClick={refetchContent}>
+          Refetch content
+        </button>
       </div>
-      <div className='centeredContainer marginBottom4rem'>
+      <div className="centeredContainer mb-4">
         <input
-          className='marginTop3rem inputBox1'
-          label='Search by MPN'
-          placeholder='Search by MPN'
+          className="mt-5 inputBox1"
+          label="Search by MPN"
+          placeholder="Search by MPN"
           value={searchQuery}
           onChange={handleSearch}
         />
       </div>
-      <table className='marginTop3rem'>
+      <table className="mt-5">
         <thead>
           <tr>
             <th>Model</th>
@@ -169,29 +194,43 @@ function EditSingleProductDescription() {
                   data-custom-mpn={d.mpn}
                   id={d.dif_id}
                   disabled={buttonStatus}
-                  className='darkRedButtonInlineMD'
-                  onClick={openModal}>
-                    View/Edit
+                  className="darkRedButtonInlineMD"
+                  onClick={openModal}
+                >
+                  View/Edit
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Description Modal"
       >
         <div>
-          <div className='tab-buttons marginTopAndBottom'>
-            <button className='editPreviewButton' onClick={() => setActiveTab('edit')}>Edit</button>
+          <div className="tab-buttons my-5">
+            <button
+              className="editPreviewButton"
+              onClick={() => setActiveTab("edit")}
+            >
+              Edit
+            </button>
             &nbsp;&nbsp;
-            <button className='editPreviewButton' onClick={() => setActiveTab('preview')}>Preview</button>
+            <button
+              className="editPreviewButton"
+              onClick={() => setActiveTab("preview")}
+            >
+              Preview
+            </button>
             &nbsp;&nbsp;
             {descriptions.length > 0 && (
-              <span className='mdSpan'>{descriptions[0].category} | {descriptions[0].mpn} |  {descriptions[0].product_name}</span>
+              <span className="mdSpan">
+                {descriptions[0].category} | {descriptions[0].mpn} |{" "}
+                {descriptions[0].product_name}
+              </span>
               // <span className='mdSpan'>Product Name: {descriptions[0].product_name}</span>
             )}
           </div>
@@ -199,31 +238,39 @@ function EditSingleProductDescription() {
             <table>
               <thead>
                 <tr>
-                  <th className='tinyTh'>Store</th>
-                  <th className='tinyTh'>Update</th>
+                  <th className="tinyTh">Store</th>
+                  <th className="tinyTh">Update</th>
                   <th>Description</th>
                 </tr>
               </thead>
               <tbody>
                 {descriptions.map((d, i) => (
                   <tr key={i}>
-                    <td className='bold'>&nbsp;{d.store_id}</td>
+                    <td className="font-bold">&nbsp;{d.store_id}</td>
                     <td>
                       <button
-                        className='darkRedButtonInline'
-                        onClick={() => saveProductDescription(d.store_id)}>
+                        className="darkRedButtonInline"
+                        onClick={() => saveProductDescription(d.store_id)}
+                      >
                         Use
                       </button>
                     </td>
                     <td>
-                      {activeTab === 'edit' ? (
+                      {activeTab === "edit" ? (
                         <textarea
                           value={descriptionValues[d.store_id]}
-                          className='textAreaAuto'
-                          onChange={(e) => handleDescriptionChange(d.store_id, e.target.value)}
+                          className="textAreaAuto"
+                          onChange={(e) =>
+                            handleDescriptionChange(d.store_id, e.target.value)
+                          }
                         />
                       ) : (
-                        <span className='preview' dangerouslySetInnerHTML={{ __html: descriptionValues[d.store_id] }} />
+                        <span
+                          className="preview"
+                          dangerouslySetInnerHTML={{
+                            __html: descriptionValues[d.store_id],
+                          }}
+                        />
                       )}
                     </td>
                   </tr>

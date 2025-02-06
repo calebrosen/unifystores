@@ -33,7 +33,7 @@ function ImportSalesAgents() {
   return (
     <div>
       <div className="centered">
-        <p className="text-white text-5xl mt-28 mb-4 bold underline">Import Sales Agents to Store</p>
+        <p className="text-white text-5xl mt-28 mb-4 font-bold underline">Import Sales Agents to Store</p>
         <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 rounded-xl text-4xl font-medium py-2 px-3 transition hover:scale-105 mt-4" onClick={ImportToStore}>Import</button>
       </div>
     </div>

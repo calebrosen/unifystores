@@ -256,10 +256,10 @@ function EditSingleProductDescription() {
   return (
     <div>
     <div className="centered">
-      <span className="my-5 text-white text-6xl bold underline">Edit Product Description Table</span>
+      <span className="my-5 text-white text-6xl font-bold underline">Edit Product Description Table</span>
     </div>
       <form>
-        <div className="centeredContainer marginBottom4rem">
+        <div className="centeredContainer mb-4">
           <label className="text-white text-3xl">
             Name:&nbsp;
             <input
@@ -322,7 +322,7 @@ function EditSingleProductDescription() {
           </button>
         </div>
       </form>
-      <table className="marginTop3rem">
+      <table className="mt-5">
         <thead>
           <tr>
             <th>Product ID</th>
@@ -365,7 +365,7 @@ function EditSingleProductDescription() {
       >
         <div>
           <div>
-            <h1 className="text-white text-4xl bold">
+            <h1 className="text-white text-4xl font-bold">
               Model: {selectedModel} ••• MPN: {selectedMPN} ••• Label:{" "}
               {productLabel}{" "}
             </h1>

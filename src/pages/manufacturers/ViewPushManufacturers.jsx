@@ -35,8 +35,8 @@ function ViewPushManufacturers() {
 
   return (
     
-    <div id="manufacturersContainer" className='subsectionContainer'>
-      <table className='marginTop3rem'>
+    <div id="manufacturersContainer" className='text-center'>
+      <table className='mt-5'>
         <thead>
           <tr>
             <th>ID</th>

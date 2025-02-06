@@ -37,8 +37,8 @@ function ViewPushOrderStatuses() {
 
   return (
     
-    <div id="orderStatusContainer" className='subsectionContainer'>
-      <table className='marginTop3rem'>
+    <div id="orderStatusContainer" className='text-center'>
+      <table className='mt-5'>
         <thead>
           <tr>
             <th>ID</th>

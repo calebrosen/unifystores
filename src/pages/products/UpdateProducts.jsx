@@ -386,22 +386,22 @@ function UpdateProducts() {
         </div>
         <div className="centeredContainer">
           <input
-            className="bg-slate-800 px-2 py-3 m-0 text-neutral-800 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700"
+            className="bg-slate-800 px-2 py-3 m-0 text-neutral-200 placeholder:text-neutral-300 rounded-lg text-neutral-200 active:text-neutral-200 text-4xl border-1 border-slate-700"
             label="Search by Name"
             placeholder="Search by Name"
             value={nameSearchQuery}
             onChange={handleNameSearch}
           />
           <input
-            className="bg-slate-800 px-2 py-3 m-0 text-neutral-800 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700"
+            className="bg-slate-800 px-2 py-3 m-0 text-neutral-200 placeholder:text-neutral-300 rounded-lg text-neutral-200 active:text-neutral-200 text-4xl border-1 border-slate-700"
             label="Search by MPN"
             placeholder="Search by MPN"
             value={mpnSearchQuery}
             onChange={handleMPNSearch}
           />
         </div>
-        <div id="productsContainer" className="subsectionContainer">
-          <table className="marginTop3rem">
+        <div id="productsContainer" className="text-center">
+          <table className="mt-5">
             <thead>
               <tr>
                 <th>Update</th>
@@ -448,11 +448,11 @@ function UpdateProducts() {
             Go Back
           </button>
         </div>
-        <div className="text-neutral-200 text-6xl mt-3 bold underline">
+        <div className="text-neutral-200 text-6xl mt-3 font-bold underline">
           Are you SURE these are the correct product(s) to update to{" "}
           {selectedStore}?
         </div>
-        <table className="marginTop3rem">
+        <table className="mt-5">
           <thead>
             <tr>
               <th>ID</th>

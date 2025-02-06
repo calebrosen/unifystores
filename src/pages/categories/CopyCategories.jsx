@@ -122,7 +122,7 @@ function CopyCategories() {
     <>
       {/* First step (selecting categories) */}
       {step == 1 && (
-        <div id="categoryContainer" className="subsectionContainer">
+        <div id="categoryContainer" className="text-center">
           {categoryIDsToCopy && categoryIDsToCopy.length > 0 && (
             <div>
               <p className="text-3xl text-neutral-200 mt-8">Category ID's selected: </p>
@@ -156,7 +156,7 @@ function CopyCategories() {
               onChange={FilterCategories}
             />
           </div>
-          <table className="marginTop2rem">
+          <table className="mt-4">
             <thead>
               <tr>
                 <th>Copy</th>
@@ -193,20 +193,20 @@ function CopyCategories() {
 
     {/* Second step */}
     {step === 2 && categoriesPreview && categoriesPreview.length > 0 &&
-    <div id="categoryContainer" className="subsectionContainer">
-      <div className="xlHeader marginTop4rem">Review Categories</div>
+    <div id="categoryContainer" className="text-center">
+      <div className="text-6xl text-white font-bold underline mt-5 mb-4">REVIEW CATEGORIES</div>
       <div>
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-2xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105" onClick={CopyCategoriesAction}>Proceed</button>
+        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105" onClick={CopyCategoriesAction}>Proceed</button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <button
-            className="deleteButtonLG marginTop2rem"
+            className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105"
             onClick={() => ChangeStep(1)}
         >
         Go Back
         </button>
       </div>
 
-      <table className="marginTop2rem">
+      <table className="mt-4">
         <thead>
           <tr>
             <th>ID</th>

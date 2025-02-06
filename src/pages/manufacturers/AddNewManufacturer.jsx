@@ -30,10 +30,10 @@ function AddNewManufacturer() {
   return (
     <div>
       <div className='centered'>
-        <p className="text-5xl bold underline text-neutral-200">
+        <p className="text-5xl font-bold underline text-neutral-200">
           INPUT A MANUFACTURER NAME
         </p>
-        <div id="manufacturersContainer" className='subsectionContainer'>
+        <div id="manufacturersContainer" className='text-center'>
           <input className="bg-slate-800 p-2 text-neutral-900 mt-5 rounded-lg h-100 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700" onChange={updateManufacturerName}></input>
         </div>
         <div>
