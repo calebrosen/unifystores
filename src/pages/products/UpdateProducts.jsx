@@ -55,6 +55,7 @@ function UpdateProducts() {
     }
   };
 
+
   const HideStoreSelection = () => {
     const stores = document.getElementById("storesRadioInner");
     stores.style.display = "none";
@@ -180,9 +181,9 @@ function UpdateProducts() {
             console.log(res.data[0][0]["success"]);
             console.log("successfully processed CopyProducts_GetTargetData");
             setLastMessage("successfully processed CopyProducts_GetTargetData - proceeding...");
-            // CopyProducts_GetProductsToCopy procedure
+            // updateProducts_getProductsToUpdate procedure
             return axios.post(
-              `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_GetProductsToCopy`
+              `${process.env.REACT_APP_API_URL}/node/products/updateProducts_getProductsToUpdate`
             );
           } else {
             console.log(
@@ -204,13 +205,13 @@ function UpdateProducts() {
           ) {
             console.log(res.data[0][0]["success"]);
             console.log(
-              "successfully processed CopyProducts_GetProductsToCopy"
+              "successfully processed updateProducts_getProductsToUpdate"
             );
-            setLastMessage("successfully processed CopyProducts_GetProductsToCopy - proceeding...");
+            setLastMessage("successfully processed updateProducts_getProductsToUpdate - proceeding...");
 
-            // CopyProducts_CopyProductsToStore procedure
+            // updateProducts_updateProductsTo procedure
             return axios.post(
-              `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyProductsToStore`,
+              `${process.env.REACT_APP_API_URL}/node/products/updateProducts_updateProductsTo`,
               { selectedStore }
             );
           } else {
@@ -218,9 +219,9 @@ function UpdateProducts() {
               "Unexpected response format or missing 'success' key:",
               res
             );
-            alert("Something went wrong.");
+            alert("Something went wrong. Please check if the MPN and Model are the same on the store.");
             return Promise.reject(
-              "Failed to process CopyProducts_GetProductsToCopy"
+              "Failed to process updateProducts_getProductsToUpdate - CHECK IF MPN IS PRESENT ON THE STORE."
             );
           }
         })
@@ -233,9 +234,9 @@ function UpdateProducts() {
           ) {
             console.log(res.data[0][0]["success"]);
             console.log(
-              "successfully processed CopyProducts_CopyProductsToStore"
+              "successfully processed updateProducts_updateProductsTo"
             );
-            setLastMessage("successfully processed CopyProducts_CopyProductsToStore - proceeding...");
+            setLastMessage("successfully processed updateProducts_updateProductsTo - proceeding...");
             CopyImagesToStore();
             setLastMessage("Completed. Copying images now...");
             setStep2(false);
@@ -421,7 +422,7 @@ function UpdateProducts() {
                     &nbsp;&nbsp;&nbsp;{" "}
                     <input
                       type="checkbox"
-                      className="checkboxForCopyProduct"
+                      className="w-10 h-10 rounded-xl bg-white"
                       data-custom-product-id={d.ProductID}
                       onClick={UpdateProductsToUpdateList}
                     ></input>
@@ -482,18 +483,18 @@ function UpdateProducts() {
         >
           YES! These are the correct products.
         </button>
-        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
+        <div className="my-5 text-4xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   } else if (step3) {
     return (
       <div>
         <div className="goBack">
-          <button className="GoBackButton" onClick={GoBackOneStep}>
+          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105" onClick={GoBackOneStep}>
             Go Back
           </button>
         </div>
-        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
+        <div className="my-5 text-4xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   }

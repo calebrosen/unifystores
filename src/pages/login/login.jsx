@@ -37,7 +37,7 @@ function Login() {
       className="d-flex justify-content-center align-items-center"
       style={{ minHeight: "90vh" }}
     >
-      <div className="p-5 bg-slate-700 w-45 rounded">
+      <div className="p-5 bg-slate-700 w-45 rounded shadow-xl border-1 border-cyan-900">
         <form onSubmit={handleLogin}>
           <h2 className="centered text-6xl p-3 text-neutral-200 font-bold">
             For IT Team Use ONLY
