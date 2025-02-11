@@ -21,7 +21,7 @@ exports.getManufacturersSubsections = async (req, res) => {
 exports.addNewManufacturer = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL AddManufacturer(?)";
+    const sql = "CALL usp_add_manufacturer(?)";
     const values = [req.body.manufacturerName];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -38,7 +38,7 @@ exports.addNewManufacturer = async (req, res) => {
 exports.viewEditManufacturers = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetManufacturers();";
+    const sql = "CALL usp_get_manufacturers();";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -54,7 +54,7 @@ exports.viewEditManufacturers = async (req, res) => {
 exports.pushManufacturer = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushManufacturerToStore(?, ?)";
+    const sql = "CALL usp_push_manufacturer_to_store(?, ?)";
     const values = [req.body.selectedStore, req.body.manufacturerID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -72,7 +72,7 @@ exports.pushManufacturer = async (req, res) => {
 exports.updateManufacturerName = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL UpdateManufacturerName(?, ?);";
+      const sql = "CALL usp_update_manufacturer_name(?, ?);";
       const values = [req.body.manufacturerID, req.body.editedName];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);

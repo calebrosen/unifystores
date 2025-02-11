@@ -25,7 +25,7 @@ exports.getProductSubsections = async (req, res) => {
 exports.getProductsToCopy = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.GetProductsForUnify()";
+    const sql = "CALL copyProductsToStore.usp_get_products_for_unify()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -40,7 +40,7 @@ exports.getProductsToCopy = async (req, res) => {
 exports.RefetchOCMasterTables = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.uspStep1_GetMasterTablesCopy()";
+    const sql = "CALL copyProductsToStore.usp_step_1_get_master_tables_copy()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -55,7 +55,7 @@ exports.RefetchOCMasterTables = async (req, res) => {
 exports.getProductsForViewingCopy = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.GetProductsForViewingCopy(?)";
+    const sql = "CALL copyProductsToStore.usp_get_products_for_viewing_copy(?)";
     const values = [req.body.tempProductIdsString];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -72,7 +72,7 @@ exports.insertIntoSelectedProductsToCopy = async (req, res) => {
   try {
     const db = await connectToDB();
     const sql =
-      "CALL copyProductsToStore.InsertIntoSelectedProductsToCopy(?, ?, ?, ?)";
+      "CALL copyProductsToStore.usp_insert_into_selected_products_to_copy(?, ?, ?, ?)";
     const values = [
       req.body.pID,
       req.body.model,
@@ -94,7 +94,7 @@ exports.truncateSelectedProductsToCopyTable = async (req, res) => {
   try {
     const db = await connectToDB();
     const sql =
-      "CALL copyProductsToStore.TruncateSelectedProductsToCopyTable()";
+      "CALL copyProductsToStore.usp_truncate_selected_products_to_copy_table()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -109,7 +109,7 @@ exports.truncateSelectedProductsToCopyTable = async (req, res) => {
 exports.CopyProducts_GetTargetData = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.uspStep2_GetTargetData(?)";
+    const sql = "CALL copyProductsToStore.usp_step_2_get_target_data(?)";
     const values = [req.body.selectedStore];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -125,7 +125,7 @@ exports.CopyProducts_GetTargetData = async (req, res) => {
 exports.CopyProducts_GetProductsToCopy = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.uspStep3_GetProductsToCopy()";
+    const sql = "CALL copyProductsToStore.usp_step_3_get_products_to_copy()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -137,10 +137,11 @@ exports.CopyProducts_GetProductsToCopy = async (req, res) => {
   }
 };
 
+
 exports.CopyProducts_CopyProductsToStore = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.uspStep4_CopyProductsTo(?)";
+    const sql = "CALL copyProductsToStore.usp_step_4_copy_products_to(?)";
     const values = [req.body.selectedStore];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -156,7 +157,7 @@ exports.CopyProducts_CopyProductsToStore = async (req, res) => {
 exports.CopyProducts_CopyImagesToStore = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.uspStep5_CopyImagesToStore()";
+    const sql = "CALL copyProductsToStore.usp_step_5_copy_images_to_store()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -317,7 +318,7 @@ exports.truncateSelectedProductsToUpdateTable = async (req, res) => {
   try {
     const db = await connectToDB();
     const sql =
-      "CALL copyProductsToStore.TruncateSelectedProductsToUpdateTable()";
+      "CALL copyProductsToStore.usp_truncate_selected_products_to_update_table()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -335,7 +336,7 @@ exports.insertIntoSelectedProductsToUpdate = async (req, res) => {
   try {
     const db = await connectToDB();
     const sql =
-      "CALL copyProductsToStore.InsertIntoSelectedProductsToUpdate(?, ?, ?)";
+      "CALL copyProductsToStore.usp_insert_into_selected_products_to_update(?, ?, ?)";
     const values = [
       req.body.pID,
       req.body.model,
@@ -353,49 +354,27 @@ exports.insertIntoSelectedProductsToUpdate = async (req, res) => {
 };
 
 
-
-exports.getProductsForRelease = async (req, res) => {
+exports.getProductsToUpdate = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetProductForRelease(?)";
+    const sql = "CALL copyProductsToStore.usp_step_3_get_products_to_update()";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+
+exports.updateProductsTo = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL copyProductsToStore.usp_step_4_update_product_to(?)";
     const values = [req.body.selectedStore];
-    db.query(sql, values, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
-  }
-};
-
-exports.releaseProductOnStore = async (req, res) => {
-  try {
-    const db = await connectToDB();
-    const sql = "CALL ReleaseProductOnStore(?, ?, ?, ?)";
-    const values = [
-      req.body.selectedStore,
-      req.body.releaseQuantity,
-      req.body.productID,
-      req.body.selectedMPN,
-    ];
-    db.query(sql, values, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
-  }
-};
-
-exports.releaseProductOnStore = async (req, res) => {
-  try {
-    const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
-    const values = [req.body.selectedStore, req.body.customerGroupID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -429,7 +408,7 @@ exports.getProductDescriptionSubsections = async (req, res) => {
 exports.viewEditProductDescription = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetProduct_summary_dif_table;";
+    const sql = "CALL usp_get_product_summary_diff_table;";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -445,7 +424,7 @@ exports.viewEditProductDescription = async (req, res) => {
 exports.getProductDescDifferences = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetProduct_description_differences(?);";
+    const sql = "CALL usp_get_product_description_differences(?);";
     const values = [req.body.difID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -462,7 +441,7 @@ exports.getProductDescDifferences = async (req, res) => {
 exports.saveProductDescription = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushProductDescriptionToStores(?, ?, ?, ?);";
+    const sql = "CALL usp_push_product_description_to_stores(?, ?, ?, ?);";
     const values = [
       req.body.storeId,
       req.body.selectedMPN,
@@ -484,7 +463,7 @@ exports.saveProductDescription = async (req, res) => {
 exports.refetchProductDescriptions = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetProductSummaryTables()";
+    const sql = "CALL usp_get_product_summary_tables()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -499,7 +478,7 @@ exports.refetchProductDescriptions = async (req, res) => {
 exports.searchForProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL SearchForProductsAdvanced(?,?,?,?,?,?)";
+    const sql = "CALL usp_search_for_products_advanced(?,?,?,?,?,?)";
     const values = [req.body.name, req.body.mpn, req.body.model, req.body.status, req.body.hidden, req.body.searchType];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -516,7 +495,7 @@ exports.searchForProducts = async (req, res) => {
 exports.GetProductDescriptionInfo = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetProductDescriptionInfo(?)";
+    const sql = "CALL usp_get_product_description_info(?)";
     const values = [req.body.OCMProductID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -533,7 +512,7 @@ exports.GetProductDescriptionInfo = async (req, res) => {
 exports.UpdateProductDescriptionName = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL UpdateProductDescription(?, ?, ?, ?, ?)";
+    const sql = "CALL usp_update_product_description(?, ?, ?, ?, ?)";
     const values = [req.body.OCMProductID, req.body.newName, req.body.newDescription, req.body.newMetaKeywords, req.body.newMetaDescription];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -553,7 +532,7 @@ exports.UpdateProductDescriptionName = async (req, res) => {
 exports.DiscontinuedDisabledProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL work_area_db.GetDiscontinuedOrDisabledProducts()";
+    const sql = "CALL work_area_db.usp_get_discontinued_or_disabled_products()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -569,7 +548,7 @@ exports.DiscontinuedDisabledProducts = async (req, res) => {
 exports.UpdateDiscontinuedOrDisabledProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL work_area_db.UpdateDiscontinuedOrDisabledProducts(?, ?, ?)";
+    const sql = "CALL work_area_db.usp_update_discontinued_or_disabled_product(?, ?, ?)";
     const values = [req.body.selectedMPN, req.body.selectedReason, req.body.selectedReplacedBy];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -586,7 +565,7 @@ exports.UpdateDiscontinuedOrDisabledProducts = async (req, res) => {
 exports.AddDiscontinuedOrDisabledProduct = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL work_area_db.AddDiscontinuedOrDisabledProduct(?, ?, ?)";
+    const sql = "CALL work_area_db.usp_add_discontinued_or_disabled_product(?, ?, ?)";
     const values = [req.body.selectedMPN, req.body.selectedReason, req.body.selectedReplacedBy];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);

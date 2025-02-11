@@ -21,7 +21,7 @@ exports.getInformationSubsections = async (req, res) => {
 exports.viewEditInformation = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetInformationDescription();";
+    const sql = "CALL usp_get_information_description();";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -37,7 +37,7 @@ exports.viewEditInformation = async (req, res) => {
 exports.saveInformation = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL SaveInformationDescription(?, ?);";
+    const sql = "CALL usp_save_information_description(?, ?);";
     const values = [req.body.selectedInformation, req.body.inputValue];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -54,7 +54,7 @@ exports.saveInformation = async (req, res) => {
 exports.pushInformation = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushInformationDescription(?, ?)";
+    const sql = "CALL usp_push_information_description(?, ?)";
     const values = [req.body.selectedStore, req.body.selectedInformation];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);

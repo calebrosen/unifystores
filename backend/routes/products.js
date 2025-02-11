@@ -38,16 +38,11 @@ router.post('/CopyProducts_CopyImagesToStore_Action', controller.CopyProducts_Co
 // Procedure to refetch OC Master products
 router.get('/RefetchOCMasterTables', controller.RefetchOCMasterTables);
 
-// Loading products to release
-router.post('/getProductsForRelease', controller.getProductsForRelease);
-
-// Releasing product on selected store
-router.post('/releaseProductOnStore', controller.releaseProductOnStore);
-
-
-
 
 // Updating products
+router.post('/updateProducts_updateProductsTo', controller.updateProductsTo);
+
+router.post('/updateProducts_getProductsToUpdate', controller.getProductsToUpdate);
 
 // Truncating product data table
 router.post('/truncateSelectedProductsToUpdateTable', controller.truncateSelectedProductsToUpdateTable);

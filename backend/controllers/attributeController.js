@@ -22,7 +22,7 @@ exports.getAttributeSections = async (req, res) => {
 exports.getAttributes = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call GetAttributes()";
+    const sql = "Call usp_get_attributes()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -38,7 +38,7 @@ exports.getAttributes = async (req, res) => {
 exports.getProductsForAttributeCopy = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call GetProductsForAttributeCopy(?)";
+    const sql = "Call usp_get_products_for_attribute_copy(?)";
     const values = [req.body.selectedAttribute];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -55,7 +55,7 @@ exports.getProductsForAttributeCopy = async (req, res) => {
 exports.copyAttributesFromOCMasterToStore = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call CopyAttributesFromOCMasterToStore(?, ?, ?);";
+    const sql = "Call usp_copy_attributes_from_ocmaster_to_store(?, ?, ?);";
     const values = [req.body.selectedStore, req.body.selectedAttribute, req.body.productIdsString];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -73,7 +73,7 @@ exports.copyAttributesFromOCMasterToStore = async (req, res) => {
 exports.previewProductsForAttributeCopy = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call PreviewProductsForAttributeCopy(?, ?);";
+    const sql = "Call usp_preview_products_for_attribute_copy(?, ?);";
     const values = [req.body.selectedStore, req.body.selectedAttribute];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);

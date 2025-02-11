@@ -19,7 +19,7 @@ exports.getZonesSubsections = async (req, res) => {
 exports.getZones = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "Call GetZones()";
+      const sql = "Call usp_get_zones()";
       db.query(sql, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.json(data);
@@ -34,7 +34,7 @@ exports.getZones = async (req, res) => {
 exports.viewEnabledZones = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "Call ViewEnabledZones();";
+      const sql = "Call usp_view_enabled_zones();";
       db.query(sql, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.json(data);
@@ -49,7 +49,7 @@ exports.viewEnabledZones = async (req, res) => {
 exports.editZonesOnStore = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "Call EditZonesOnStore(?, ?, ?)";
+      const sql = "Call usp_edit_zone_on_store(?, ?, ?)";
       const values = [
         req.body.selectedStore,
         req.body.zoneID,
@@ -70,7 +70,7 @@ exports.editZonesOnStore = async (req, res) => {
 exports.disableZone = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "Call DisableZoneOnAllStores(?)";
+      const sql = "Call usp_disable_zone_on_all_stores(?)";
       const values = [req.body.selectedZoneID];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);

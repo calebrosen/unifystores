@@ -466,7 +466,7 @@ function CopyProductsToStores() {
                   <td>
                     <input
                       type="checkbox"
-                      className="w-10 h-10 rounded-lg bg-white"
+                      className="w-10 h-10 rounded-xl bg-white"
                       data-custom-product-id={d.ProductID}
                       onClick={UpdateProductsToCopyList}
                     ></input>
@@ -534,7 +534,7 @@ function CopyProductsToStores() {
                   &nbsp;&nbsp;&nbsp;{" "}
                   <input
                     type="checkbox"
-                    className="w-10 h-10 rounded-lg bg-white"
+                    className="w-10 h-10 rounded-xl bg-white"
                     checked={!!forceCopyState[d.product_id]}
                     onChange={() => handleCheckboxChange(d.product_id)}
                   ></input>
@@ -555,7 +555,7 @@ function CopyProductsToStores() {
         >
           YES! These are the correct products.
         </button>
-        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
+        <div className="my-5 text-4xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   } else if (step3) {
@@ -566,7 +566,7 @@ function CopyProductsToStores() {
             Go Back
           </button>
         </div>
-        <div className="my-5 font-3xl text-neutral-200">{lastMessage}</div>
+        <div className="my-5 text-4xl text-neutral-200">{lastMessage}</div>
       </div>
     );
   }

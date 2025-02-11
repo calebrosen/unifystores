@@ -36,7 +36,7 @@ exports.fetchAgents = async (req, res) => {
 exports.createCoupon = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL CreateCoupon(?, ?, ?, ?);";
+    const sql = "CALL usp_create_coupon(?, ?, ?, ?);";
     const values = [
       req.body.selectedAgent,
       req.body.selectedStore,
@@ -58,7 +58,7 @@ exports.createCoupon = async (req, res) => {
 exports.selectCoupons = async (req, res) => {
   try {
     const db = await connectToDB();
-  const sql = "CALL SelectCoupons(?);";
+  const sql = "CALL usp_select_coupons(?);";
   const values = [req.body.selectedStore];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -75,7 +75,7 @@ exports.selectCoupons = async (req, res) => {
 exports.updateCoupon = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL UpdateCoupon(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+      const sql = "CALL usp_update_coupon(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
       const values = [
         req.body.selectedStore,
         req.body.coupon_id,
@@ -103,7 +103,7 @@ exports.updateCoupon = async (req, res) => {
   exports.deleteCoupon = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL DeleteCoupon(?, ?, ?);";
+      const sql = "CALL usp_delete_coupon(?, ?, ?);";
       const values = [req.body.selectedStore, req.body.coupon_id, req.body.code];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);

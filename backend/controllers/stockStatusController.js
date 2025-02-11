@@ -20,7 +20,7 @@ exports.getStockstatusSubsections = async (req, res) => {
 exports.addNewStockStatus = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL AddStockStatus(?)";
+      const sql = "CALL usp_add_stock_status(?)";
       const values = [req.body.stockStatusName];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);
@@ -37,7 +37,7 @@ exports.addNewStockStatus = async (req, res) => {
 exports.updateStockStatusName = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL GetSalesAgents()";
+      const sql = "";
       db.query(sql, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.json(data);
@@ -52,7 +52,7 @@ exports.updateStockStatusName = async (req, res) => {
 exports.viewEditStockStatusName = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL GetStockStatuses();";
+      const sql = "CALL usp_get_stock_statuses();";
       db.query(sql, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.json(data);

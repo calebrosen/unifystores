@@ -19,7 +19,7 @@ exports.getPartDiagramsSubsections = async (req, res) => {
   exports.pushPartDiagrams = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL PushPartDiagrams(?)";
+      const sql = "CALL usp_push_part_diagrams(?)";
       const values = [req.body.selectedStore];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);

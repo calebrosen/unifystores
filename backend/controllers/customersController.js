@@ -20,7 +20,7 @@ exports.getCustomerGroupSubsections = async (req, res) => {
 exports.addNewCustomerGroup = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL AddNewCustomerGroup(?)";
+    const sql = "CALL usp_add_new_customer_group(?)";
     const values = [req.body.customerGroupName];
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -36,7 +36,7 @@ exports.addNewCustomerGroup = async (req, res) => {
 exports.viewEditCustomerGroupName = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL GetCustomerGroups();";
+    const sql = "CALL usp_get_customer_groups();";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -51,7 +51,7 @@ exports.viewEditCustomerGroupName = async (req, res) => {
 exports.editCustomerGroupName = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL UpdateCustomerGroupName(?, ?);";
+    const sql = "CALL usp_update_customer_group_name(?, ?);";
     const values = [req.body.customerGroupID, req.body.name];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -67,7 +67,7 @@ exports.editCustomerGroupName = async (req, res) => {
 exports.pushCustomerGroups = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL PushCustomerGroupToStore(?, ?)";
+    const sql = "CALL usp_push_customer_group_to_store(?, ?)";
     const values = [req.body.selectedStore, req.body.customerGroupID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);

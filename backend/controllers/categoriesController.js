@@ -20,7 +20,7 @@ exports.getCategoriesSubsections = async (req, res) => {
 exports.fetchOCMasterCategories = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call GetOCMasterCategories()";
+    const sql = "Call usp_get_ocmaster_categories()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -42,7 +42,7 @@ exports.InsertCategoryIDsToCopy = async (req, res) => {
     const ids = req.body.categoryIDsToCopy.toString();
     const db = await connectToDB();
     // this is on unify db, everything involving copying afterwards will be on copyProductsToStore db
-    const sql = "Call InsertCategoryIDsToCopy(?)";
+    const sql = "Call usp_insert_category_ids_to_copy(?)";
     const values = [ids];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -58,7 +58,7 @@ exports.InsertCategoryIDsToCopy = async (req, res) => {
 exports.GenerateCategoriesForPreviews = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call copyProductsToStore.usp_Step1_CC_GetCategoryStructureForCopy()";
+    const sql = "Call copyProductsToStore.usp_copy_category_step_1_get_category_structure_for_copy()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -73,7 +73,7 @@ exports.GenerateCategoriesForPreviews = async (req, res) => {
 exports.CopyCategoriesAction = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call copyProductsToStore.usp_Step2_CC_CopySourceToTarget()";
+    const sql = "Call copyProductsToStore.usp_copy_category_step_2_copy_source_to_target()";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);

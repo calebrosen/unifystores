@@ -20,7 +20,7 @@ exports.getSubsections = async (req, res) => {
 exports.viewEnabledCountries = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call ViewEnabledCountries();";
+    const sql = "Call usp_view_enabled_countries();";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
@@ -36,7 +36,7 @@ exports.viewEnabledCountries = async (req, res) => {
 exports.disableCountry = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Call DisableCountryOnAllStores(?)";
+    const sql = "Call usp_disable_country_on_all_stores(?)";
     const values = [req.body.selectedCountryID];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
@@ -52,7 +52,7 @@ exports.disableCountry = async (req, res) => {
   exports.editCountryOnStore = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "Call EditCountryOnStore(?, ?, ?)";
+      const sql = "Call usp_edit_country_on_store(?, ?, ?)";
       const values = [
         req.body.selectedStore,
         req.body.countryID,
@@ -72,7 +72,7 @@ exports.disableCountry = async (req, res) => {
   exports.getCountries = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "Call GetCountries()";
+      const sql = "Call usp_get_countries()";
       db.query(sql, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.json(data);

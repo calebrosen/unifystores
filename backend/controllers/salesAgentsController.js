@@ -20,7 +20,7 @@ exports.getSalesagentSubsections = async (req, res) => {
 exports.addNewSalesAgent = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL AddNewSalesAgent(?)";
+      const sql = "CALL usp_add_new_sales_agent(?)";
       const values = [req.body.salesAgentName];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);
@@ -37,7 +37,7 @@ exports.addNewSalesAgent = async (req, res) => {
 exports.getSalesAgents = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL GetSalesAgents()";
+      const sql = "CALL usp_get_sales_agents()";
       db.query(sql, (err, data) => {
         if (err) return res.status(500).json(err);
         return res.json(data);
@@ -52,7 +52,7 @@ exports.getSalesAgents = async (req, res) => {
 exports.EditSalesAgent = async (req, res) => {
     try {
       const db = await connectToDB();
-        const sql = "CALL EditSalesAgent(?, ?, ?, ?)";
+        const sql = "CALL usp_edit_sales_agent(?, ?, ?, ?)";
         const values = [
         req.body.selectedID,
         req.body.selectedFName,
@@ -73,7 +73,7 @@ exports.EditSalesAgent = async (req, res) => {
 exports.ImportSalesAgents = async (req, res) => {
     try {
       const db = await connectToDB();
-      const sql = "CALL ImportSalesAgents(?)";
+      const sql = "CALL usp_import_sales_agents(?)";
       const values = [req.body.selectedStore];
       db.query(sql, values, (err, data) => {
         if (err) return res.status(500).json(err);
