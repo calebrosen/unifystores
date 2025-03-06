@@ -27,6 +27,7 @@ const stockStatusRoutes = require('./routes/stockstatus');
 const storeRoutes = require('./routes/stores');
 const zoneRoutes = require('./routes/zones');
 const categoriesRoutes = require('./routes/categories');
+const documentsRoutes = require('./routes/documents');
 
 app.use('/node/auth', authRoutes);
 app.use('/node/attributes', attributeRoutes);
@@ -44,6 +45,7 @@ app.use('/node/salesagents', salesAgentRoutes);
 app.use('/node/stockstatus', stockStatusRoutes);
 app.use('/node/stores', storeRoutes);
 app.use('/node/zones', zoneRoutes);
+app.use('/node/documents', documentsRoutes);
 app.use('/node/categories', categoriesRoutes);
 
 const PORT = process.env.PORT || 5003;

@@ -22,6 +22,7 @@ import CustomerGroups from './pages/customergroups/customergroups.jsx';
 import EditCustomerGroupName from './pages/customergroups/EditCustomerGroupName.jsx';
 import ViewPushCustomerGroups from './pages/customergroups/ViewPushCustomerGroups.jsx';
 import Dashboard from './pages/dashboard/dashboard.jsx';
+import Documents from './pages/documents/Documents.jsx';
 import Filters from './pages/filters/Filters.jsx';
 import Information from './pages/information/information.jsx';
 import PushInformation from './pages/information/pushInformation.jsx';
@@ -41,6 +42,7 @@ import EditSingleProductDescription from './pages/productdescription/EditSingleD
 import ProductDescription from './pages/productdescription/productdescription.jsx';
 import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
 import CopyProductsToStores from './pages/products/CopyProductsToStores.jsx';
+import DiscontinuedWhileSuppliesLast from './pages/products/DiscontinuedWhileSuppliesLast.jsx';
 import Products from './pages/products/Products.jsx';
 import UpdateProducts from './pages/products/UpdateProducts.jsx';
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
@@ -53,8 +55,7 @@ import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx
 import EditZonesOnStore from './pages/zones/EditZonesOnStore.jsx';
 import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
 import Zones from './pages/zones/Zones.jsx';
-import DiscontinuedWhileSuppliesLast from './pages/products/DiscontinuedWhileSuppliesLast.jsx';
-
+import PdfPageGenerator from './pages/documents/PdfPageGenerator.jsx';
 
 const App = () => {
   return (
@@ -109,7 +110,9 @@ const App = () => {
           <Route path="/products/DiscontinuedWhileSuppliesLast" element={<RequireAuth><HomeAndLogOutButtons><DiscontinuedWhileSuppliesLast /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/filters" element={<RequireAuth><HomeAndLogOutButtons><Filters /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/categories" element={<RequireAuth><HomeAndLogOutButtons><Categories /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/documents" element={<RequireAuth><HomeAndLogOutButtons><Documents /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/categories/CopyCategories" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyCategories /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/documents/PdfPageGenerator" element={<RequireAuth><HomeAndLogOutButtons><PdfPageGenerator /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>
