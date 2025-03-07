@@ -8,4 +8,7 @@ router.get('/getSubsections', controller.getSubsections);
 // Getting paths
 router.get('/getFilePaths', controller.getFilePaths);
 
+// Getting paths
+router.post('/getFilteredFilePaths', controller.getFilteredFilePaths);
+
 module.exports = router;
