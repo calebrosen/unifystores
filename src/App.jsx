@@ -55,7 +55,7 @@ import ViewPushStockStatuses from './pages/stockstatus/ViewPushStockStatuses.jsx
 import EditZonesOnStore from './pages/zones/EditZonesOnStore.jsx';
 import ViewEnabledZones from './pages/zones/ViewEnabledZones.jsx';
 import Zones from './pages/zones/Zones.jsx';
-import PdfPageGenerator from './pages/documents/PdfPageGenerator.jsx';
+import AddEditDocuments from './pages/documents/AddEditDocuments.jsx';
 
 const App = () => {
   return (
@@ -112,7 +112,7 @@ const App = () => {
           <Route path="/categories" element={<RequireAuth><HomeAndLogOutButtons><Categories /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/documents" element={<RequireAuth><HomeAndLogOutButtons><Documents /></HomeAndLogOutButtons></RequireAuth>}/>
           <Route path="/categories/CopyCategories" element={<RequireAuth><HomeAndLogOutButtons><StoresRadio><CopyCategories /></StoresRadio></HomeAndLogOutButtons></RequireAuth>}/>
-          <Route path="/documents/PdfPageGenerator" element={<RequireAuth><HomeAndLogOutButtons><PdfPageGenerator /></HomeAndLogOutButtons></RequireAuth>}/>
+          <Route path="/documents/AddEditDocuments" element={<RequireAuth><HomeAndLogOutButtons><AddEditDocuments /></HomeAndLogOutButtons></RequireAuth>}/>
         </Routes>
       </Router>
     </StoreProvider>

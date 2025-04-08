@@ -9,6 +9,7 @@ exports.login = async (req, res) => {
   const db = await connectToDB();
   const sql = "SELECT * FROM users WHERE username = ? AND pw = ?";
   db.query(sql, values, (err, data) => {
+    console.log(err, data);
     if (err) return res.status(500).json({ message: "Login Failed" });
     if (data.length > 0) {
       const token = jwt.sign({ id: data[0].id }, SECRET_KEY, {

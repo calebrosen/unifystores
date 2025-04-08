@@ -10,7 +10,6 @@ function Documents() {
   }, []);
 
   return (
-    
     <div id="documentsContainer" className='text-center'>
       <div className="text-center mb-12">
         <span className="inline-block ns bg-gradient-to-r from-cyan-800 to-slate-800 text-neutral-200 font-medium py-6 px-8 rounded-xl text-6xl shadow-lg transform hover:scale-105 transition-transform duration-300">

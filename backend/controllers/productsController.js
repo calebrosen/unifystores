@@ -1,7 +1,7 @@
 const connectToDB = require("../model/db");
 require("dotenv").config({ path: "../env/.env" });
 const fs = require("fs");
-const { Client } = require("basic-ftp");
+const ftp = require("basic-ftp");
 const path = require("path");
 
 /* PRODUCTS */
@@ -137,7 +137,6 @@ exports.CopyProducts_GetProductsToCopy = async (req, res) => {
   }
 };
 
-
 exports.CopyProducts_CopyProductsToStore = async (req, res) => {
   try {
     const db = await connectToDB();
@@ -175,140 +174,80 @@ exports.CopyProducts_CopyImagesToStore_Action = async (req, res) => {
     return res.status(400).send("Store and image path are required");
   }
 
-  //there is a bug with simple-ftp that doesn't allow you to mess with directories and then transfer images.
-  //so, i am splitting it into two steps. this works and doesn't have any issues
+  const localPath = path.join(__dirname, "../temp", path.basename(imagePath));
+  fs.mkdirSync(path.dirname(localPath), { recursive: true });
+
   try {
-    console.log('Starting first step')
-    const firstStepResult = await moveImages(selectedStore, imagePath, 1);
+    //downloading from OCMASTER
+    const masterClient = new ftp.Client();
+    masterClient.ftp.verbose = false;
 
-    console.log("First step result:", firstStepResult);
+    await masterClient.access({
+      host: process.env.OCMASTERHOST,
+      user: process.env.OCMASTERUSER,
+      password: process.env.OCMASTERPASSWORD,
+    });
 
-    console.log('Starting second step')
-    
-    const secondStepResult = await moveImages(selectedStore, imagePath, 2);
+    await masterClient.downloadTo(localPath, `/oc_master/image/${imagePath}`);
+    await masterClient.close();
 
-    console.log("Second step result:", secondStepResult);
+    // step 2: Upload to selected store
+    const storeCreds = getStoreFtpCredentials(selectedStore);
+    if (!storeCreds) {
+      return res.status(400).send("Invalid store code");
+    }
+
+    const storeClient = new ftp.Client();
+    storeClient.ftp.verbose = false;
+
+    await storeClient.access(storeCreds);
+    const folderPath = path.posix.dirname(imagePath);
+    const fileName = path.basename(imagePath);
+
+    const segments = folderPath.split("/").filter(Boolean);
+    for (const segment of segments) {
+      try {
+        await storeClient.cd(segment);
+      } catch {
+        await storeClient.send("MKD " + segment);
+        await storeClient.cd(segment);
+      }
+    }
+
+    await storeClient.uploadFrom(localPath, fileName);
+    await storeClient.close();
+
+    fs.unlinkSync(localPath);
 
     res.status(200).send("Images moved successfully in both steps");
   } catch (error) {
-    console.log("Error:", error);
+    console.log("Error during image transfer:", error);
     res.status(500).send("Failed to move images");
   }
 };
 
-async function moveImages(selectedStore, imagePath, step) {
-  const client = new Client();
-  client.ftp.verbose = true;
-  let moveToClient = null;
-  let storeHost, storeUser, storePW;
+// function to return FTP credentials based on store code
+function getStoreFtpCredentials(code) {
+  const store = code.trim().toUpperCase();
+  const creds = {
+    DIM: ["DIMHOST", "DIMUSER", "DIMPASSWORD"],
+    FMS: ["FMSHOST", "FMSUSER", "FMSPASSWORD"],
+    FMP: ["FMPHOST", "FMPUSER", "FMPPASSWORD"],
+    FPG: ["FPGHOST", "FPGUSER", "FPGPASSWORD"],
+    GNP: ["GNPHOST", "GNPUSER", "GNPPASSWORD"],
+    RFS: ["RFSHOST", "RFSUSER", "RFSPASSWORD"],
+    BMS: ["BMSHOST", "BMSUSER", "BMSPASSWORD"],
+    MFS: ["MFSHOST", "MFSUSER", "MFSPASSWORD"],
+    MHS: ["MHSHOST", "MHSUSER", "MHSPASSWORD"]
+  };
 
-  switch (selectedStore.trim().toUpperCase()) {
-    case "DIM":
-      storeHost = process.env.DIMHOST;
-      storeUser = process.env.DIMUSER;
-      storePW = process.env.DIMPASSWORD;
-      break;
-    case "FMS":
-      storeHost = process.env.FMSHOST;
-      storeUser = process.env.FMSUSER;
-      storePW = process.env.FMSPASSWORD;
-      break;
-    case "FMP":
-      storeHost = process.env.FMPHOST;
-      storeUser = process.env.FMPUSER;
-      storePW = process.env.FMPPASSWORD;
-      break;
-    case "FPG":
-      storeHost = process.env.FPGHOST;
-      storeUser = process.env.FPGUSER;
-      storePW = process.env.FPGPASSWORD;
-      break;
-    case "GNP":
-      storeHost = process.env.GNPHOST;
-      storeUser = process.env.GNPUSER;
-      storePW = process.env.GNPPASSWORD;
-      break;
-    case "RFS":
-      storeHost = process.env.RFSHOST;
-      storeUser = process.env.RFSUSER;
-      storePW = process.env.RFSPASSWORD;
-      break;
-    case "BMS":
-      storeHost = process.env.BMSHOST;
-      storeUser = process.env.BMSUSER;
-      storePW = process.env.BMSPASSWORD;
-    case "MFS":
-      storeHost = process.env.MFSHOST;
-      storeUser = process.env.MFSUSER;
-      storePW = process.env.MFSPASSWORD;
-      break;
-    default:
-      console.log("Store wasn't set in moveImages function.");
-      return;
-  }
+  if (!creds[store]) return null;
 
-  try {
-    if (step == 1) {
-      // accessing OCMASTER FTP
-      await client.access({
-        host: process.env.OCMASTERHOST,
-        user: process.env.OCMASTERUSER,
-        password: process.env.OCMASTERPASSWORD,
-      });
-
-      // ensuring directory exists locally
-      const localDir = path.dirname(imagePath);
-      fs.mkdirSync(localDir, { recursive: true });
-
-      // downloading file
-      await client.downloadTo(imagePath, "/oc_master/image/" + imagePath);
-
-      // Initialize moveToClient here so it can be reused
-      moveToClient = new Client();
-      moveToClient.ftp.verbose = true;
-
-      // accessing store FTP
-      await moveToClient.access({
-        host: storeHost,
-        user: storeUser,
-        password: storePW,
-      });
-
-      // extracting directory path from image path
-      const directoryPath = imagePath.substring(
-        0,
-        imagePath.lastIndexOf("/") + 1
-      );
-
-      // ensure the directory exists on the target store, and creating it if necessary
-      await moveToClient.ensureDir(directoryPath);
-
-      return "Step 1: File downloaded";
-    } else if (step == 2) {
-      // Ensure moveToClient is accessible for the second step
-      if (!moveToClient) {
-        moveToClient = new Client();
-        moveToClient.ftp.verbose = true;
-        await moveToClient.access({
-          host: storeHost,
-          user: storeUser,
-          password: storePW,
-        });
-      }
-
-      // Uploading the image to the target store
-      await moveToClient.uploadFrom(imagePath, imagePath);
-
-      return "Step 2: File uploaded";
-    }
-  } catch (err) {
-    console.log("Error in moveImages:", err);
-  } finally {
-    client.close();
-    if (moveToClient) {
-      moveToClient.close();
-    }
-  }
+  return {
+    host: process.env[creds[store][0]],
+    user: process.env[creds[store][1]],
+    password: process.env[creds[store][2]]
+  };
 }
 
 /* START OF UPDATE PRODUCTS */
@@ -331,7 +270,7 @@ exports.truncateSelectedProductsToUpdateTable = async (req, res) => {
 };
 
 
-// Inserting into for product update
+// inserting into for product update
 exports.insertIntoSelectedProductsToUpdate = async (req, res) => {
   try {
     const db = await connectToDB();
@@ -353,7 +292,6 @@ exports.insertIntoSelectedProductsToUpdate = async (req, res) => {
   }
 };
 
-
 exports.getProductsToUpdate = async (req, res) => {
   try {
     const db = await connectToDB();
@@ -368,7 +306,6 @@ exports.getProductsToUpdate = async (req, res) => {
       .json({ message: "Database connection failed", error });
   }
 };
-
 
 exports.updateProductsTo = async (req, res) => {
   try {

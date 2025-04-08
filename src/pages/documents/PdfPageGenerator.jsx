@@ -16,7 +16,8 @@ function PdfPageGenerator() {
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedFileType, setSelectedFileType] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  
+  const [oldSelectedBrand, setOldSelectedBrand] = useState("All Brands");
+
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
@@ -32,24 +33,36 @@ function PdfPageGenerator() {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-
   useEffect(() => {
     async function refetchDocuments() {
-        if (selectedBrand || selectedCategory || selectedYear || selectedFileType) {
-          axios
-            .post(`${process.env.REACT_APP_API_URL}/node/documents/getFilteredFilePaths`, { selectedBrand, selectedCategory, selectedYear, selectedFileType })
-            .then((res) => {
-              const rows = res.data[0];
-              if (rows) {
-                organizeDocumentPaths(rows);
-              }
-            })
-            .catch((err) => console.log("Error:", err));
-        }
+      if (
+        selectedBrand ||
+        selectedCategory ||
+        selectedYear ||
+        selectedFileType
+      ) {
+        axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/node/documents/getFilteredFilePaths`,
+            { selectedBrand, selectedCategory, selectedYear, selectedFileType }
+          )
+          .then((res) => {
+            const rows = res.data[0];
+            if (rows) {
+              organizeDocumentPaths(rows);
+            }
+          })
+          .catch((err) => console.log("Error:", err));
+      }
     }
-
     refetchDocuments();
 
+    if (oldSelectedBrand !== selectedBrand) {
+      setOldSelectedBrand(selectedBrand);
+      setSelectedCategory("");
+      setSelectedFileType("");
+      setSelectedYear("");
+    }
   }, [selectedBrand, selectedCategory, selectedYear, selectedFileType]);
 
   const pullDocumentPaths = () => {
@@ -63,7 +76,7 @@ function PdfPageGenerator() {
       })
       .catch((err) => console.log("Error:", err));
   };
-  
+
   const documentTypes = {
     om: "<i class='fa-solid fa-file-pdf'></i> Owner's Manual",
     ss: "<i class='fa-solid fa-file-alt'></i> Sell Sheet",
@@ -79,35 +92,22 @@ function PdfPageGenerator() {
     spec: "<i class='fa-solid fa-file'></i> Spec Sheet",
     remote: "<i class='fa-solid fa-gamepad'></i> Remote",
     trim: "<i class='fa-solid fa-ruler-combined'></i> Trim Guide",
-    lpg: "<i class='fa-solid fa-fire'></i> Log Placement Guide",
+    lpg: "<i class='fa-solid fa-fire-burner'></i> Log Placement Guide",
     controls: "<i class='fa-solid fa-sliders'></i> Controls",
   };
 
   const organizeDocumentPaths = (rows) => {
-    
     let paths = {};
 
-    
-  // logic here needs to be re-worked //
-  // 
-    
-    // re-initializing years and categories every time to only show years applicable to the selected brand(s)
-
-    
+    // re-initializing every time to only show years applicable to the selected brand(s)
     const uniqueYears = new Set();
     const uniqueCategories = new Set();
     const documentTypes = new Set();
 
     // storing all brands and document types and keeping them
-    const uniqueBrands = new Set(brands);
+    const uniqueBrands = new Set();
 
-
-    ///
-    //
-    // end logic rework
-    
     rows.forEach((row) => {
-
       if (!paths[row.brand]) {
         // adding brand if it does not exist
         paths[row.brand] = {};
@@ -187,36 +187,44 @@ function PdfPageGenerator() {
 
       // adding product year if it doesnt exist
       if (
-        !currentCategory[row.product_display_name][row.product_path][
-          row.year
-        ]
+        !currentCategory[row.product_display_name][row.product_path][row.year]
       ) {
-        currentCategory[row.product_display_name][row.product_path][
-          row.year
-        ] = {};
+        currentCategory[row.product_display_name][row.product_path][row.year] =
+          {};
       }
 
-      
       // adding document_type if it doesnt exist
-      if (!currentCategory[row.product_display_name][row.product_path][row.year][row.document_type]) {
- 
+      if (
+        !currentCategory[row.product_display_name][row.product_path][row.year][
+          row.document_type
+        ]
+      ) {
         documentTypes.add(row.document_type);
-        
+
         // creating document type regardless
-        currentCategory[row.product_display_name][row.product_path][row.year][row.document_type] = {};
-        
+        currentCategory[row.product_display_name][row.product_path][row.year][
+          row.document_type
+        ] = {};
+
         // if subtype is null, just creating path object for document_type - if not, it will be handled below
         if (row.document_subtype == null) {
-          currentCategory[row.product_display_name][row.product_path][row.year][row.document_type] = {
+          currentCategory[row.product_display_name][row.product_path][row.year][
+            row.document_type
+          ] = {
             path: row.path,
           };
         }
       } else {
         // if there is more than one file in the same folder. the naming conventions for this condition are handled at => let paths = value.split(",");"
-        let oldPath = currentCategory[row.product_display_name][row.product_path][row.year][row.document_type].path;
+        let oldPath =
+          currentCategory[row.product_display_name][row.product_path][row.year][
+            row.document_type
+          ].path;
         let newPath = oldPath + "," + row.path;
         if (row.document_subtype == null) {
-          currentCategory[row.product_display_name][row.product_path][row.year][row.document_type] = {
+          currentCategory[row.product_display_name][row.product_path][row.year][
+            row.document_type
+          ] = {
             path: newPath,
           };
         }
@@ -224,15 +232,16 @@ function PdfPageGenerator() {
 
       // adding document_subtype if it exists
       if (row.document_subtype !== null) {
-
         documentTypes.add(row.document_subtype);
 
-        currentCategory[row.product_display_name][row.product_path][row.year][row.document_type][row.document_subtype] = {
+        currentCategory[row.product_display_name][row.product_path][row.year][
+          row.document_type
+        ][row.document_subtype] = {
           path: row.path,
         };
       }
 
-       /* at this point, we will be at something like this -
+      /* at this point, we will be at something like this -
 
         {
           Fire Magic (brand): {
@@ -273,54 +282,98 @@ function PdfPageGenerator() {
     setFileTypes([...documentTypes]);
     setBrands([...uniqueBrands]);
     setYears([...uniqueYears]);
-  }
+  };
 
   const FilterInputs = () => {
     return (
       <div className="flex justify-center">
         <form className="mx-auto">
-          <div className="flex gap-10">
-              <select id="brands"
+          <div className="flex flex-col gap-10 sm:flex-row w-[90vw] sm:w-auto mx-auto">
+            <div className="relative">
+              <select
+                id="brands"
                 value={selectedBrand}
-                className="bg-slate-500 text-3xl rounded-sm focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={(e) => setSelectedBrand(e.target.value)}
+                className="bg-slate-500 text-3xl rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full p-3 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200 appearance-none"
               >
                 <option>All Brands</option>
                 {brands.map((key) => (
                   <option value={key}>{key}</option>
                 ))}
               </select>
-
-              <select id="categories"
+              <svg
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="relative">
+              <select
+                id="categories"
                 value={selectedCategory}
-                className="bg-slate-500 text-3xl rounded-sm focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-500 text-3xl rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full p-3 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200 appearance-none"
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
-              <option>All Categories</option>
-              {categories
-                .sort((a, b) => b-a)
-                .map((key) => (
-                  <option value={key}>{key}</option>
-                ))}
+                <option>All Categories</option>
+                {categories
+                  .sort((a, b) => b - a)
+                  .map((key) => (
+                    <option value={key}>{key}</option>
+                  ))}
               </select>
 
-              <select id="years"
+              <svg
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="relative">
+              <select
+                id="years"
                 value={selectedYear}
-                className="bg-slate-500 text-3xl rounded-sm focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-500 text-3xl rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full pr-12  pl-3 py-3 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200 appearance-none"
                 onChange={(e) => setSelectedYear(e.target.value)}
               >
                 <option>All Years</option>
-              {years
-                .sort((a, b) => b-a)
-                .map((key) => (
-                  <option value={key}>{key}</option>
-                ))}
+                {years
+                  .sort((a, b) => b - a)
+                  .map((key) => (
+                    <option value={key}>{key}</option>
+                  ))}
               </select>
-
+              <svg
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="relative">
               <select
                 id="document_types"
                 value={selectedFileType}
-                className="bg-slate-500 text-3xl rounded-sm focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-slate-500 text-3xl rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none block w-full p-3 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200 appearance-none"
                 onChange={(e) => setSelectedFileType(e.target.value)}
               >
                 <option>All File Types</option>
@@ -328,13 +381,28 @@ function PdfPageGenerator() {
                   .sort((a, b) => b - a)
                   .map((key) => {
                     const z = documentTypes[key].split("</i> ").pop();
-                    return <option value={key} key={key}>{z}</option>;
+                    return (
+                      <option value={key} key={key}>
+                        {z}
+                      </option>
+                    );
                   })}
               </select>
-
+              <svg
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
           </div>
         </form>
-
       </div>
     );
   };
@@ -363,7 +431,12 @@ function PdfPageGenerator() {
     return count;
   };
 
-  const renderCategories = (categoryData, depth = 1, parentCategory = "", categoryPath = "") => {
+  const renderCategories = (
+    categoryData,
+    depth = 1,
+    parentCategory = "",
+    categoryPath = ""
+  ) => {
     if (typeof categoryData !== "object" || categoryData === null) {
       return null;
     }
@@ -435,13 +508,13 @@ function PdfPageGenerator() {
       );
     }
 
-    return categoryKeys.map((key,index) => {
+    return categoryKeys.map((key, index) => {
       let value = categoryData[key];
       const newCategoryPath = `${categoryPath}_${key}`
         .replace(/\//g, "_")
         .replace(/\s+/g, "_")
         .replace(/&/g, "_");
-       
+
       // if the value is a string and ends with .pdf, treat it as the path
       if (typeof value === "string" && value.endsWith(".pdf")) {
         // getting value of text from the json above
@@ -457,22 +530,28 @@ function PdfPageGenerator() {
                 // you can specify different text because the condition switch would just choose the first one
                 switch (true) {
                   case path.includes("options"):
-                    documentText = "<i class='fa-solid fa-ruler-combined'></i> Trim Options";
+                    documentText =
+                      "<i class='fa-solid fa-ruler-combined'></i> Trim Options";
                     break;
                   case path.includes("installation"):
-                    documentText = "<i class='fa-solid fa-ruler-combined'></i> Trim Installation";
+                    documentText =
+                      "<i class='fa-solid fa-ruler-combined'></i> Trim Installation";
                     break;
                   case path.includes("41mm"):
-                    documentText = "<i class='fa-solid fa-compass-drafting'></i> CAD Drawing (41mm Trim)";
+                    documentText =
+                      "<i class='fa-solid fa-compass-drafting'></i> CAD Drawing (41mm Trim)";
                     break;
                   case path.includes("16mm"):
-                    documentText = "<i class='fa-solid fa-compass-drafting'></i> CAD Drawing (16mm Trim)";
+                    documentText =
+                      "<i class='fa-solid fa-compass-drafting'></i> CAD Drawing (16mm Trim)";
                     break;
                   case path.includes("ss/insert"):
-                    documentText = "<i class='fa-solid fa-file-alt'></i> Sell Sheet (Insert)";
+                    documentText =
+                      "<i class='fa-solid fa-file-alt'></i> Sell Sheet (Insert)";
                     break;
                   case path.includes("ss/builtin"):
-                    documentText = "<i class='fa-solid fa-file-alt'></i> Sell Sheet (Built-In)";
+                    documentText =
+                      "<i class='fa-solid fa-file-alt'></i> Sell Sheet (Built-In)";
                     break;
                 }
 
@@ -509,7 +588,6 @@ function PdfPageGenerator() {
         if (
           documentTypes.hasOwnProperty(key) ||
           checkCharFrequency(key, "/") > 1
-   
         ) {
           return renderCategories(value, depth + 1, key, newCategoryPath);
           // continue rendering children
