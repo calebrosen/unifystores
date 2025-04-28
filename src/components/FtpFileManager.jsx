@@ -80,14 +80,14 @@ export default function FtpFileManager() {
     <div className="max-w-8xl mx-auto mt-8 p-4 bg-slate-800 text-white rounded-xl">
       <h2 className="text-3xl font-bold mb-4">FTP File Manager</h2>
 
-      {uploadedPath ? (<h3 className="my-8 font-semibold text-2xl">Uploaded File Path:&nbsp;&nbsp;&nbsp;&nbsp;{uploadedPath}</h3>) : null}
+      {uploadedPath ? (<h3 className="mb-8 mt-2 font-semibold text-3xl">Uploaded File Path:&nbsp;&nbsp;{uploadedPath}</h3>) : null}
 
       <div className="mb-4">
-        <div className="mb-2">Current Path: /{currentPath || ""}</div>
+        <div className="my-6 text-2xl">Current Path: /{currentPath || ""}</div>
         {currentPath && (
           <button
             onClick={goBack}
-            className="bg-gray-700 px-2 py-1 rounded mr-2"
+            className="bg-gray-700 px-2 py-1 text-2xl rounded mr-2"
           >
             ⬅️ Back
           </button>
@@ -98,11 +98,11 @@ export default function FtpFileManager() {
           value={newFolderName}
           onChange={(e) => setNewFolderName(e.target.value)}
           placeholder="New folder name"
-          className="bg-gray-600 text-white px-2 py-1 rounded mr-2"
+          className="bg-gray-600 text-white text-2xl px-3 py-2 rounded mr-2"
         />
         <button
           onClick={createFolder}
-          className="bg-blue-700 px-3 py-1 rounded"
+          className="bg-blue-700 px-3 py-2 text-2xl rounded"
         >
           Create Folder
         </button>
