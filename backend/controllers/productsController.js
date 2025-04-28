@@ -24,18 +24,34 @@ exports.getProductSubsections = async (req, res) => {
 
 exports.getProductsToCopy = async (req, res) => {
   try {
+    const { page = 1, pageSize = 50, searchName = '', searchMPN = '' } = req.query;
+    const offset = (page - 1) * pageSize;
+
     const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.usp_get_products_for_unify()";
-    db.query(sql, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
+
+    // use promise() so we can await properly
+    const [results] = await db.promise().query("CALL copyProductsToStore.usp_get_products_for_unify(?, ?)", [searchName, searchMPN]);
+
+    const allProducts = results[0] || [];
+    const totalProducts = allProducts.length;
+
+    const paginatedProducts = allProducts.slice(offset, offset + parseInt(pageSize));
+
+    return res.json({
+      products: paginatedProducts,
+      total: totalProducts,
+      page: parseInt(page),
+      pageSize: parseInt(pageSize),
+      totalPages: Math.ceil(totalProducts / pageSize),
     });
+
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
+    console.error("Error in getProductsToCopy:", error);
+    return res.status(500).json({ message: "Database connection failed", error });
   }
 };
+
+
 
 exports.RefetchOCMasterTables = async (req, res) => {
   try {
@@ -171,36 +187,51 @@ exports.CopyProducts_CopyImagesToStore = async (req, res) => {
 exports.CopyProducts_CopyImagesToStore_Action = async (req, res) => {
   const { selectedStore, imagePath } = req.body;
   if (!selectedStore || !imagePath) {
+    console.warn("[ImageCopy] Missing selectedStore or imagePath:", { selectedStore, imagePath });
     return res.status(400).send("Store and image path are required");
   }
 
   const localPath = path.join(__dirname, "../temp", path.basename(imagePath));
   fs.mkdirSync(path.dirname(localPath), { recursive: true });
 
+  console.log(`[ImageCopy] Starting copy for image: ${imagePath}`);
+
   try {
-    //downloading from OCMASTER
+    // Step 1: Download from OCMASTER
     const masterClient = new ftp.Client();
     masterClient.ftp.verbose = false;
 
+    console.log("[ImageCopy] Connecting to OCMASTER FTP...");
     await masterClient.access({
       host: process.env.OCMASTERHOST,
       user: process.env.OCMASTERUSER,
       password: process.env.OCMASTERPASSWORD,
     });
+    console.log("[ImageCopy] Connected to OCMASTER FTP.");
 
-    await masterClient.downloadTo(localPath, `/oc_master/image/${imagePath}`);
+    const masterImagePath = `/oc_master/image/${imagePath}`;
+    console.log(`[ImageCopy] Downloading from master FTP: ${masterImagePath}`);
+    await masterClient.downloadTo(localPath, masterImagePath);
+    console.log("[ImageCopy] Downloaded image to local temp folder.");
+
     await masterClient.close();
+    console.log("[ImageCopy] Closed connection to OCMASTER FTP.");
 
-    // step 2: Upload to selected store
+    // Step 2: Upload to selected store
+    console.log(`[ImageCopy] Preparing to upload to store: ${selectedStore}`);
     const storeCreds = getStoreFtpCredentials(selectedStore);
     if (!storeCreds) {
+      console.error("[ImageCopy] Invalid store code:", selectedStore);
       return res.status(400).send("Invalid store code");
     }
 
     const storeClient = new ftp.Client();
     storeClient.ftp.verbose = false;
 
+    console.log(`[ImageCopy] Connecting to store FTP (${selectedStore})...`);
     await storeClient.access(storeCreds);
+    console.log(`[ImageCopy] Connected to store FTP.`);
+
     const folderPath = path.posix.dirname(imagePath);
     const fileName = path.basename(imagePath);
 
@@ -208,20 +239,28 @@ exports.CopyProducts_CopyImagesToStore_Action = async (req, res) => {
     for (const segment of segments) {
       try {
         await storeClient.cd(segment);
+        console.log(`[ImageCopy] Changed into folder: ${segment}`);
       } catch {
+        console.log(`[ImageCopy] Folder not found, creating folder: ${segment}`);
         await storeClient.send("MKD " + segment);
         await storeClient.cd(segment);
       }
     }
 
+    console.log(`[ImageCopy] Uploading image ${fileName} to store FTP...`);
     await storeClient.uploadFrom(localPath, fileName);
-    await storeClient.close();
+    console.log("[ImageCopy] Upload successful.");
 
+    await storeClient.close();
+    console.log("[ImageCopy] Closed connection to store FTP.");
+
+    // Cleanup local temp file
     fs.unlinkSync(localPath);
+    console.log("[ImageCopy] Cleaned up local temp file.");
 
     res.status(200).send("Images moved successfully in both steps");
   } catch (error) {
-    console.log("Error during image transfer:", error);
+    console.error("[ImageCopy] Error during image transfer:", error.message || error);
     res.status(500).send("Failed to move images");
   }
 };
