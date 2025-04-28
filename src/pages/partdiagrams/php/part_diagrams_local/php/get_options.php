@@ -18,8 +18,8 @@ switch ($method) {
   case 'GET':
     $sql = "SELECT DISTINCT O.option_part_id, O.model_id, O.description, P.model, P.image, P.price, P.quantity, PD.name, 'Dummy Price', 'Dummy Keyword'
     FROM  part_diagrams_part_options O 
-    INNER JOIN product P ON P.product_id = O.option_part_id 
-    INNER JOIN product_description PD ON PD.product_id = P.product_id 
+    INNER JOIN oc_master.product P ON P.product_id = O.option_part_id 
+    INNER JOIN oc_master.product_description PD ON PD.product_id = P.product_id 
     WHERE O.part_id = '$part_id' AND O.model_id = '$model_id'";
     break;
 }
