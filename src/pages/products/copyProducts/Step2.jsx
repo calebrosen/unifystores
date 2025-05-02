@@ -1,3 +1,4 @@
+// this is the confirm page
 function Step2({
   viewProducts,
   forceCopy,

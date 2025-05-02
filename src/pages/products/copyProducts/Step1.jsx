@@ -1,3 +1,4 @@
+// this is the table for product selection
 function Step1({
   products,
   selectedProductIds,
@@ -75,7 +76,7 @@ function Step1({
       </table>
       <div className="flex my-10">
         <div className="grid gap-4 justify-between" style={{ gridTemplateColumns: 'repeat(30, minmax(0, 1fr))' }}>
-
+        {/* page numbers pagination */}
         {Array.from({ length: totalPages }, (_, i) => (
 
           <button

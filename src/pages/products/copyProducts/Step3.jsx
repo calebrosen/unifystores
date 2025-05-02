@@ -1,3 +1,4 @@
+// this is the final page
 function Step3({ goBack, lastMessage }) {
   return (
     <div className="text-center">
