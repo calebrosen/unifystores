@@ -1,6 +1,5 @@
 import axios from "axios";
-import debounce from "lodash.debounce";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { StoreContext } from "../../../contexts/StoreContext";
 import Step1 from "./Step1";
@@ -17,10 +16,10 @@ function CopyProductsToStores() {
   const [forceCopy, setForceCopy] = useState({});
   const [lastMessage, setLastMessage] = useState("");
 
-  const [nameInput, setNameInput] = useState('');
-  const [mpnInput, setMpnInput] = useState('');
   const [nameQuery, setNameQuery] = useState('');
   const [mpnQuery, setMpnQuery] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  const [mpnInput, setMpnInput] = useState('');
 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -50,26 +49,16 @@ function CopyProductsToStores() {
   useEffect(() => {
     fetchProducts(page, pageSize, nameQuery, mpnQuery);
   }, [page, pageSize, nameQuery, mpnQuery]);
-  
-  const debouncedSetNameQuery = useCallback(
-    debounce((val) => setNameQuery(val), 750),
-    []
-  );
-  
-  const debouncedSetMpnQuery = useCallback(
-    debounce((val) => setMpnQuery(val), 750),
-    []
-  );
+
+  const searchProducts = () => {
+    setMpnQuery(mpnInput);
+    setNameQuery(nameInput);
+  };
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
     }
-  };
-
-  const handlePageSizeChange = (e) => {
-    setPageSize(parseInt(e.target.value));
-    setPage(1); // reset to page 1
   };
   
   const toggleProductSelection = (productId) => {
@@ -164,27 +153,31 @@ function CopyProductsToStores() {
     }
   };
 
+  
+
   const copyImages = async () => {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyImagesToStore`);
-      const images = data[0] || [];
-
-      const copyPromises = images.map((img) =>
-        axios.post(`${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyImagesToStore_Action`, {
-          selectedStore,
-          imagePath: img.image,
-        })
+      setLastMessage("Gathering images to copy…");
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyImagesToStore`
       );
-      await Promise.allSettled(copyPromises);
-      setLastMessage("All images copied successfully.");
-      console.log("All images copied successfully.");
-
-    } catch (error) {
-      console.error("Error copying images:", error);
-      setLastMessage("Image copy encountered errors. Check console.");
+      const rows = Array.isArray(data[0]) ? data[0] : [];
+      if (rows.length === 0) {
+        setLastMessage("No images found to copy.");
+        return;
+      }
+      const imagePaths = rows.map(r => r.image);
+      console.log('Images to copy: ', imagePaths);
+      setLastMessage(`Copying images…`);
+      const bulkRes = await axios.post(`${process.env.REACT_APP_API_URL}/node/products/CopyProducts_CopyImagesToStore_Action`, {selectedStore, images: imagePaths});
+      setLastMessage(bulkRes.data.message);
+    } catch (err) {
+      console.error("Image copy failed:", err);
+      setLastMessage("Image copy failed");
     }
   };
 
+  
   const clearSelections = () => {
     setSelectedProductIds([]);
   };
@@ -217,24 +210,26 @@ function CopyProductsToStores() {
       <div>
           <div className="flex justify-center gap-6 my-8">
           <input
-            value={nameInput}
             className="bg-slate-800 p-3 rounded-lg text-2xl text-neutral-200 placeholder:text-neutral-400"
             placeholder="Search by Name"
-            onChange={(e) => {
-              setNameInput(e.target.value);
-              debouncedSetNameQuery(e.target.value);
-            }}
+            value={nameInput}
+            onChange={(e) => setNameInput(e.target.value)}
           />
 
           <input
-            value={mpnInput}
             className="bg-slate-800 p-3 rounded-lg text-2xl text-neutral-200 placeholder:text-neutral-400"
             placeholder="Search by MPN"
-            onChange={(e) => {
-              setMpnInput(e.target.value);
-              debouncedSetMpnQuery(e.target.value);
-            }}
+            value={mpnInput}
+            onChange={(e) => setMpnInput(e.target.value)}
           />
+
+          <button
+            onClick={searchProducts}
+            className="bg-cyan-700 hover:bg-cyan-800 px-4 py-3 text-3xl rounded-xl text-white font-semibold transition hover:scale-105"
+          >
+            Search
+          </button>
+
         </div>
         <Step1
           products={products}
