@@ -96,10 +96,10 @@ function CreateCoupon() {
 
   return (
     <div>
-      <div id="createCouponContainer">
+      <div className="flex flex-row items-center justify-center w-full h-full gap-10 mt-40">
         <div id="agentSelection">
           <select
-            className="w-100 bg-slate-800 px-2 py-3 text-neutral-200 h-100 rounded-lg text-neutral-200 text-3xl border-1 border-slate-700"
+            className="w-100 bg-slate-800 px-2 py-3 text-neutral-200 h-100 rounded-lg text-neutral-200 text-5xl border-1 border-slate-700"
             id="selectAgent"
             value={selectedAgent}
             onChange={handleInputChange}
@@ -120,7 +120,7 @@ function CreateCoupon() {
             id="couponCodeField"
             maxLength="11"
             value={couponCode}
-            className="w-100 bg-slate-800 px-3 py-3 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700"
+            className="w-100 bg-slate-800 px-3 py-3 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-5xl border-1 border-slate-700"
             onChange={(e) => setCouponCode(e.target.value)}
           />
         </div>
@@ -129,15 +129,16 @@ function CreateCoupon() {
           <input
             type="number"
             placeholder="Amount of Coupon"
-            className="w-100 bg-slate-800 px-3 py-3 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700"
+            className="w-100 bg-slate-800 px-3 py-3 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-5xl border-1 border-slate-700"
             id="amountField"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
 
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 h-100 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-4 px-3 transition hover:scale-105" id="createCouponButton" onClick={createCouponAction}>Create Coupon</button>
-      </div>
+ 
+        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 h-100 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-5xl font-semibold py-4 px-3 transition hover:scale-105" id="createCouponButton" onClick={createCouponAction}>Create Coupon</button>
+ </div>
       
       {generatedCouponCode && (
         <div className="text-neutral-200 mt-5 text-4xl">Coupon Code: {generatedCouponCode}</div>
