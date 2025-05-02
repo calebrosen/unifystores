@@ -1,7 +1,9 @@
 const connectToDB = require("../model/db");
 require("dotenv").config({ path: "../env/.env" });
+const { PassThrough } = require("stream");
 const fs = require("fs");
 const ftp = require("basic-ftp");
+const { Readable, Writable } = require("stream");
 const path = require("path");
 
 /* PRODUCTS */
@@ -153,6 +155,21 @@ exports.CopyProducts_GetProductsToCopy = async (req, res) => {
   }
 };
 
+exports.CopyProducts_CopyImagesToStore = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL copyProductsToStore.usp_step_5_copy_images_to_store()";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
 exports.CopyProducts_CopyProductsToStore = async (req, res) => {
   try {
     const db = await connectToDB();
@@ -169,99 +186,110 @@ exports.CopyProducts_CopyProductsToStore = async (req, res) => {
   }
 };
 
-exports.CopyProducts_CopyImagesToStore = async (req, res) => {
-  try {
-    const db = await connectToDB();
-    const sql = "CALL copyProductsToStore.usp_step_5_copy_images_to_store()";
-    db.query(sql, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
-  }
-};
+// buffer function for image copy to not have too many actions at once
+async function downloadToBuffer(client, remotePath) {
+  const chunks = [];
+  const writer = new Writable({
+    write(chunk, encoding, callback) {
+      chunks.push(chunk);
+      callback();
+    }
+  });
+  await client.downloadTo(writer, remotePath);
+  return Buffer.concat(chunks);
+}
 
 exports.CopyProducts_CopyImagesToStore_Action = async (req, res) => {
-  const { selectedStore, imagePath } = req.body;
-  if (!selectedStore || !imagePath) {
-    console.warn("[ImageCopy] Missing selectedStore or imagePath:", { selectedStore, imagePath });
-    return res.status(400).send("Store and image path are required");
+  let { selectedStore, images } = req.body;
+  console.log("[image-copy] start for store:", selectedStore);
+
+  if (!selectedStore || !Array.isArray(images) || images.length === 0) {
+    return res.status(400).json({ message: "Store and images array required" });
   }
 
-  const localPath = path.join(__dirname, "../temp", path.basename(imagePath));
-  fs.mkdirSync(path.dirname(localPath), { recursive: true });
+  // filtering out any empty paths
+  images = images.filter(p => typeof p === "string" && p.trim());
 
-  console.log(`[ImageCopy] Starting copy for image: ${imagePath}`);
+  const master = new ftp.Client();
+  const store  = new ftp.Client();
+  master.ftp.verbose = false;
+  store.ftp.verbose  = false;
+
+  let success = 0, missing = 0, errors = 0;
 
   try {
-    // Step 1: Download from OCMASTER
-    const masterClient = new ftp.Client();
-    masterClient.ftp.verbose = false;
-
-    console.log("[ImageCopy] Connecting to OCMASTER FTP...");
-    await masterClient.access({
-      host: process.env.OCMASTERHOST,
-      user: process.env.OCMASTERUSER,
+    // connect once
+    console.log("[image-copy] master FTP connect…");
+    await master.access({
+      host:     process.env.OCMASTERHOST,
+      user:     process.env.OCMASTERUSER,
       password: process.env.OCMASTERPASSWORD,
     });
-    console.log("[ImageCopy] Connected to OCMASTER FTP.");
+    console.log("[image-copy] master ✔");
 
-    const masterImagePath = `/oc_master/image/${imagePath}`;
-    console.log(`[ImageCopy] Downloading from master FTP: ${masterImagePath}`);
-    await masterClient.downloadTo(localPath, masterImagePath);
-    console.log("[ImageCopy] Downloaded image to local temp folder.");
+    const creds = getStoreFtpCredentials(selectedStore);
+    if (!creds) throw new Error(`Invalid store: ${selectedStore}`);
+    console.log("[image-copy] store FTP connect…");
+    await store.access(creds);
+    console.log("[image-copy] store ✔");
 
-    await masterClient.close();
-    console.log("[ImageCopy] Closed connection to OCMASTER FTP.");
+    for (let imagePath of images) {
+      await store.cd("/");
+      console.log("[image-copy] cwd reset to", await store.pwd());
+      const remoteMasterPath = `/oc_master/image/${imagePath}`;
+      const fileName         = path.basename(imagePath);
+      console.log(`\n[image-copy] ➡️  ${remoteMasterPath}`);
 
-    // Step 2: Upload to selected store
-    console.log(`[ImageCopy] Preparing to upload to store: ${selectedStore}`);
-    const storeCreds = getStoreFtpCredentials(selectedStore);
-    if (!storeCreds) {
-      console.error("[ImageCopy] Invalid store code:", selectedStore);
-      return res.status(400).send("Invalid store code");
-    }
-
-    const storeClient = new ftp.Client();
-    storeClient.ftp.verbose = false;
-
-    console.log(`[ImageCopy] Connecting to store FTP (${selectedStore})...`);
-    await storeClient.access(storeCreds);
-    console.log(`[ImageCopy] Connected to store FTP.`);
-
-    const folderPath = path.posix.dirname(imagePath);
-    const fileName = path.basename(imagePath);
-
-    const segments = folderPath.split("/").filter(Boolean);
-    for (const segment of segments) {
+      // ensuring path exists on master
       try {
-        await storeClient.cd(segment);
-        console.log(`[ImageCopy] Changed into folder: ${segment}`);
-      } catch {
-        console.log(`[ImageCopy] Folder not found, creating folder: ${segment}`);
-        await storeClient.send("MKD " + segment);
-        await storeClient.cd(segment);
+        await master.size(remoteMasterPath);
+      } catch (_) {
+        console.warn(`⚠️ missing on master: ${remoteMasterPath}`);
+        missing++;
+        continue;
+      }
+
+      // ensuring folder strucutre on store
+      const dir = path.posix.dirname(imagePath);
+      console.log(`  • ensure remote folder: ${dir}`);
+      for (let seg of dir.split("/").filter(Boolean)) {
+        try {
+          await store.cd(seg);
+        } catch {
+          console.log(`  • mkd ${seg}`);
+          await store.send("MKD " + seg);
+          await store.cd(seg);
+        }
+      }
+
+      // downloading to memory and uploading to store
+      try {
+        console.log(`  • downloading into memory…`);
+        const buffer = await downloadToBuffer(master, remoteMasterPath);
+
+        console.log(`  • uploading to store: ${fileName}`);
+        await store.uploadFrom(Readable.from(buffer), fileName);
+
+        console.log(`✅ copied ${remoteMasterPath}`);
+        success++;
+      } catch (err) {
+        console.error(`❌ error on ${remoteMasterPath}:`, err.message || err);
+        errors++;
       }
     }
 
-    console.log(`[ImageCopy] Uploading image ${fileName} to store FTP...`);
-    await storeClient.uploadFrom(localPath, fileName);
-    console.log("[ImageCopy] Upload successful.");
-
-    await storeClient.close();
-    console.log("[ImageCopy] Closed connection to store FTP.");
-
-    // Cleanup local temp file
-    fs.unlinkSync(localPath);
-    console.log("[ImageCopy] Cleaned up local temp file.");
-
-    res.status(200).send("Images moved successfully in both steps");
-  } catch (error) {
-    console.error("[ImageCopy] Error during image transfer:", error.message || error);
-    res.status(500).send("Failed to move images");
+    const msg = `Done. ${success} copied, ${missing} missing, ${errors} errors.`;
+    console.log("[bulk-image-copy] summary:", msg);
+    return res.json({ success: errors === 0, message: msg });
+  }
+  catch (fatal) {
+    console.error("[bulk-image-copy] fatal:", fatal);
+    return res.status(500).json({ success: false, message: fatal.message });
+  }
+  finally {
+    master.close();
+    store.close();
+    console.log("[bulk-image-copy] connections closed");
   }
 };
 
@@ -277,7 +305,8 @@ function getStoreFtpCredentials(code) {
     RFS: ["RFSHOST", "RFSUSER", "RFSPASSWORD"],
     BMS: ["BMSHOST", "BMSUSER", "BMSPASSWORD"],
     MFS: ["MFSHOST", "MFSUSER", "MFSPASSWORD"],
-    MHS: ["MHSHOST", "MHSUSER", "MHSPASSWORD"]
+    MHS: ["MHSHOST", "MHSUSER", "MHSPASSWORD"],
+    GCL: ["GCLHOST", "GCLUSER", "GCLPASSWORD"]
   };
 
   if (!creds[store]) return null;
