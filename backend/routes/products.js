@@ -58,9 +58,6 @@ router.post('/insertIntoSelectedProductsToUpdate', controller.insertIntoSelected
 // Getting sections
 router.get('/getProductDescriptionSubsections', controller.getProductDescriptionSubsections);
 
-// loading the edit page
-router.get('/viewEditProductDescription', controller.viewEditProductDescription);
-
 // getting differences on selected product (in the modal)
 router.post('/getProductDescDifferences', controller.getProductDescDifferences);
 

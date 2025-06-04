@@ -1,6 +1,11 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../contexts/StoreContext";
+import MediumButton from "../../components/buttons/MediumButton";
+import LargeButton from "../../components/buttons/LargeButton";
+import MediumInput from "../../components/inputs/MediumInput";
+import LargeInput from "../../components/inputs/LargeInput";
+import BoldH1 from "../../components/headings/BoldH1";
 
 function CopyCategories() {
   const [data, setData] = useState([]);
@@ -122,37 +127,25 @@ function CopyCategories() {
     <>
       {/* First step (selecting categories) */}
       {step == 1 && (
-        <div id="categoryContainer" className="text-center">
+        <div className="text-center">
           {categoryIDsToCopy && categoryIDsToCopy.length > 0 && (
-            <div>
-              <p className="text-3xl text-neutral-200 mt-8">Category ID's selected: </p>
-              {categoryIDsToCopy.map((d, i) => (
-                <span key={i} className="text-neutral-200 text-3xl">
-                  {d}&nbsp;
-                </span>
-              ))}
-              <div className="mt-10">
-                <button
-                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-3 px-3 me-2 mb-2 transition hover:scale-105"
-                  onClick={() => ChangeStep(2)}
-                >
-                  Proceed
-                </button>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button
-                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-3 px-3 me-2 mb-2 transition hover:scale-105"
-                  onClick={ClearSelection}
-                >
-                  Clear Selection
-                </button>
-              </div>
+            <div className="flex justify-center my-8 gap-8">
+              <LargeButton
+                action={() => ChangeStep(2)}
+                text={"Proceed"}
+              />
+              <LargeButton
+                action={ClearSelection}
+                text={"Clear Selection"}
+                color={"bg-slate-700"}
+              />
             </div>
           )}
-          <div>
-            <input
-              className="bg-slate-700 p-3 rounded-lg text-neutral-200 text-4xl mt-4 w-25"
+          <div className="mt-12 mb-14">
+            <LargeInput
               label="Search by Name or Parent Name"
               placeholder="Search by Name or Parent Name"
+              value={nameSearch}
               onChange={FilterCategories}
             />
           </div>
@@ -193,17 +186,20 @@ function CopyCategories() {
 
     {/* Second step */}
     {step === 2 && categoriesPreview && categoriesPreview.length > 0 &&
-    <div id="categoryContainer" className="text-center">
-      <div className="text-6xl text-white font-bold underline mt-5 mb-4">REVIEW CATEGORIES</div>
-      <div>
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105" onClick={CopyCategoriesAction}>Proceed</button>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button
-            className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2 px-3 me-2 mb-2 transition hover:scale-105"
-            onClick={() => ChangeStep(1)}
-        >
-        Go Back
-        </button>
+    <div className="text-center">
+      <BoldH1
+        text={"REVIEW CATEGORIES"}
+      />
+      <div className="flex justify-center my-8 gap-8">
+        <LargeButton
+          action={CopyCategoriesAction}
+          text={"Copy Categories"}
+        />
+        <LargeButton
+          action={() => ChangeStep(1)}
+          text={"Go Back"}
+          color={"bg-slate-700"}
+        />
       </div>
 
       <table className="mt-4">

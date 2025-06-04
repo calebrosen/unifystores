@@ -1,45 +1,71 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import MediumInput from '../../components/inputs/MediumInput';
+import MediumButton from '../../components/buttons/MediumButton';
+import BoldH1 from '../../components/headings/BoldH1';
 
 function EditPushOrderStatusName() {
   const [data, setData] = useState([]);
- 
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/node/orders/viewEditOrderStatusName`)
       .then(res => res.json())
-      .then(data => setData(data[0]))
-      .catch(err => console.log('Fetch error:', err));
+      .then(data => {
+        // Initialize editable names per item
+        const withInputs = data[0].map(d => ({
+          ...d,
+          editedName: d.name
+        }));
+        setData(withInputs);
+      })
+      .catch(err => console.error('Fetch error:', err));
   }, []);
 
-  const editOrderStatusName = (order_status_id, originalName) => {
-    const inputID = `orderStatusID${order_status_id}`;
-    const editedName = document.getElementById(inputID).value;
-    if (editedName != originalName) {
-      const confirmPush = confirm(`Are you sure you want to change the name from ${originalName} (ID: ${order_status_id}) to ${editedName}?`);
-      if (confirmPush) {
-        axios.post(`${process.env.REACT_APP_API_URL}/node/orders/updateOrderStatusName`, { order_status_id, editedName })
-          .then(res => {
-            console.log(res);
-            if (res.data[0][0]['success']) {
-              alert(res.data[0][0]['success']);
-            } 
-          })
-          .catch(err => alert('Error:', err));
-      }
-    } else {
-      alert("There's an input field, btw. Try changing that first.");
+  const handleInputChange = (order_status_id, newValue) => {
+    setData(prev =>
+      prev.map(d =>
+        d.order_status_id === order_status_id ? { ...d, editedName: newValue } : d
+      )
+    );
+  };
+
+  const editOrderStatusName = (order_status_id, originalName, editedName) => {
+    if (editedName.trim() === "" || editedName === originalName) {
+      alert("Please change the input value before submitting.");
+      return;
     }
-  }
+
+    const confirmPush = confirm(
+      `Are you sure you want to change the name from "${originalName}" (ID: ${order_status_id}) to "${editedName}"?`
+    );
+
+    if (!confirmPush) return;
+
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/node/orders/updateOrderStatusName`, {
+        order_status_id,
+        editedName
+      })
+      .then(res => {
+        if (res.data[0][0]?.success) {
+          alert(res.data[0][0].success);
+        }
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        alert('There was an error updating the order status name.');
+      });
+  };
 
   return (
-    <div id="orderStatusContainer" className='text-center'>
-      <p className="text-6xl font-bold underline text-neutral-200">Edit Order Status Name</p>
-      <table className='mt-5'>
+    <div className="text-center">
+      <BoldH1 text="Edit Order Status Name" />
+      <table className="mt-4 mx-auto">
         <thead>
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Edit Name</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -47,20 +73,17 @@ function EditPushOrderStatusName() {
             <tr key={i}>
               <td>{d.order_status_id}</td>
               <td>
-                <input
-                  type="text"
+                <MediumInput
                   id={`orderStatusID${d.order_status_id}`}
-                  defaultValue={d.name}
-                  name={d.name}
-                  className="bg-slate-700 rounded-lg text-neutral-200 p-2"
+                  value={d.editedName}
+                  onChange={e => handleInputChange(d.order_status_id, e.target.value)}
                 />
               </td>
               <td>
-                <button
-                  className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold p-2 transition hover:scale-105"
-                  onClick={() => editOrderStatusName(d.order_status_id, d.name)}>
-                    Edit Name
-                </button>
+                <MediumButton
+                  text="Edit Name"
+                  action={() => editOrderStatusName(d.order_status_id, d.name, d.editedName)}
+                />
               </td>
             </tr>
           ))}

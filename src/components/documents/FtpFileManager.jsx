@@ -1,6 +1,8 @@
-// FtpFileManager.jsx
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { PDFPathContext } from '../../contexts/PDFPathContext';
+import MediumButton from "../buttons/MediumButton";
+import SmallInput from "../inputs/SmallInput";
 
 const API = `${process.env.REACT_APP_API_URL}/node/documents`;
 
@@ -9,7 +11,7 @@ export default function FtpFileManager() {
   const [folderContents, setFolderContents] = useState([]);
   const [newFolderName, setNewFolderName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadedPath, setUploadedPath] = useState("");
+  const { docPath, setDocPath } = useContext(PDFPathContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -46,8 +48,9 @@ export default function FtpFileManager() {
   };
 
   const uploadFile = async () => {
-    setLoading(true);
     if (!selectedFile) return alert("No file selected");
+
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -60,13 +63,12 @@ export default function FtpFileManager() {
       });
     
       const { ftpPath, failed } = res.data;
-    
-      alert(`Upload finished!\nPath: ${ftpPath}`);
+          
       if (failed && failed.length > 0) {
         alert(`⚠️ Some servers failed:\n${failed.map(f => `${f.host}: ${f.error}`).join("\n")}`);
       }
     
-      setUploadedPath(ftpPath);
+      setDocPath(ftpPath);
       fetchFolderContents();
     } catch (err) {
       console.error("Full error:", err);
@@ -77,37 +79,38 @@ export default function FtpFileManager() {
   };
 
   return (
-    <div className="max-w-8xl mx-auto mt-8 p-4 bg-slate-800 text-white rounded-xl">
+    <div className="mx-auto mt-8 p-4 bg-slate-800 text-white rounded-xl">
       <h2 className="text-3xl font-bold mb-4">FTP File Manager</h2>
 
-      {uploadedPath ? (<h3 className="mb-8 mt-2 font-semibold text-3xl">Uploaded File Path:&nbsp;&nbsp;{uploadedPath}</h3>) : null}
+      {docPath ? (<h3 className="mb-8 mt-2 text-2xl">Uploaded File Path: {docPath}</h3>) : null}
 
       <div className="mb-4">
         <div className="my-6 text-2xl">Current Path: /{currentPath || ""}</div>
+
+
+        <div className="flex gap-3">
         {currentPath && (
           <button
             onClick={goBack}
-            className="bg-gray-700 px-2 py-1 text-2xl rounded mr-2"
+            className="bg-gray-700 px-3 text-2xl rounded"
           >
             ⬅️ Back
           </button>
         )}
 
-        <input
-          type="text"
+        <SmallInput
           value={newFolderName}
           onChange={(e) => setNewFolderName(e.target.value)}
           placeholder="New folder name"
-          className="bg-gray-600 text-white text-2xl px-3 py-2 rounded mr-2"
         />
-        <button
-          onClick={createFolder}
-          className="bg-blue-700 px-3 py-2 text-2xl rounded"
-        >
-          Create Folder
-        </button>
-      </div>
 
+        <MediumButton
+          text={"Create Folder"}
+          action={createFolder}
+          size={"text-2xl !font-medium"}
+        />
+      </div>
+</div>
       <ul className="mb-6 space-y-1">
         {folderContents.map((item) => (
           <li
@@ -130,17 +133,18 @@ export default function FtpFileManager() {
         ))}
       </ul>
 
-      <div>
+      <div className="flex flex-col gap-3 w-min">
         <input
           type="file"
           accept=".pdf"
           onChange={(e) => setSelectedFile(e.target.files[0])}
           className="mb-2 block"
         />
-        <button onClick={uploadFile} className="bg-green-600 px-4 py-2 rounded">
-          Upload PDF to Stores
-        </button>
-          {loading ? (<div className="w-16 h-16 mt-10 border-4 border-gray-300  border-t-slate-600 rounded-full animate-spin"></div> ) : null}
+        <MediumButton
+          text={"Upload PDF"}
+          action={uploadFile}
+        />
+          {loading ? (<div className="w-16 h-16 mt-10 border-4 border-gray-300 border-t-slate-600 rounded-full animate-spin"></div> ) : null}
       </div>
     </div>
   );

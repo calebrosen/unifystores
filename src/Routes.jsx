@@ -46,7 +46,6 @@ import Zones from './pages/zones/Zones.jsx';
 
 import EditSingleProductDescription from './pages/productdescription/EditSingleDescription.jsx';
 import ProductDescription from './pages/productdescription/productdescription.jsx';
-import ViewEditProductDescription from './pages/productdescription/ViewEditProductDescription.jsx';
 
 import CopyProductsToStores from './pages/products/copyProducts/CopyProductsToStores.jsx';
 import DiscontinuedWhileSuppliesLast from './pages/products/DiscontinuedWhileSuppliesLast.jsx';
@@ -125,7 +124,6 @@ export const routes = [
 
   // Product Description
   { path: "/productdescription", element: <ProductDescription />, auth: true },
-  { path: "/productdescription/EditDescription", element: <ViewEditProductDescription />, auth: true },
   { path: "/productdescription/EditSingleDescription", element: <EditSingleProductDescription />, auth: true },
 
   // Products

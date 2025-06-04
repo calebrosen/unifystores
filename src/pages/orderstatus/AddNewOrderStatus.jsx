@@ -1,5 +1,8 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import LargeButton from '../../components/buttons/LargeButton';
+import BoldH1 from '../../components/headings/BoldH1';
+import LargeInput from '../../components/inputs/LargeInput';
 
 function AddNewOrderStatus() {
   const [orderStatusName, setOrderStatusName] = useState('');
@@ -30,18 +33,12 @@ function AddNewOrderStatus() {
   }
 
   return (
-    <div>
-      <div className='centered'>
-        <p className="text-5xl font-bold underline text-neutral-200">
-          INPUT AN ORDER STATUS NAME
-        </p>
-        <div id="manufacturersContainer" className='text-center'>
-          <input className="bg-slate-800 p-2 text-neutral-900 mt-5 rounded-lg h-100 text-white placeholder:text-neutral-300 text-4xl border-1 border-slate-700" onChange={updateOrderStatusName}></input>
-        </div>
-        <div>
-          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 mt-5 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" onClick={addOrderStatusAction}>Add Order Status</button>
-        </div>
+    <div className="text-center">
+      <BoldH1 text={"INPUT AN ORDER STATUS NAME"} />
+      <div className="my-10">
+        <LargeInput onChange={updateOrderStatusName}/>
       </div>
+      <LargeButton action={addOrderStatusAction} text="Add Order Status"/>
     </div>
   );
 }

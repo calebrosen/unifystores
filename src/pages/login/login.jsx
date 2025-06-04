@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import FullWidthButton from "../../components/buttons/FullWidthButton.jsx";
+import MediumInputFW from "../../components/inputs/MediumInputFW.jsx";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -37,7 +39,7 @@ function Login() {
       className="d-flex justify-content-center align-items-center"
       style={{ minHeight: "90vh" }}
     >
-      <div className="p-5 bg-slate-700 w-45 rounded shadow-xl border-1 border-cyan-900">
+      <div className="p-5 bg-slate-700 w-45 rounded shadow-xl border-2 border-cyan-700 border-opacity-10">
         <form onSubmit={handleLogin}>
           <h2 className="centered text-6xl p-3 text-neutral-200 font-bold">
             For IT Team Use ONLY
@@ -49,11 +51,11 @@ function Login() {
             >
               Username
             </label>
-            <input
-              type="text"
-              className="w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
-              placeholder="Enter your username"
+            <MediumInputFW
               onChange={(e) => setUsername(e.target.value)}
+              name="username"
+              placeholder="Enter your username"
+              type="text"
             />
           </div>
           <div className="mb-5">
@@ -63,17 +65,18 @@ function Login() {
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              className="w-100 bg-slate-800 px-2 py-2.5 text-neutral-200 rounded-lg text-neutral-200 text-3xl"
+            <MediumInputFW
               onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              placeholder="Enter your password"
+              type="password"
             />
           </div>
-          <button type="submit" className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold py-2.5 mb-2 transition hover:scale-105 w-100">
-            Login
-          </button>
+          <FullWidthButton
+            action={""}
+            text={"Login"}
+            type={"submit"}
+          ></FullWidthButton>
         </form>
         {isLoggedIn && <Navigate to="../dashboard" replace={true} />}
       </div>

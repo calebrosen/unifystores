@@ -1,23 +1,12 @@
 import axios from "axios";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
+import InfoBanner from "../../components/banners/InfoBanner";
+import LargeButton from "../../components/buttons/LargeButton";
 import { StoreContext } from "../../contexts/StoreContext";
 
 function PartDiagramsPushToStores() {
   const { selectedStore } = useContext(StoreContext);
   var validStores = ["FPG", "FMP", "FMS"];
-
-  useEffect(() => {
-    if (selectedStore) {
-      var pushButton = document.getElementById("pushButton");
-      var pushText = "Push to " + selectedStore;
-      pushButton.innerHTML = pushText;
-      if (validStores.includes(selectedStore)) {
-        pushButton.style.visibility = "visible";
-      } else {
-        pushButton.style.visibility = "hidden";
-      }
-    }
-  });
 
   function pushToStoresAction() {
     let confirmPush = confirm(
@@ -40,35 +29,32 @@ function PartDiagramsPushToStores() {
 
   return (
     <div>
-      <div id="partDiagramsContainer" className="text-center">
-        <div
-          id="explain"
-          className="mt-5 font-xl text-neutral-200"
-        >
-          <span className="text-4xl text-neutral-200 font-bold my-3">
-            This will push:
-          </span>
-          <br />
-          <div className="text-3xl my-4 text-neutral-200">
-            All part diagrams models
-            <br />
-            All individual parts on each model
-            <br />
-            All part options (part that has more than one option, normally
-            depending on date manufactured)
-            <br />
-            All product tags (labels on each part on the diagrams)
-            <br />
-          </div>
-        </div>
-        <div>
-          <button
-            className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 mt-4 me-2 mb-2 transition hover:scale-105"
-            id="pushButton"
-            onClick={pushToStoresAction}
-          >
-            Push
-          </button>
+      <div className="text-center">
+        <InfoBanner
+          text={`
+            <div class="h4 space-y-2">
+              <p class="text-4xl font-bold text-neutral-200 mb-4">This will push the following:</p>
+              <ul class="list-disc list-inside pl-6 space-y-2 text-neutral-200">
+                <li>All part diagram models</li>
+                <li>All individual parts on each model</li>
+                <li>
+                  All part options 
+                  <span class="italic text-xl">(e.g., parts with multiple options depending on date of manufacture)</span>
+                </li>
+                <li>All product tags <span class="italic text-xl">(labels shown on each diagram part)</span></li>
+              </ul>
+            </div>
+          `}
+          maxW="w-1/3"
+        />
+
+        <div className="mt-10">
+          {validStores.includes(selectedStore) &&
+            <LargeButton
+              text={"Push"}
+              action={pushToStoresAction}
+            />
+          }
         </div>
       </div>
     </div>

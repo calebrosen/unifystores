@@ -1,5 +1,7 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import XLButton from '../../components/buttons/XLButton';
+import XLInput from '../../components/inputs/XLInput';
 import { StoreContext } from '../../contexts/StoreContext';
 
 function CreateCoupon() {
@@ -9,7 +11,7 @@ function CreateCoupon() {
   const [amount, setAmount] = useState('');
   const [generatedCouponCode, setGeneratedCouponCode] = useState('');
   const { selectedStore } = useContext(StoreContext);
-  const adminInput = useRef(null);
+  const [showCouponCode, setShowCouponCode] = useState(true);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/node/coupons/fetchAgents`)
@@ -21,16 +23,12 @@ function CreateCoupon() {
   const handleInputChange = (e) => {
     setSelectedAgent(e.target.value);
     if (e.target.value === 'ADMIN') {
-      adminInput.current.style.display = 'block';
+      setShowCouponCode(true);
     } else {
-      adminInput.current.style.display = 'none';
+      setShowCouponCode(false);
+      setCouponCode('');
     }
   };
-
-  function isFloat(n) {
-    return Number(n) === n && n % 1 !== 0;
-  }
-
 
   const createCouponAction = () => {
     if (selectedAgent === 'ADMIN' && couponCode === '') {
@@ -38,9 +36,9 @@ function CreateCoupon() {
       return;
     }
   
-    // assigning to temp variable
+    // assigning to temp variable for reassignment if necessary
     let tempCode = couponCode;
-    console.log(tempCode)
+
 
     if (selectedAgent !== 'ADMIN' && tempCode !== '') {
       console.log('Clearing coupon code');
@@ -70,7 +68,7 @@ function CreateCoupon() {
         console.log('User canceled the coupon creation.');
       }
     } else {
-      alert('You either forgot to select a store or input an amount.');
+      alert(`You either forgot to select a store or input an amount. ${selectedStore}, ${amount}`);
     }
   };
   
@@ -94,13 +92,20 @@ function CreateCoupon() {
     }
   };
 
+  const updateAmount = (e) => {
+    setAmount(e.target.value);
+  }
+
+  const updateCouponCode = (e) => {
+    setCouponCode(e.target.value);
+  }
+
   return (
     <div>
-      <div className="flex flex-row items-center justify-center w-full h-full gap-10 mt-40">
-        <div id="agentSelection">
+      <div className="flex flex-row items-center justify-center w-full h-full gap-10 mt-16">
+
           <select
-            className="w-100 bg-slate-800 px-2 py-3 text-neutral-200 h-100 rounded-lg text-neutral-200 text-5xl border-1 border-slate-700"
-            id="selectAgent"
+            className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 border-slate-700 text-4xl placeholder:text-neutral-400 my-12"
             value={selectedAgent}
             onChange={handleInputChange}
           >
@@ -111,37 +116,31 @@ function CreateCoupon() {
               </option>
             ))}
           </select>
-        </div>
+     
+          {showCouponCode &&
+            <XLInput
+              placeholder={"Coupon Code"}
+              value={couponCode}
+              maxLength={11}
+              onChange={updateCouponCode}
+            />
+          }
 
-        <div id="inputCouponCode" ref={adminInput}>
-          <input
-            type="text"
-            placeholder="Coupon Code"
-            id="couponCodeField"
-            maxLength="11"
-            value={couponCode}
-            className="w-100 bg-slate-800 px-3 py-3 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-5xl border-1 border-slate-700"
-            onChange={(e) => setCouponCode(e.target.value)}
+          <XLInput
+            placeholder={"Coupon Amount"}
+            type={"number"}
+            onChange={updateAmount}
           />
-        </div>
 
-        <div id="inputAmount">
-          <input
-            type="number"
-            placeholder="Amount of Coupon"
-            className="w-100 bg-slate-800 px-3 py-3 text-neutral-900 rounded-lg h-100 text-white placeholder:text-neutral-300 text-5xl border-1 border-slate-700"
-            id="amountField"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+          <XLButton
+            text={"Create Coupon"}
+            action={createCouponAction}
           />
-        </div>
 
- 
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 h-100 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-5xl font-semibold py-4 px-3 transition hover:scale-105" id="createCouponButton" onClick={createCouponAction}>Create Coupon</button>
- </div>
+         </div>
       
       {generatedCouponCode && (
-        <div className="text-neutral-200 mt-5 text-4xl">Coupon Code: {generatedCouponCode}</div>
+        <div className="text-neutral-200 mt-5 text-4xl flex justify-center">Coupon Code: {generatedCouponCode}</div>
       )}
     </div>
   );

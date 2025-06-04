@@ -409,22 +409,6 @@ exports.getProductDescriptionSubsections = async (req, res) => {
   }
 };
 
-// loading the edit page
-exports.viewEditProductDescription = async (req, res) => {
-  try {
-    const db = await connectToDB();
-    const sql = "CALL usp_get_product_summary_diff_table;";
-    db.query(sql, (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json(data);
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
-  }
-};
-
 // getting differences on selected product (in the modal)
 exports.getProductDescDifferences = async (req, res) => {
   try {
@@ -483,8 +467,8 @@ exports.refetchProductDescriptions = async (req, res) => {
 exports.searchForProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL usp_search_for_products_advanced(?,?,?,?,?,?)";
-    const values = [req.body.name, req.body.mpn, req.body.model, req.body.status, req.body.hidden, req.body.searchType];
+    const sql = "CALL usp_search_for_products_advanced(?,?,?,?,?)";
+    const values = [req.body.name, req.body.mpn, req.body.model, req.body.status, req.body.hidden];
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);

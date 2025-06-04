@@ -1,5 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
+import BoldH1 from "../../components/headings/BoldH1";
+import LargeButton from "../../components/buttons/LargeButton";
+import LargeInput from "../../components/inputs/LargeInput";
 
 function AddNewCustomerGroup() {
   const [customerGroupName, setCustomerGroupName] = useState("");
@@ -35,23 +38,21 @@ function AddNewCustomerGroup() {
   return (
     <div>
       <div className="centered">
-        <p className="text-6xl text-white font-bold underline my-4">
-          INPUT A CUSTOMER GROUP NAME
-        </p>
-        <div id="customerGroupContainer" className="text-center">
-          <input
-            className="bg-slate-700 p-2 rounded-lg text-neutral-200 text-4xl mt-4 w-25"
+        <BoldH1 text={"Input Customer Group Name"} />
+        <div className="text-center mt-10 mb-12">
+          <LargeInput
+            label="Customer Group Name"
+            placeholder="Customer Group Name"
+            value={customerGroupName}
             onChange={updateCustomerGroupName}
-          ></input>
+          />
         </div>
-        <div>
-          <button
-            className="text-neutral-200 bg-gradient-to-r from-cyan-800 mt-5 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 me-2 mb-2 transition hover:scale-105"
-            onClick={addCustomerGroupAction}
-          >
-            Add Customer Group
-          </button>
-        </div>
+
+        <LargeButton
+          action={addCustomerGroupAction}
+          text={"Add Customer Group"}
+        />
+
       </div>
     </div>
   );

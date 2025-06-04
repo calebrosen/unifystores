@@ -2,15 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  padding: 25px;
-  margin: 0;
-  width: 100%;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  background-color: #131c27;
-  color: #333;
-  font: 'Interim'
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    padding: 25px;
+    margin: 0;
+    width: 100%;
+    background-color: #131c27;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  table {
+    @apply w-full table-auto border border-slate-700 text-neutral-200 rounded-sm border-collapse mb-8;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  th, td {
+    @apply px-4 py-2 text-left;
+    border: none;
+  }
+
+  tr {
+    @apply border-b border-slate-800 overflow-hidden border-opacity-60 text-[1.6rem];
+  }
+
+  input[type="radio"] {
+    @apply accent-cyan-600
+  }
+
+  tr > td:first-child input[type="checkbox"] {
+    @apply scale-150 ml-3 accent-cyan-600 rounded-sm;
+  }
+
+  th, thead {
+    @apply bg-slate-800 font-semibold text-[1.645rem];
+  }
 }
+
 
 #createCouponContainer {
   display: flex;
@@ -74,14 +107,6 @@ body {
 .section:hover {
   border-color: darkred;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.sectionTitleHomePage {
-  font-size: 1.75em;
-  font-weight: 500;
-  text-align: center;
-  color: #333;
-  margin: 0;
 }
 
 .noDecoration {
@@ -187,90 +212,6 @@ body {
   color: white;
 }
 
-.darkRedButton {
-  text-align: center;
-  appearance: none;
-  width: auto; 
-  height: 40px;
-  border: 2px solid rgb(172, 26, 26);
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-  background-color: white;
-  color: black;
-  font-size: 25px;
-  font-weight: bold;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  align-items: center;
-  justify-content: center;
-}
-
-.darkRedButton:hover {
-  border-color: rgb(85, 14, 9);
-}
-
-.darkRedButton:active {
-  background-color: rgb(146, 20, 20);
-  border-color: rgb(146, 20, 20);
-  color: white;
-}
-
-.darkRedButtonInline {
-  text-align: center;
-  appearance: none;
-  width: auto; 
-  height: auto;
-  border: 2px solid rgb(172, 26, 26);
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-  background-color: white;
-  color: black;
-  font-weight: bold;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  align-items: center;
-  justify-content: center;
-}
-
-.darkRedButtonInline:hover {
-  border-color: rgb(85, 14, 9);
-}
-
-.darkRedButtonInline:active {
-  background-color: rgb(146, 20, 20);
-  border-color: rgb(146, 20, 20);
-  color: white;
-}
-
-.darkRedButtonInlineMD {
-  text-align: center;
-  appearance: none;
-  width: auto; 
-  height: auto;
-  border: 2px solid rgb(172, 26, 26);
-  border-radius: 4px;
-  outline: none;
-  font-size:2rem;
-  cursor: pointer;
-  background-color: white;
-  color: black;
-  font-weight: bold;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  align-items: center;
-  justify-content: center;
-}
-
-.darkRedButtonInlineMD:hover {
-  border-color: rgb(85, 14, 9);
-}
-
-.darkRedButtonInlineMD:active {
-  background-color: rgb(146, 20, 20);
-  border-color: rgb(146, 20, 20);
-  color: white;
-}
-
-
 .saveButtonLG {
   text-align: center;
   appearance: none;
@@ -332,57 +273,6 @@ body {
   font-size:35px;
 }
 
-thead {
-  background: linear-gradient(to right, #0c6b83, #132430);
-  color: white;
-}
-
-tbody {
-  border: 1px solid #083e42;
-}
-
-thead th {
-  padding: 10px 15px;
-  text-align: left;
-  font-weight: bold;
-  font-size: 1.9rem;
-}
-
-tbody tr {
-  border-bottom: 1px solid #2e3b47;
-}
-
-tbody td {
-  padding: 8px 12px;
-  background-color:  rgb(35, 46, 63);
-  text-align: left;
-  font-size: 1.7rem;
-  color: #e7e7e7;
-}
-
-tbody tr:last-of-type {
-  border-bottom: 2px solid #1e1e1e;
-}
-
-tbody td:first-of-type {
-  border-left: 2px solid #1e1e1e;
-}
-
-tbody td:last-of-type {
-  border-right: 2px solid #1e1e1e;
-}
-
-table {
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-tbody tr:hover {
-  background-color: #1f2a33;
-}
-
 .centered {
   text-align: center;
   justify-content: center;
@@ -415,7 +305,7 @@ tbody tr:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.842);
   z-index: 999;
 }
 

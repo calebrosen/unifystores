@@ -1,5 +1,8 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import InfoBanner from "../../components/banners/InfoBanner";
+import LargeButton from "../../components/buttons/LargeButton";
+import BoldH1 from "../../components/headings/BoldH1";
 import { StoreContext } from "../../contexts/StoreContext";
 
 const CopyAttributes = () => {
@@ -18,7 +21,6 @@ const CopyAttributes = () => {
     .then((res) => res.json())
     .then((data) => {
       setData(data[0]);
-      HideStoreSelection();
     })
     .catch((err) => console.log("Fetch error:", err));
   }, []);
@@ -37,7 +39,6 @@ const CopyAttributes = () => {
             const tmp = res.data[0];
             if (tmp.length > 0) {
               setProductsToAffect(tmp);
-              ShowStoreSelection();
             } else {
               alert("No products were found with that attribute.");
             }
@@ -76,7 +77,6 @@ const CopyAttributes = () => {
           }
         })
         .catch((err) => alert("Error:", err));
-      HideStoreSelection();
       setShowLastPreview(true);
     } else {
       alert("Select a store to copy to.");
@@ -100,7 +100,7 @@ const CopyAttributes = () => {
         )
         .then((res) => {
           if (res.data) {
-            alert('good');
+            alert('success');
           } else {
             alert(
               "Something went wrong when attempting to find products to preview. Maybe there were no applicable products."
@@ -112,16 +112,6 @@ const CopyAttributes = () => {
       }
     }
   }
-
-  const HideStoreSelection = () => {
-    const stores = document.getElementById("storesRadioInner");
-    stores.style.display = "none";
-  };
-
-  const ShowStoreSelection = () => {
-    const stores = document.getElementById("storesRadioInner");
-    stores.style.display = "block";
-  };
 
   const HandleChangeAttribute = (e) => {
     setSelectedAttribute(e.currentTarget.value);
@@ -142,7 +132,6 @@ const CopyAttributes = () => {
 
   const GoBack = () => {
     // This function resets everything to initial states
-    HideStoreSelection();
     setProductsToAffect([]);
     setStoreProductsToAffectPreview([]);
     setShowLastPreview(false);
@@ -166,13 +155,12 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
-          <div className="mt-4 mb-28">
-            <span className="fonbg-gradient-to-r from-cyan-800 to-slate-800 text-neutral-200 font-medium py-6 px-8 rounded-xl text-6xl shadow-lg transform hover:scale-105 transition-transform duration-300">SELECT AN ATTRIBUTE TO COPY
-            </span>
+          <div className="mt-20 mb-10">
+            <BoldH1 text="SELECT AN ATTRIBUTE TO COPY"/>
           </div>
+
           <select
-            id="selectAttributeGroup"
-            className="p-2 bg-slate-700 text-neutral-200 text-3xl rounded-lg mb-12"
+            className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 border-slate-700 placeholder:text-neutral-400"
             onChange={HandleChangeAttribute}
           >
             <option></option>
@@ -184,13 +172,11 @@ const CopyAttributes = () => {
               </option>
             ))}
           </select>
-          <div>
-            <button
-              className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105"
-              onClick={PreviewCopyAction}
-            >
-              Proceed
-            </button>
+          <div className="mt-10">
+            <LargeButton
+              action={PreviewCopyAction}
+              text={"Proceed"}
+            />
           </div>
         </div>
       </div>
@@ -199,32 +185,32 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
-          <h1 className="text-5xl my-4 text-neutral-200 font-bold">Selected: {selectedStore}</h1>
-          <p className="text-neutral-200 text-4xl mt-12 font-semibold">
-            Products with the boxes checked will be copied to
-          </p>
-          <div className="flex flex-row gap-8 my-8 justify-content-center">
-            <button className="text-neutral-200 bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
-              Go back
-            </button>
-            <button className="text-neutral-200 bg-gradient-to-r mt-4 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={CopyAttributesFromOCMToStoreAction}>Proceed</button>
+          
+          <InfoBanner
+            text={`Products with the boxes checked will be copied to. (T stands for Target, OCM stands for OCMaster.`}
+            size={"text-3xl"}
+          />
+          <div className="flex gap-10 justify-content-center my-14">
+            <LargeButton
+              action={SelectAll}
+              text={"Check all"}
+            />
+            <LargeButton
+              action={UnSelectAll}
+              text={"Uncheck all"}
+              color={"bg-slate-700"}
+            />
+            <LargeButton
+              action={CopyAttributesFromOCMToStoreAction}
+              text={"Proceed"}
+            />
+            <LargeButton
+              action={GoBack}
+              text={"Go back"}
+              color={"bg-slate-700"}
+            />
           </div>
-          <p className="text-4xl mt-8 mb-4 text-neutral-200 font-bold">
-            T stands for Target | OCM stands for OCMaster
-          </p>
-          <div className="text-3xl mt-14 text-neutral-200 font-bold">Product IDs selected:</div>
-          <div className='lineBreakSpanContainer'>
-          {Array.from(checkedItems) &&
-            Array.from(checkedItems).length > 0 &&
-            Array.from(checkedItems).map((d, i) => (
-              <span key={i} className='lineBreakSpan'>
-                {d},&nbsp;
-              </span>
-          ))}</div>
-          <div>
-            <button onClick={UnSelectAll} className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Uncheck all</button>
-            <button onClick={SelectAll} className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-3xl font-semibold px-3 py-3 mx-4 mb-2 transition hover:scale-105">Check all</button>
-          </div>
+
           <table className="mt-5">
             <thead>
               <tr>
@@ -273,7 +259,7 @@ const CopyAttributes = () => {
                 <tr>
                   <td
                     colSpan={12}
-                    style={{ textAlign: "center", fontSize: "26px" }}
+                    style={{ textAlign: "center", fontSize: "20px" }}
                   >
                     Loading...
                   </td>
@@ -288,17 +274,18 @@ const CopyAttributes = () => {
     return (
       <div>
         <div className="centered">
-          <div className="spaceApart">
-            <button className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={GoBack}>
-              Go back
-            </button>
-            <button className="text-neutral-200 bg-gradient-to-r mt-10 from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold px-5 py-3 me-2 mb-2 transition hover:scale-105" onClick={PreviewProductsToAffect}>
-              Proceed
-            </button>
+          <div className="flex gap-10 justify-content-center my-14">
+            <LargeButton
+              action={PreviewProductsToAffect}
+              text={"Proceed"}
+            />
+            <LargeButton
+              action={GoBack}
+              text={"Go back"}
+              color={"bg-slate-700"}
+            />
           </div>
-          <p className="text-neutral-200 text-5xl mt-12 font-semibold">
-            Products on OCMaster with Attribute ID {selectedAttribute}
-          </p>
+          <BoldH1 text={`Products on OCMaster with Attribute ID ${selectedAttribute}`}/>
           <table className="mt-5">
             <thead>
               <tr>

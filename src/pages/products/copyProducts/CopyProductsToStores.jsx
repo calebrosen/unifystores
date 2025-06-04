@@ -5,7 +5,8 @@ import { StoreContext } from "../../../contexts/StoreContext";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
-
+import MediumButton from "../../../components/buttons/MediumButton";
+import MediumInput from "../../../components/inputs/MediumInput";
 
 function CopyProductsToStores() {
   const { selectedStore } = useContext(StoreContext);
@@ -177,7 +178,6 @@ function CopyProductsToStores() {
     }
   };
 
-  
   const clearSelections = () => {
     setSelectedProductIds([]);
   };
@@ -209,26 +209,23 @@ function CopyProductsToStores() {
     return (
       <div>
           <div className="flex justify-center gap-6 my-8">
-          <input
-            className="bg-slate-800 p-3 rounded-lg text-2xl text-neutral-200 placeholder:text-neutral-400"
+
+          <MediumInput
             placeholder="Search by Name"
             value={nameInput}
             onChange={(e) => setNameInput(e.target.value)}
           />
 
-          <input
-            className="bg-slate-800 p-3 rounded-lg text-2xl text-neutral-200 placeholder:text-neutral-400"
+          <MediumInput
             placeholder="Search by MPN"
             value={mpnInput}
             onChange={(e) => setMpnInput(e.target.value)}
           />
 
-          <button
-            onClick={searchProducts}
-            className="bg-cyan-700 hover:bg-cyan-800 px-4 py-3 text-3xl rounded-xl text-white font-semibold transition hover:scale-105"
-          >
-            Search
-          </button>
+          <MediumButton
+            action={searchProducts}
+            text={"Search"}
+          />
 
         </div>
         <Step1

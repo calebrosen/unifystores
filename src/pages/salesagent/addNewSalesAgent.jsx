@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import BoldH1 from '../../components/headings/BoldH1';
+import LargeButton from '../../components/buttons/LargeButton';
+import LargeInput from '../../components/inputs/LargeInput';
 
 function AddNewSalesAgent() {
   const [salesAgentName, setSalesAgentName] = useState('');
@@ -31,16 +34,14 @@ function AddNewSalesAgent() {
 
   return (
     <div>
-      <div className='centered'>
-        <p className="mt-5 text-white text-5xl font-bold">
-          INPUT A SALES AGENT NAME (Formatted like "Caleb R")
-        </p>
-        <div id="salesAgentContainer" className='text-center'>
-          <input className="bg-slate-800 mt-5 px-2 py-2 m-0 placeholder:text-neutral-300 rounded-lg text-neutral-200 text-4xl border-1 border-slate-700" onChange={updateSalesAgentName}></input>
+      <div className="text-center">
+        <BoldH1 text={'INPUT A SALES AGENT NAME (Formatted like "Caleb R")'}/>
+        
+        <div className="my-12">
+          <LargeInput onChange={updateSalesAgentName}/>
         </div>
-        <div>
-          <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold p-3 mb-2 transition hover:scale-105 mt-5" onClick={addSalesAgentAction}>Add Sales Agent</button>
-        </div>
+        <LargeButton text={"Add Sales Agent"} action={addSalesAgentAction} />
+        
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import IsAuthenticated from './components/auth.js';
-import HomeAndLogOutButtons from './components/HomeAndLogOutButtons.jsx';
+import HomeAndLogOutButtons from './components/buttons/HomeAndLogOutButtons.jsx';
 import StoresRadio from './components/stores/StoresRadio.jsx';
+import { PathProvider } from './contexts/PDFPathContext.jsx';
 import { StoreProvider } from './contexts/StoreContext.jsx';
 import './index.css';
 import { routes } from './Routes.jsx';
@@ -15,27 +15,29 @@ const RequireAuth = ({ children }) => {
 
 const App = () => (
   <StoreProvider>
-    <Router>
-      <Routes>
-        {routes.map(({ path, element, auth, storesRadio }, i) => (
-          <Route
-            key={i}
-            path={path}
-            element={
-              auth ? (
-                <RequireAuth>
-                  <HomeAndLogOutButtons>
-                    {storesRadio ? <StoresRadio>{element}</StoresRadio> : element}
-                  </HomeAndLogOutButtons>
-                </RequireAuth>
-              ) : (
-                element
-              )
-            }
-          />
-        ))}
-      </Routes>
-    </Router>
+    <PathProvider>
+      <Router>
+        <Routes>
+          {routes.map(({ path, element, auth, storesRadio }, i) => (
+            <Route
+              key={i}
+              path={path}
+              element={
+                auth ? (
+                  <RequireAuth>
+                    <HomeAndLogOutButtons>
+                      {storesRadio ? <StoresRadio>{element}</StoresRadio> : element}
+                    </HomeAndLogOutButtons>
+                  </RequireAuth>
+                ) : (
+                  element
+                )
+              }
+            />
+          ))}
+        </Routes>
+      </Router>
+    </PathProvider>
   </StoreProvider>
 );
 

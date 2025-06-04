@@ -1,5 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import LargeButton from '../../components/buttons/LargeButton';
+import MediumButton from '../../components/buttons/MediumButton';
+import BoldH1 from '../../components/headings/BoldH1';
+import MediumTextarea from '../../components/textarea/MediumTextarea';
 
 function ViewEditInformation() {
   const [information, setInformation] = useState([]);
@@ -21,14 +25,11 @@ function ViewEditInformation() {
     return txt.value;
   };
 
-  function loadInputBox() {
-    const selected = document.getElementById('selectInformation').value;
-    information.forEach(element => {
-      if (element.title === selected) {
-        setInputValue(decodeHtml(element.replaced));
-      }
-    });
-  }
+function loadInputBox(e) {
+  const selected = e.target.value;
+  const matched = information.find((element) => element.title === selected);
+  setInputValue(decodeHtml(matched?.replaced));
+}
 
   const saveInformation = () => {
     const selectedInformation = document.getElementById('selectInformation').value;
@@ -49,12 +50,10 @@ function ViewEditInformation() {
 
   return (
     <div>
-      <div className='centered'>
-        <p className="mt-10 text-5xl text-neutral-200 font-bold underline">
-          SELECT WHICH INFORMATION TO LOAD
-        </p>
-        <select className="bg-slate-800 mt-8 px-2 py-3 text-neutral-200 h-100 rounded-lg text-neutral-200 text-3xl border-1 border-slate-700" id="selectInformation" defaultValue="" onChange={loadInputBox}>
-          <option value="" disabled></option>
+      <div className="text-center">
+        <BoldH1 text={"SELECT WHICH INFORMATION TO EDIT"}/>
+        <select className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 border-slate-700 placeholder:text-neutral-400 mt-10 max-w-md" id="selectInformation" onChange={loadInputBox}>
+          <option value=""></option>
           {information.map((d, i) => (
             <option key={i} value={d.title}>
               {d.title}
@@ -63,33 +62,36 @@ function ViewEditInformation() {
         </select>
       </div>
 
-      <div className='tab-buttons my-5'>
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" onClick={() => setActiveTab('edit')}>Edit</button>
-        &nbsp;&nbsp;
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" onClick={() => setActiveTab('preview')}>Preview</button>
-        <p className="text-3xl text-neutral-200 mt-5">Available placeholders are <span className="font-bold">&#123;WEBSITE&#125;</span> (Ex: FireplaceandGrill.com) and <span className="bold">&#123;EMAILDOMAIN&#125;</span> (Ex: @fireplaceandgrill.com)</p>
+      <div className="flex gap-6">
+        <MediumButton
+          text={"Edit"}
+          action={() => setActiveTab('edit')}
+        />
+        <MediumButton
+          text={"Preview"}
+          action={() => setActiveTab('preview')}
+        />
       </div>
+        <p className="text-3xl text-neutral-200 mt-5">Available placeholders are <span className="font-bold">&#123;WEBSITE&#125;</span> (Ex: FireplaceandGrill.com) and <span className="bold">&#123;EMAILDOMAIN&#125;</span> (Ex: @fireplaceandgrill.com)</p>
+    
 
-      {activeTab === 'edit' ? (
-        <div>
-          <p>
-            <textarea
-              className="w-100 h-2/3 bg-slate-700 text-white rounded-lg"
-              id="informationDescInput"
+      {activeTab === "edit" ? (
+        <div className="mt-3">
+            <MediumTextarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              rows="10"
-              cols="50"
             />
-          </p>
         </div>
       ) : (
-        <div className='preview bg-white' dangerouslySetInnerHTML={{ __html: inputValue }} />
+        <div className="preview bg-white" dangerouslySetInnerHTML={{ __html: inputValue }} />
       )}
 
-      <p className='centered'>
-        <button className="text-neutral-200 bg-gradient-to-r from-cyan-800 to-slate-800 hover:bg-cyan-700 mt-5 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-4xl font-semibold py-2.5 px-3 mb-2 transition hover:scale-105" value="save" onClick={saveInformation}>Save</button>
-      </p>
+      <div className="text-center mt-6">
+        <LargeButton
+          text={"Save"}
+          action={saveInformation}
+        />
+      </div>
     </div>
   );
 }

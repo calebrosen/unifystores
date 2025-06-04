@@ -1,3 +1,5 @@
+import LargeButton from "../../../components/buttons/LargeButton";
+
 // this is the table for product selection
 function Step1({
   products,
@@ -11,39 +13,36 @@ function Step1({
 }) {
   return (
     <div className="text-center">
-      <h1 className="text-6xl font-bold text-neutral-200 mt-10 underline">
+      <h1 className="text-5xl font-bold text-neutral-200 mt-16">
         SELECT PRODUCTS TO COPY
       </h1>
 
       <div className="mb-10">
         {selectedProductIds.length > 0 && (
           <div className="text-4xl text-neutral-200 mb-6 mt-4">
-            Selected IDs: {selectedProductIds.join(", ")}
+            Selected Product ID's: {selectedProductIds.join(", ")}
           </div>
         )}
 
         <div className="flex justify-center gap-6 mt-8">
-          <button
-            onClick={handleProceedStep2}
-            className="bg-cyan-700 hover:bg-cyan-800 px-4 py-3 text-3xl rounded-xl text-white font-semibold transition hover:scale-105"
-          >
-            Proceed
-          </button>
-
-          <button
-            onClick={clearSelections}
-            className="bg-slate-700 hover:bg-slate-800 px-4 py-3 text-3xl rounded-xl text-white font-semibold transition hover:scale-105"
-          >
-            Clear Selection
-          </button>
+          <LargeButton
+            action={handleProceedStep2}
+            text={"Proceed"}
+          />
+          <LargeButton
+            action={clearSelections}
+            text={"Clear Selection"}
+            type={"button"}
+            color={"bg-slate-700"}
+          />
         </div>
       </div>
 
-      <table className="w-full text-neutral-200 text-xl">
+      <table>
         <thead>
           <tr>
             <th className="p-3">Copy</th>
-            <th className="p-3">ID</th>
+            <th className="p-3">Product ID</th>
             <th className="p-3">Model</th>
             <th className="p-3">MPN</th>
             <th className="p-3">Manufacturer</th>
