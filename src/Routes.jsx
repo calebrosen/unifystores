@@ -53,9 +53,11 @@ import Products from './pages/products/Products.jsx';
 import UpdateProducts from './pages/products/UpdateProducts.jsx';
 
 import Filters from './pages/filters/Filters.jsx';
+import AddCategoryFilters from './pages/filters/AddCategoryFilters.jsx';
 
 import Categories from './pages/categories/Categories.jsx';
 import CopyCategories from './pages/categories/CopyCategories.jsx';
+
 
 import AddEditDocuments from './pages/documents/AddEditDocuments.jsx';
 import Documents from './pages/documents/Documents.jsx';
@@ -134,6 +136,7 @@ export const routes = [
 
   // Filters
   { path: "/filters", element: <Filters />, auth: true },
+  { path: "/filters/AddCategoryFilters", element: <AddCategoryFilters />, auth: true },
 
   // Categories
   { path: "/categories", element: <Categories />, auth: true },
