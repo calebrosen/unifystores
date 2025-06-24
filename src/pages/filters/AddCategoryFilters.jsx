@@ -5,7 +5,7 @@ import AddCategoryFilterModal from "./AddCategoryFilterModal";
 import BoldH1 from "../../components/headings/BoldH1";
 
 function AddCategoryFilters() {
-  const [data, setData] = useState([]);
+  const [categoryFilters, setCategoryFilters] = useState([]);
   const [allFilterGroups, setAllFilterGroups] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState({});
@@ -31,7 +31,7 @@ function AddCategoryFilters() {
         const mainRes = await fetch(
           `${process.env.REACT_APP_API_URL}/node/filters/getCategoryFilterLogicTable`
         );
-        setData(await mainRes.json());
+        setCategoryFilters(await mainRes.json());
       } catch (err) {
         console.log("Fetch error:", err);
       }
@@ -60,7 +60,7 @@ function AddCategoryFilters() {
           </tr>
         </thead>
         <tbody>
-          {data.map((category) => (
+          {categoryFilters.map((category) => (
             <tr key={category.category_id}>
               <td className="p-2">{category.category_id}</td>
               <td className="p-2">{category.name}</td>
