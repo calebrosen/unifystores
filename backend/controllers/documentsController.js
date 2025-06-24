@@ -105,6 +105,11 @@ const replicateToOtherFtpServers = async (localFilePath, folderPath, filename) =
       host: process.env.GNPHOSTPDF,
       user: process.env.GNPUSERPDF,
       password: process.env.GNPPASSWORDPDF
+    },
+    {
+      host: process.env.IRGHOSTPDF,
+      user: process.env.IRGUSERPDF,
+      password: process.env.IRGPASSWORDPDF
     }
   ];
 

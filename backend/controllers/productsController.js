@@ -305,8 +305,8 @@ function getStoreFtpCredentials(code) {
     RFS: ["RFSHOST", "RFSUSER", "RFSPASSWORD"],
     BMS: ["BMSHOST", "BMSUSER", "BMSPASSWORD"],
     MFS: ["MFSHOST", "MFSUSER", "MFSPASSWORD"],
-    MHS: ["MHSHOST", "MHSUSER", "MHSPASSWORD"],
-    GCL: ["GCLHOST", "GCLUSER", "GCLPASSWORD"]
+    GCL: ["GCLHOST", "GCLUSER", "GCLPASSWORD"],
+    IRG: ["IRGHOST", "IRGUSER", "IRGPASSWORD"]
   };
 
   if (!creds[store]) return null;
