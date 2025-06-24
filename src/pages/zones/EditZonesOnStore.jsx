@@ -2,7 +2,6 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { StoreContext } from "../../contexts/StoreContext";
-import BoldH1 from "../../components/headings/BoldH1";
 import HighlightedBanner from "../../components/banners/HighlightedBanner";
 import MediumButton from "../../components/buttons/MediumButton";
 import MediumInput from "../../components/inputs/MediumInput";
