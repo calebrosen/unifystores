@@ -20,7 +20,7 @@ exports.getSubsections = async (req, res) => {
 exports.fetchAgents = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "Select `Agent`, `AgentID` from federatedb.CouponAgentList WHERE Status = 1";
+    const sql = "Select `agent_name` as 'Agent', agent_id as 'AgentID' from work_area_db.coupon_agent_list WHERE Status = 1";
     db.query(sql, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);

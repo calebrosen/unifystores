@@ -31,15 +31,26 @@ export default function AddCategoryFilterModal({
 
   useEffect(() => {
     const fetchFilters = async () => {
-      if (!isOpen || !activeCategory?.filter_group_ids?.length) return;
-      const filters = await fetchFilterGroupNamesByIds(
-        activeCategory.filter_group_ids
-      );
-      setFilterGroups(filters);
+      if (!isOpen || !activeCategory?.category_id) {
+        setFilterGroups([]);
+        setSelectedCopyCategoryId("");
+        return;
+      }
+
+      const ids = activeCategory.filter_group_ids || [];
+
+      if (ids.length > 0) {
+        const filters = await fetchFilterGroupNamesByIds(ids);
+        setFilterGroups(filters);
+      } else {
+        setFilterGroups([]);
+      }
+
+      setSelectedCopyCategoryId("");
     };
 
     fetchFilters();
-  }, [activeCategory?.category_id, isOpen]);
+  }, [isOpen, activeCategory?.category_id]);
 
   const handleRemove = (indexToRemove) => {
     const updated = filterGroups.filter((_, i) => i !== indexToRemove);
@@ -93,9 +104,9 @@ export default function AddCategoryFilterModal({
       customClass: "sweetalert-lg-info bg-slate-600 text-neutral-200",
     }).then((result) => {
       if (result.isConfirmed && activeCategory) {
-        const filterGroupIds = filterGroups.map(
-          (group) => group.filter_group_id
-        ).join(",");
+        const filterGroupIds = filterGroups
+          .map((group) => group.filter_group_id)
+          .join(",");
         axios
           .post(
             `${process.env.REACT_APP_API_URL}/node/filters/saveCategoryFilter`,

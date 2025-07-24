@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 
-export const StoreContext = createContext();
 
+export const StoreContext = createContext();
 export const StoreProvider = ({ children }) => {
   const [selectedStore, setSelectedStore] = useState('');
 
