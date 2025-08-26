@@ -118,6 +118,7 @@ export default function AddCategoryFilterModal({
           .then(() => {
             onClose();
             alert("success");
+            window.location.reload();
           })
           .catch((error) => {
             console.error("Error saving category filters:", error);

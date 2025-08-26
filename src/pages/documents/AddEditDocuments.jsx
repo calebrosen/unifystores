@@ -15,10 +15,8 @@ export default function AddEditDocuments() {
   const [currentRow, setCurrentRow] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchInput, setSearchInput] = useState("");
   const [newDocument, setNewDocument] = useState({});
   const [dbLoading, setDbLoading] = useState(false);
-  const isFirstRender = useRef(true);
 
   // dropdown options
   const [brands, setBrands] = useState([]);
@@ -66,7 +64,6 @@ export default function AddEditDocuments() {
     setMPNOptions
   );
 
-
   // get brands and doc types on initial load
   useEffect(() => {
     axios
@@ -81,30 +78,22 @@ export default function AddEditDocuments() {
       );
   }, []);
 
-  // debounced search input
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      setSearchInput(searchQuery);
-    }, 1000);
-    return () => clearTimeout(delayDebounce);
-  }, [searchQuery]);
-
-  // filter documents based on search input
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  // manual search
+  const handleSearch = () => {
 
     axios
       .post(`${process.env.REACT_APP_API_URL}/node/documents/getFilteredDocuments`, {
-        searchInput,
+        searchInput: searchQuery,
       })
       .then((res) => {
-        if (res.data[0].length !== 0) setRows(res.data[0]);
+        if (res.data[0].length !== 0) {
+          setRows(res.data[0]);
+        } else {
+          alert("No results found.");
+        }
       })
       .catch((err) => console.log("Error:", err));
-  }, [searchInput]);
+  };
 
   // handle opening modal
   const openEditModal = (row) => {
@@ -151,54 +140,52 @@ export default function AddEditDocuments() {
     }));
   };
 
-const handleAddInputChange = (selectedOption, actionMeta) => {
-  const fieldName = actionMeta.name;
-  const value = selectedOption?.value || null;
+  const handleAddInputChange = (selectedOption, actionMeta) => {
+    const fieldName = actionMeta.name;
+    const value = selectedOption?.value || null;
 
-  const cleared = {
-    brand: {
-      top_level_category: null,
-      second_level_category: null,
-      third_level_category: null,
-      fourth_level_category: null,
-      fifth_level_category: null,
-      sixth_level_category: null,
-    },
-    top_level_category: {
-      second_level_category: null,
-      third_level_category: null,
-      fourth_level_category: null,
-      fifth_level_category: null,
-      sixth_level_category: null,
-    },
-    second_level_category: {
-      third_level_category: null,
-      fourth_level_category: null,
-      fifth_level_category: null,
-      sixth_level_category: null,
-    },
-    third_level_category: {
-      fourth_level_category: null,
-      fifth_level_category: null,
-      sixth_level_category: null,
-    },
-    fourth_level_category: {
-      fifth_level_category: null,
-      sixth_level_category: null,
-    },
-    fifth_level_category: {
-      sixth_level_category: null,
-    },
+    const cleared = {
+      brand: {
+        top_level_category: null,
+        second_level_category: null,
+        third_level_category: null,
+        fourth_level_category: null,
+        fifth_level_category: null,
+        sixth_level_category: null,
+      },
+      top_level_category: {
+        second_level_category: null,
+        third_level_category: null,
+        fourth_level_category: null,
+        fifth_level_category: null,
+        sixth_level_category: null,
+      },
+      second_level_category: {
+        third_level_category: null,
+        fourth_level_category: null,
+        fifth_level_category: null,
+        sixth_level_category: null,
+      },
+      third_level_category: {
+        fourth_level_category: null,
+        fifth_level_category: null,
+        sixth_level_category: null,
+      },
+      fourth_level_category: {
+        fifth_level_category: null,
+        sixth_level_category: null,
+      },
+      fifth_level_category: {
+        sixth_level_category: null,
+      },
+    };
+
+    setNewDocument((prev) => ({
+      ...prev,
+      [fieldName]: value,
+      ...(cleared[fieldName] || {}),
+    }));
   };
-
-  setNewDocument((prev) => ({
-    ...prev,
-    [fieldName]: value,
-    ...(cleared[fieldName] || {}),
-  }));
-};
-
-
 
   const addDocumentToDB = () => {
     if (!newDocument.path) {
@@ -264,11 +251,14 @@ const handleAddInputChange = (selectedOption, actionMeta) => {
     <div>
       <div className="flex flex-col items-center text-center gap-6 mb-12">
         <BoldH1 text="SEARCH, EDIT OR ADD NEW DOCUMENTS" />
-        <LargeInput
-          value={searchQuery}
-          placeholder="Search..."
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        <div className="flex gap-4 mb-10">
+          <LargeInput
+            value={searchQuery}
+            placeholder="Search..."
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <LargeButton text="Search" action={handleSearch} />
+        </div>
         <LargeButton text="Add New" action={openAddModal} />
       </div>
 
