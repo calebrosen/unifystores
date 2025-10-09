@@ -88,4 +88,16 @@ router.post('/UpdateDiscontinuedOrDisabledProducts', controller.UpdateDiscontinu
 // Adding discontinued product
 router.post('/AddDiscontinuedOrDisabledProduct', controller.AddDiscontinuedOrDisabledProduct);
 
+
+/* PRODUCT PROMOTIONS */
+
+// Getting product promotions
+router.get('/GetProductPromotions', controller.GetProductPromotions);
+
+// // Adding product promotion
+router.post('/AddProductPromotion', controller.AddProductPromotion);
+
+// Updating product promotion
+router.post('/UpdateProductPromotion', controller.UpdateProductPromotion);
+
 module.exports = router;

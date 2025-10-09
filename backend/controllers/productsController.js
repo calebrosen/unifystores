@@ -566,3 +566,95 @@ exports.AddDiscontinuedOrDisabledProduct = async (req, res) => {
       .json({ message: "Database connection failed", error });
   }
 };
+
+
+
+/* PRODUCT PROMOTIONS */
+
+exports.GetProductPromotions = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL unify.usp_get_product_promotions()";
+    db.query(sql, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+exports.UpdateProductPromotion = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL unify.usp_update_product_promotion(?, ?, ?, ?, ?, ?)";
+    const values = [
+      req.body.mpn,
+      req.body.promo_price,
+      req.body.start_date,
+      req.body.end_date,
+      req.body.promo_status,
+      req.body.promo_notes
+    ];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+exports.AddProductPromotion = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL unify.usp_add_product_promotion(?, ?, ?, ?, ?, ?)";
+    const values = [
+      req.body.mpn,
+      req.body.promo_price,
+      req.body.start_date,
+      req.body.end_date,
+      req.body.promo_status,
+      req.body.promo_notes
+    ];
+    db.query(sql, values, (err, data) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};
+
+
+exports.UpdateProductPromotion = async (req, res) => {
+  try {
+    const db = await connectToDB();
+    const sql = "CALL unify.usp_update_product_promotion(?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+      req.body.promo_id,
+      req.body.mpn,
+      req.body.promo_price,
+      req.body.start_date,
+      req.body.end_date,
+      req.body.promo_status,
+      req.body.promo_notes
+    ];
+    db.query(sql, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.json(data);
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Database connection failed", error });
+  }
+};

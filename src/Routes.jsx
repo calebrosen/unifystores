@@ -51,6 +51,7 @@ import CopyProductsToStores from './pages/products/copyProducts/CopyProductsToSt
 import DiscontinuedWhileSuppliesLast from './pages/products/DiscontinuedWhileSuppliesLast.jsx';
 import Products from './pages/products/Products.jsx';
 import UpdateProducts from './pages/products/UpdateProducts.jsx';
+import ProductPromotions from './pages/products/ProductPromotions.jsx';
 
 import Filters from './pages/filters/Filters.jsx';
 import AddCategoryFilters from './pages/filters/AddCategoryFilters.jsx';
@@ -133,6 +134,7 @@ export const routes = [
   { path: "/products/CopyProductsToStores", element: <CopyProductsToStores />, auth: true, storesRadio: true },
   { path: "/products/UpdateProducts", element: <UpdateProducts />, auth: true, storesRadio: true },
   { path: "/products/DiscontinuedWhileSuppliesLast", element: <DiscontinuedWhileSuppliesLast />, auth: true },
+  { path: "/products/ProductPromotions", element: <ProductPromotions />, auth: true },
 
   // Filters
   { path: "/filters", element: <Filters />, auth: true },
