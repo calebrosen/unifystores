@@ -8,7 +8,7 @@ export default function DocumentTable({ rows, onEdit }) {
       <thead>
         <tr>
           {["Brand", "1st Level", "2nd Level", "3rd Level", "4th Level", "5th Level", "6th Level", "Display Name", "Type", "Year", "MPN's", "Edit"].map((header) => (
-            <th key={header} className="whitespace-nowrap">{header}</th>
+            <th key={header}>{header}</th>
           ))}
         </tr>
       </thead>

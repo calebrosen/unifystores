@@ -537,36 +537,128 @@ exports.DiscontinuedDisabledProducts = async (req, res) => {
 exports.UpdateDiscontinuedOrDisabledProducts = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL work_area_db.usp_update_discontinued_or_disabled_product(?, ?, ?)";
-    const values = [req.body.selectedMPN, req.body.selectedReason, req.body.selectedReplacedBy];
+
+    const attachmentsCsv = Array.isArray(req.body.attachments)
+      ? req.body.attachments.join(',')
+      : req.body.attachments || '';
+
+    const sql =
+      "CALL work_area_db.usp_update_discontinued_or_disabled_product(?, ?, ?, ?)";
+    const values = [
+      req.body.selectedMPN,
+      req.body.selectedReason,
+      req.body.selectedReplacedBy,
+      attachmentsCsv
+    ];
+
+    console.log(values);
+
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
     });
+
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
+    return res.status(500).json({ message: "Database connection failed", error });
   }
 };
 
-// Adding new discontinued/disabled product
+
 exports.AddDiscontinuedOrDisabledProduct = async (req, res) => {
   try {
     const db = await connectToDB();
-    const sql = "CALL work_area_db.usp_add_discontinued_or_disabled_product(?, ?, ?)";
-    const values = [req.body.selectedMPN, req.body.selectedReason, req.body.selectedReplacedBy];
+
+    const attachmentsCsv = Array.isArray(req.body.attachments)
+      ? req.body.attachments.join(',')
+      : req.body.attachments || '';
+
+    const sql =
+      "CALL work_area_db.usp_add_discontinued_or_disabled_product(?, ?, ?, ?)";
+    const values = [
+      req.body.selectedMPN,
+      req.body.selectedReason,
+      req.body.selectedReplacedBy,
+      attachmentsCsv
+    ];
+
+    console.log(values)
+
     db.query(sql, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.json(data);
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Database connection failed", error });
+    return res.status(500).json({ message: "Database connection failed", error });
   }
 };
 
+exports.UploadDiscontinuedAttachments = async (req, res) => {
+  const { mpn } = req.body;
+  const files = req.files || [];
+
+  if (!mpn) {
+    return res.status(400).json({ message: "mpn is required" });
+  }
+
+  if (!files.length) {
+    return res.status(400).json({ message: "at least one file is required" });
+  }
+
+  // sanitize for folder/filename: replace / and spaces with _
+  const safeMpn = String(mpn).trim().replace(/[\/\s]+/g, "_");
+
+  const master = new ftp.Client();
+  master.ftp.verbose = false;
+
+  try {
+    // connect to OC master FTP
+    await master.access({
+      host: process.env.OCMASTERHOST,
+      user: process.env.OCMASTERUSER,
+      password: process.env.OCMASTERPASSWORD,
+    });
+
+    const baseRemoteDir = `/unify/src/assets/discontinued_attachments/${safeMpn}`;
+
+    // ensure directory tree exists
+    await master.cd("/"); // start at root
+    const segments = baseRemoteDir.split("/").filter(Boolean);
+    for (const seg of segments) {
+      try {
+        await master.cd(seg);
+      } catch {
+        await master.send("MKD " + seg);
+        await master.cd(seg);
+      }
+    }
+
+    const uploadedUrls = [];
+    const publicBase = process.env.DISCONTINUED_ATTACH_BASE_URL || "";
+
+    for (const file of files) {
+      const safeName = `${safeMpn}_${file.originalname}`.replace(/\s+/g, "_");
+
+      // upload buffer to current dir (= baseRemoteDir)
+      await master.uploadFrom(Readable.from(file.buffer), safeName);
+
+      // build path & url
+      const relativePath = `discontinued_attachments/${safeMpn}/${safeName}`;
+      const url = publicBase ? `${publicBase}/${relativePath}` : relativePath;
+
+      uploadedUrls.push(url);
+    }
+
+    master.close();
+
+    return res.json({ urls: uploadedUrls });
+  } catch (error) {
+    console.error("UploadDiscontinuedAttachments error:", error);
+    master.close();
+    return res
+      .status(500)
+      .json({ message: "Failed to upload attachments", error: error.message });
+  }
+};
 
 
 /* PRODUCT PROMOTIONS */

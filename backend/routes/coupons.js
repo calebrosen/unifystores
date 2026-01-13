@@ -18,4 +18,6 @@ router.post('/updateCoupon', controller.updateCoupon);
 
 router.post('/deleteCoupon', controller.deleteCoupon);
 
+router.post('/createCampaignCoupon', controller.createCampaignCoupon);
+
 module.exports = router;

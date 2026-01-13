@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/productsController');
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
 
 /* PRODUCTS */
@@ -87,6 +89,14 @@ router.post('/UpdateDiscontinuedOrDisabledProducts', controller.UpdateDiscontinu
 
 // Adding discontinued product
 router.post('/AddDiscontinuedOrDisabledProduct', controller.AddDiscontinuedOrDisabledProduct);
+
+// Adding attachments
+router.post(
+  '/UploadDiscontinuedAttachments',
+  upload.array("files"),
+  controller.UploadDiscontinuedAttachments
+);
+
 
 
 /* PRODUCT PROMOTIONS */

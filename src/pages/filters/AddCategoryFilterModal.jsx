@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import SmallSimpleBanner from "../../components/banners/SmallSimpleBanner";
 import LargeButton from "../../components/buttons/LargeButton";
 import Swal from "sweetalert2";
@@ -14,6 +14,10 @@ export default function AddCategoryFilterModal({
 }) {
   const [filterGroups, setFilterGroups] = useState([]);
   const [selectedCopyCategoryId, setSelectedCopyCategoryId] = useState("");
+  const [filterGroupSearch, setFilterGroupSearch] = useState("");
+  const [categorySearch, setCategorySearch] = useState("");
+  const [showFilterGroupDropdown, setShowFilterGroupDropdown] = useState(false);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
   const fetchFilterGroupNamesByIds = async (ids = []) => {
     if (!ids.length) return [];
@@ -24,7 +28,7 @@ export default function AddCategoryFilterModal({
       );
       return res.data[0] || [];
     } catch (err) {
-      console.error("Failed to fetch filter group names:", err);
+      console.error("failed to fetch filter group names:", err);
       return [];
     }
   };
@@ -34,6 +38,8 @@ export default function AddCategoryFilterModal({
       if (!isOpen || !activeCategory?.category_id) {
         setFilterGroups([]);
         setSelectedCopyCategoryId("");
+        setFilterGroupSearch("");
+        setCategorySearch("");
         return;
       }
 
@@ -47,10 +53,36 @@ export default function AddCategoryFilterModal({
       }
 
       setSelectedCopyCategoryId("");
+      setFilterGroupSearch("");
+      setCategorySearch("");
     };
 
     fetchFilters();
   }, [isOpen, activeCategory?.category_id]);
+
+  // filtered filter groups based on search
+  const filteredFilterGroups = useMemo(() => {
+    if (!filterGroupSearch.trim()) return allFilterGroups;
+    
+    const lowerSearch = filterGroupSearch.toLowerCase();
+    return allFilterGroups.filter((group) =>
+      group.name.toLowerCase().includes(lowerSearch)
+    );
+  }, [allFilterGroups, filterGroupSearch]);
+
+  // filtered categories based on search
+  const filteredCategories = useMemo(() => {
+    const categories = allCategories
+      .filter((c) => c.category_id !== activeCategory?.category_id)
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (!categorySearch.trim()) return categories;
+
+    const lowerSearch = categorySearch.toLowerCase();
+    return categories.filter((category) =>
+      category.name.toLowerCase().includes(lowerSearch)
+    );
+  }, [allCategories, categorySearch, activeCategory?.category_id]);
 
   const handleRemove = (indexToRemove) => {
     const updated = filterGroups.filter((_, i) => i !== indexToRemove);
@@ -68,6 +100,8 @@ export default function AddCategoryFilterModal({
     ) {
       setFilterGroups([...filterGroups, groupToAdd]);
     }
+    setFilterGroupSearch("");
+    setShowFilterGroupDropdown(false);
   };
 
   const copyFiltersFromCategory = async (categoryId) => {
@@ -75,7 +109,7 @@ export default function AddCategoryFilterModal({
     if (!parsedId || isNaN(parsedId)) return;
 
     try {
-      // Fetch the category with filter_group_ids (either from props or API)
+      // fetch the category with filter_group_ids (either from props or api)
       const categoryToCopy = allCategories.find(
         (c) => c.category_id === parsedId
       );
@@ -88,8 +122,10 @@ export default function AddCategoryFilterModal({
       setFilterGroups([]);
       setFilterGroups(copiedFilters);
       setSelectedCopyCategoryId("");
+      setCategorySearch("");
+      setShowCategoryDropdown(false);
     } catch (err) {
-      console.error("Error copying filters from category:", err);
+      console.error("error copying filters from category:", err);
     }
   };
 
@@ -121,7 +157,7 @@ export default function AddCategoryFilterModal({
             window.location.reload();
           })
           .catch((error) => {
-            console.error("Error saving category filters:", error);
+            console.error("error saving category filters:", error);
           });
       }
     });
@@ -147,44 +183,82 @@ export default function AddCategoryFilterModal({
 
         <div className="py-4 px-2.5">
           <div className="mb-5 flex gap-40">
-            <div>
+            {/* filter group searchable dropdown */}
+            <div className="relative">
               <label className="block">Add Filter Group</label>
-              <select
-                onChange={(e) => addFilterGroupToCategory(e.target.value)}
-                className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 text-3xl border-slate-700 placeholder:text-neutral-400"
-              >
-                <option value="">-- Select --</option>
-                {allFilterGroups.map((filterGroup) => (
-                  <option
-                    key={filterGroup.filter_group_id}
-                    value={filterGroup.filter_group_id}
-                  >
-                    {filterGroup.name}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="text"
+                placeholder="Search filter groups..."
+                value={filterGroupSearch}
+                onChange={(e) => setFilterGroupSearch(e.target.value)}
+                onFocus={() => setShowFilterGroupDropdown(true)}
+                className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 text-3xl border-slate-700 placeholder:text-neutral-400 w-full"
+              />
+              {showFilterGroupDropdown && (
+                <div className="absolute z-10 w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg max-h-60 overflow-y-auto">
+                  {filteredFilterGroups.length === 0 ? (
+                    <div className="p-3 text-neutral-400 text-2xl">
+                      No filter groups found
+                    </div>
+                  ) : (
+                    filteredFilterGroups.map((filterGroup) => (
+                      <div
+                        key={filterGroup.filter_group_id}
+                        onClick={() =>
+                          addFilterGroupToCategory(filterGroup.filter_group_id)
+                        }
+                        className="p-3 text-3xl hover:bg-slate-700 cursor-pointer text-neutral-200"
+                      >
+                        {filterGroup.name}
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+              {showFilterGroupDropdown && (
+                <div
+                  className="fixed inset-0 z-0"
+                  onClick={() => setShowFilterGroupDropdown(false)}
+                />
+              )}
             </div>
 
-            <div>
+            {/* category searchable dropdown */}
+            <div className="relative">
               <label className="block">Copy Filters from Category</label>
-              <select
-                value={selectedCopyCategoryId}
-                onChange={(e) => copyFiltersFromCategory(e.target.value)}
-                className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 text-3xl border-slate-700 placeholder:text-neutral-400"
-              >
-                <option value="">-- Select Category --</option>
-                {allCategories
-                  .filter((c) => c.category_id !== activeCategory?.category_id)
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((category) => (
-                    <option
-                      key={category.category_id}
-                      value={category.category_id}
-                    >
-                      {category.name}
-                    </option>
-                  ))}
-              </select>
+              <input
+                type="text"
+                placeholder="Search categories..."
+                value={categorySearch}
+                onChange={(e) => setCategorySearch(e.target.value)}
+                onFocus={() => setShowCategoryDropdown(true)}
+                className="bg-slate-800 p-3 rounded-lg text-neutral-200 border-1 text-3xl border-slate-700 placeholder:text-neutral-400 w-full"
+              />
+              {showCategoryDropdown && (
+                <div className="absolute z-10 w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg max-h-60 overflow-y-auto">
+                  {filteredCategories.length === 0 ? (
+                    <div className="p-3 text-neutral-400 text-2xl">
+                      No categories found
+                    </div>
+                  ) : (
+                    filteredCategories.map((category) => (
+                      <div
+                        key={category.category_id}
+                        onClick={() => copyFiltersFromCategory(category.category_id)}
+                        className="p-3 text-3xl hover:bg-slate-700 cursor-pointer text-neutral-200"
+                      >
+                        {category.name}
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+              {showCategoryDropdown && (
+                <div
+                  className="fixed inset-0 z-0"
+                  onClick={() => setShowCategoryDropdown(false)}
+                />
+              )}
             </div>
           </div>
 

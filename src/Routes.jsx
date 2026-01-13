@@ -4,6 +4,7 @@ import Login from './pages/login/login.jsx';
 import Coupons from './pages/coupons/coupons.jsx';
 import CreateCoupon from './pages/coupons/createCoupon.jsx';
 import ModifyCoupons from './pages/coupons/modifyCoupons.jsx';
+import CreateCampaignCoupons from './pages/coupons/CreateCampaignCoupons.jsx';
 
 import AddNewSalesAgent from './pages/salesagent/addNewSalesAgent.jsx';
 import EditSalesAgents from './pages/salesagent/editSalesAgents.jsx';
@@ -76,6 +77,7 @@ export const routes = [
   { path: "/coupons", element: <Coupons />, auth: true },
   { path: "/coupons/createCoupon", element: <CreateCoupon />, auth: true, storesRadio: true },
   { path: "/coupons/modifyCoupons", element: <ModifyCoupons />, auth: true, storesRadio: true },
+  { path: "/coupons/CreateCampaignCoupons", element: <CreateCampaignCoupons />, auth: true, storesRadio: true },
 
   // Sales Agents
   { path: "/salesagent", element: <SalesAgent />, auth: true },
